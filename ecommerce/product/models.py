@@ -17,7 +17,7 @@ class Tag(models.Model):
         else:
             base_slug = slugify(self.tag_slug)
 
-        # Ensure uniqueness
+        # Uniqueness
         slug = base_slug
         num = 1
         while Tag.objects.filter(tag_slug=slug).exclude(pk=self.pk).exists():
@@ -44,7 +44,7 @@ class Brand(models.Model):
         else:
             base_slug = slugify(self.brand_slug)
 
-        # Ensure uniqueness
+        # Uniqueness
         slug = base_slug
         num = 1
         while Brand.objects.filter(brand_slug=slug).exclude(pk=self.pk).exists():
