@@ -17,19 +17,155 @@
             <button class="btn-close btn-close-white" id="closeSidebar"></button>
         </div>
         <div class="sidebar-menu">
-            <a href="#"><i class="fas fa-home me-2"></i> Home</a>
-            <a href="#"><i class="fas fa-tshirt me-2"></i> Fashion</a>
-            <a href="#"><i class="fas fa-laptop me-2"></i> Electronics</a>
-            <a href="#"><i class="fas fa-home me-2"></i> Home & Garden</a>
-            <a href="#"><i class="fas fa-gamepad me-2"></i> Sports</a>
-            <a href="#"><i class="fas fa-car me-2"></i> Automotive</a>
-            <a href="#"><i class="fas fa-book me-2"></i> Books</a>
-            <a href="#"><i class="fas fa-tags me-2"></i> Deals</a>
-            <a href="#"><i class="fas fa-info-circle me-2"></i> About</a>
-            <a href="#"><i class="fas fa-envelope me-2"></i> Contact</a>
+            <a href="#">Home</a>
+            <a href="#">Fashion</a>
+            <a href="#">Electronics</a>
+            <a href="#">Home & Garden</a>
+            <a href="#">Sports</a>
+            <a href="#">Automotive</a>
+            <a href="#">Books</a>
+            <a href="#">Deals</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
         </div>
     </div>
     <div class="overlay" id="overlay"></div>
+
+
+    <!-- Header -->
+    <header>
+        <!-- Top Header -->
+        <div class="top-header d-none d-md-block">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <small><i class="fas fa-truck me-1"></i>Free shipping on orders over $50</small>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <small>
+                            <a href="#" class="text-white text-decoration-none me-3"><i class="fas fa-question-circle me-1"></i>Help</a>
+                            <a href="#" class="text-white text-decoration-none"><i class="fas fa-map-marker-alt me-1"></i>Track Order</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Navigation -->
+        <nav class="main-nav">
+            <div class="container">
+                <div class="row align-items-center">
+                    <!-- Logo -->
+                    <div class="col-6 col-lg-2">
+                        <a href="#" class="logo">ShopEase</a>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="col-12 col-lg-6 order-3 order-lg-2 mt-3 mt-lg-0">
+                        <div class="search-container">
+                            <input type="text" class="search-input" placeholder="Search for products, brands and more..." id="searchInput">
+                            <button class="search-btn" id="searchBtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Header -->
+                    <div class="col-6 col-lg-4 order-2 order-lg-3">
+                        <div class="header-icons justify-content-end">
+                            <!-- Mobile Menu Toggle -->
+                            <button class="mobile-toggle d-lg-none" id="mobileToggle">
+                                <i class="fas fa-bars"></i>
+                            </button>
+
+                            <!-- Country Selector -->
+                            <div class="dropdown d-none d-lg-block">
+                                <a href="#" class="header-icon dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fas fa-globe"></i> US
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-flag-usa me-2"></i>United States</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Canada</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>United Kingdom</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Australia</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Cart -->
+                            <a href="#" class="header-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="cart-badge" id="cartCount">3</span>
+                            </a>
+
+                            <!-- User Account -->
+                            <div class="dropdown">
+                                <a href="#" class="header-icon dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-user-plus me-2"></i>Register</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i>My Account</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-box me-2"></i>My Orders</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Menu -->
+        <nav class="menu-nav d-none d-lg-block">
+            <div class="container">
+                <div class="d-flex">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                               Fashion
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Men's Clothing</a></li>
+                                <li><a class="dropdown-item" href="#">Women's Clothing</a></li>
+                                <li><a class="dropdown-item" href="#">Kids' Clothing</a></li>
+                                <li><a class="dropdown-item" href="#">Shoes & Accessories</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                Electronics
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Smartphones</a></li>
+                                <li><a class="dropdown-item" href="#">Laptops & Computers</a></li>
+                                <li><a class="dropdown-item" href="#">Audio & Video</a></li>
+                                <li><a class="dropdown-item" href="#">Gaming</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home & Garden</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Sports</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Automotive</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Books</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-danger fw-bold" href="#">Hot Deals</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
     
 </body>
 </html>
