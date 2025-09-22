@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+# Website Setting
 class WebsiteSetting(models.Model):
     website_name = models.CharField(max_length=100, default='')
     website_tagline = models.CharField(max_length=100, default="")
