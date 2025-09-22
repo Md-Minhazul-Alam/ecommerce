@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'frontend',
     'product',
+    'businessprofile'
 ]
 
 MIDDLEWARE = [
