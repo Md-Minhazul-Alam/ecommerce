@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tag, Brand, Category
+from .models import Tag, Brand, Category, Variation
 
 # Register Tag
 class TagAdmin(admin.ModelAdmin):
@@ -24,3 +24,11 @@ class CategoryAdmin(admin.ModelAdmin):
     list_per_page = 25
     
 admin.site.register(Category, CategoryAdmin)
+
+# Register Variation
+class VariationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'value', 'variation_slug')
+    search_fields = ('name', 'value', 'variation_slug')
+    list_per_page = 25
+
+admin.site.register(Variation, VariationAdmin)
