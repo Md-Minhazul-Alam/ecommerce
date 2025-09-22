@@ -5,6 +5,7 @@ from .models import Tag, Brand, Category
 class TagAdmin(admin.ModelAdmin):
     list_display = ('tag', 'tag_slug')
     search_fields = ('tag',)
+    list_per_page = 25
 
 admin.site.register(Tag, TagAdmin)
 
@@ -12,6 +13,7 @@ admin.site.register(Tag, TagAdmin)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ('brand', 'brand_slug')
     search_fields = ('brand',)
+    list_per_page = 25
 
 admin.site.register(Brand, BrandAdmin)
 
