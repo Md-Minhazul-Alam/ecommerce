@@ -93,3 +93,14 @@ class Category(models.Model):
             self.category_slug = slug
 
         super().save(*args, **kwargs)
+
+# Variation Model
+class Variation(models.Model):
+    name = models.CharField(max_length=100, default='') 
+    value = models.CharField(max_length=100, default='')
+    variation_slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+
+
+    def __str__(self):
+        return f"{self.name}: {self.value}"
