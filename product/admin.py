@@ -33,6 +33,8 @@ class VariationAdmin(admin.ModelAdmin):
 
 admin.site.register(Variation, VariationAdmin)
 
+
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('product_name', 'product_slug', 'brand', 'category')
     search_fields = ('product_name', 'product_slug')

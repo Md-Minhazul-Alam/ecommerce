@@ -130,7 +130,17 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name
+    
+    
+# ProductVariation Model
+class ProductVariation(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
+    variation = models.ForeignKey(Variation, on_delete=models.CASCADE)
+    stock = models.PositiveIntegerField(default=0)
 
-   
+    class Meta:
+        unique_together = ('product', 'variation')
+
+    
 
     
