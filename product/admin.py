@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tag, Brand, Category, Variation, Product
+from .models import Tag, Brand, Category, Variation, Product, ProductVariation
 
 # Register Tag
 class TagAdmin(admin.ModelAdmin):
@@ -33,12 +33,17 @@ class VariationAdmin(admin.ModelAdmin):
 
 admin.site.register(Variation, VariationAdmin)
 
-
+# Register Product & Variation Inline
+class ProductVariationInline(admin.TabularInline):
+    model = ProductVariation
+    extra = 1  
+    autocomplete_fields = ['variation']  
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('product_name', 'product_slug', 'brand', 'category')
     search_fields = ('product_name', 'product_slug')
     list_filter = ('brand', 'category', 'is_active', 'is_featured')
     filter_horizontal = ('tags',)
+    inlines = [ProductVariationInline] 
     
 admin.site.register(Product, ProductAdmin)
