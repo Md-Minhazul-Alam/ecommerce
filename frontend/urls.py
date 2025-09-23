@@ -3,6 +3,6 @@ from frontend import views
 
 
 urlpatterns = [
-    path('', views.homePage, name='home'),
+    path('', views.home_page, name='home'),
 
 ]
