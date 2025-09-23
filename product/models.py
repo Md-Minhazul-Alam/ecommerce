@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from tinymce.models import HTMLField
 
 # Tag Model
 class Tag(models.Model):
@@ -118,7 +119,7 @@ class Product(models.Model):
     base_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
 
     short_description = models.CharField(max_length=255, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    description = HTMLField(blank=True, null=True)
 
     thumbnail = models.ImageField(upload_to='thumbnails/', null=True, blank=True)
 
