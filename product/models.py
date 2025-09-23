@@ -140,7 +140,3 @@ class ProductVariation(models.Model):
 
     class Meta:
         unique_together = ('product', 'variation')
-
-    
-
-    

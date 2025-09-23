@@ -47,3 +47,14 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductVariationInline] 
     
 admin.site.register(Product, ProductAdmin)
+
+# Register Product Variation Admin
+class ProductVariationAdmin(admin.ModelAdmin):
+    list_display = ('product', 'variation', 'stock', 'get_base_price')
+    list_filter = ('product', 'variation')
+
+    def get_base_price(self, obj):
+        return obj.product.base_price
+    get_base_price.short_description = 'Base Price'
+
+admin.site.register(ProductVariation, ProductVariationAdmin)
