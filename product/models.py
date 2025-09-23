@@ -104,3 +104,33 @@ class Variation(models.Model):
 
     def __str__(self):
         return f"{self.name}: {self.value}"
+    
+
+# Product Model
+class Product(models.Model):
+    product_name = models.CharField(max_length=200)
+    product_slug = models.SlugField(max_length=255, unique=True, blank=True)
+
+    brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True, related_name='products')
+
+    base_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
+
+    short_description = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+    thumbnail = models.ImageField(upload_to='thumbnails/', null=True, blank=True)
+
+    is_active = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.product_name
+
+   
+
+    
