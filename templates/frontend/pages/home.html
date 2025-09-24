@@ -3,40 +3,46 @@
 {% block content %}
     <!-- Hero Slider -->
     <section class="hero-section">
-        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="hero-slide" style="background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/fs/d1fa2f93546277.5e67adbfa56c3.jpg');">
-                        <div class="hero-content">
-                            <h1>Summer Sale 2024</h1>
-                            <p>Up to 70% off on fashion, electronics and more</p>
-                            <a href="#" class="btn btn-primary btn-hero">Shop Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="hero-slide" style="background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/fs/7bad8c93546277.5f48a570f12f8.jpg');">
-                        <div class="hero-content">
-                            <h1>Latest Electronics</h1>
-                            <p>Discover cutting-edge technology at unbeatable prices</p>
-                            <a href="#" class="btn btn-primary btn-hero">Explore Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <!-- Indicators -->
+        <div class="carousel-indicators">
+            {% for slider in sliders %}
+                <button type="button"
+                        data-bs-target="#heroCarousel"
+                        data-bs-slide-to="{{ forloop.counter0 }}"
+                        class="{% if forloop.first %}active{% endif %}"
+                        aria-current="{% if forloop.first %}true{% endif %}">
+                </button>
+            {% endfor %}
         </div>
-    </section>
+
+        <!-- Carousel Items -->
+        <div class="carousel-inner">
+            {% for slider in sliders %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <div class="hero-slide" style="background-image: url('{{ slider.image.url }}');">
+                        <div class="hero-content">
+                            <h1>{{ slider.title }}</h1>
+                            <p>{{ slider.subtitle }}</p>
+                            {% if slider.link %}
+                                <a href="{{ slider.link }}" class="btn btn-primary btn-hero">Shop Now</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</section>
+
 
     <!-- Categories -->
     <section class="category-section">
