@@ -350,4 +350,35 @@ body {
     border-radius: 10px;
 }
 
+.category-item {
+    flex: 0 0 140px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
 
+.category-item:hover {
+    transform: translateY(-10px);
+}
+
+.category-img {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.category-img img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.category-name {
+    font-weight: 600;
+    color: var(--dark-color);
+    font-size: 16px;
+}
