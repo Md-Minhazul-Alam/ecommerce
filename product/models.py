@@ -131,6 +131,23 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name
+
+    def save(self, *args, **kwargs):
+        # Auto-generate slug
+        if not self.product_slug:
+            base_slug = slugify(self.product_name)
+        else:
+            base_slug = slugify(self.product_slug)
+
+        # Slug uniqueness
+        slug = base_slug
+        num = 1
+        while Product.objects.filter(product_slug=slug).exclude(pk=self.pk).exists():
+            slug = f"{base_slug}-{num}"
+            num += 1
+        self.product_slug = slug
+
+        super().save(*args, **kwargs)
     
     
 # ProductVariation Model
