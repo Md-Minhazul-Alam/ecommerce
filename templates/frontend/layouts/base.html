@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ShopEase - Your Online Store</title>
+    {% block main_css %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    {% endblock %}
 </head>
 <body>
     <!-- Sidebar -->
@@ -35,10 +37,10 @@
         <!-- Main Navigation -->
         {% include 'frontend/includes/main-nav.html' %}
 
-        <!-- Menu -->
+        <!-- Desktop Menu -->
         {% include 'frontend/includes/menu.html' %}
     </header>
-    
+
     <!-- Content -->
     {% block content %}
 
@@ -46,9 +48,12 @@
 
     <!-- Footer -->
     {% include 'frontend/includes/footer.html' %}
-    
+
+    {% block main_js %}
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'assets/js/script.js' %}"></script>
+    <!-- Custom JavaScript -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    {% endblock %}
 </body>
 </html>

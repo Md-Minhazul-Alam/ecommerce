@@ -3,45 +3,45 @@
 {% block content %}
     <!-- Hero Slider -->
     <section class="hero-section">
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-        <!-- Indicators -->
-        <div class="carousel-indicators">
-            {% for slider in sliders %}
-                <button type="button"
-                        data-bs-target="#heroCarousel"
-                        data-bs-slide-to="{{ forloop.counter0 }}"
-                        class="{% if forloop.first %}active{% endif %}"
-                        aria-current="{% if forloop.first %}true{% endif %}">
-                </button>
-            {% endfor %}
-        </div>
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                {% for slider in sliders %}
+                    <button type="button"
+                            data-bs-target="#heroCarousel"
+                            data-bs-slide-to="{{ forloop.counter0 }}"
+                            class="{% if forloop.first %}active{% endif %}"
+                            aria-current="{% if forloop.first %}true{% endif %}">
+                    </button>
+                {% endfor %}
+            </div>
 
-        <!-- Carousel Items -->
-        <div class="carousel-inner">
-            {% for slider in sliders %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <div class="hero-slide" style="background-image: url('{{ slider.image.url }}');">
-                        <div class="hero-content">
-                            <h1>{{ slider.title }}</h1>
-                            <p>{{ slider.subtitle }}</p>
-                            {% if slider.link %}
-                                <a href="{{ slider.link }}" class="btn btn-primary btn-hero">Shop Now</a>
-                            {% endif %}
+            <!-- Carousel Items -->
+            <div class="carousel-inner">
+                {% for slider in sliders %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="hero-slide" style="background-image: url('{{ slider.image.url }}');">
+                            <div class="hero-content">
+                                <h1>{{ slider.title }}</h1>
+                                <p>{{ slider.subtitle }}</p>
+                                {% if slider.link %}
+                                    <a href="{{ slider.link }}" class="btn btn-primary btn-hero">Shop Now</a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
 
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
-    </div>
-</section>
+            <!-- Carousel Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
 
 
     <!-- Categories -->
