@@ -11,7 +11,8 @@ urlpatterns = [
     path('tinymce/', include('tinymce.urls')),
     path('accounts/', include('allauth.urls')),
     # Frontend URLS
-    path('', include('frontend.urls'))
+    # path('', include('frontend.urls'))
+    path('', include('home.urls'))
 ]
 
 # Serve media files during development
