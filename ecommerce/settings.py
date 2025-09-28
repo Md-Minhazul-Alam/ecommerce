@@ -45,10 +45,12 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     
+    'home',
     'frontend',
     'product',
     'businessprofile',
-    'themeOption'
+    'themeOption',
+    
 ]
 
 MIDDLEWARE = [

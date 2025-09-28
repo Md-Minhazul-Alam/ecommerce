@@ -10,12 +10,12 @@ urlpatterns = [
     # Tinymce
     path('tinymce/', include('tinymce.urls')),
     path('accounts/', include('allauth.urls')),
-    # Frontend URLS
+    # Frontend URLs
     # path('', include('frontend.urls'))
-    path('', include('home.urls'))
+    path('', include('home.urls')),
 ]
 
-# Serve media files during development
+# Serve static + media files during development only
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
