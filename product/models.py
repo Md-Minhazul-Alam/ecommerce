@@ -121,6 +121,8 @@ class Product(models.Model):
     short_description = models.CharField(max_length=255, blank=True, null=True)
     description = HTMLField(blank=True, null=True)
 
+    rating = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    image_url = models.URLField(max_length=1024, null=True, blank=True)
     thumbnail = models.ImageField(upload_to='thumbnails/', null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
