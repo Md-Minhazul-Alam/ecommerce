@@ -13,6 +13,7 @@ urlpatterns = [
     # Frontend URLs
     # path('', include('frontend.urls'))
     path('', include('home.urls')),
+    path('products', include('product.urls')),
 ]
 
 # Serve static + media files during development only
