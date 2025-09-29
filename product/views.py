@@ -18,13 +18,16 @@ def all_products(request):
     return render(request, "product/products.html", context)
 
 # Product Details
-def product_detail(request, product_id):
-    """ A view to show individual product details """
+def product_detail(request, product_slug):
 
-    product = get_object_or_404(Product, pk=product_id)
+    
+    categoryMenu = Category.objects.all()
+    
+    # Product Details
+    product = get_object_or_404(Product, product_slug=product_slug)
 
     context = {
-        'product': product,
+        "product": product,
+        "categoryMenu": categoryMenu,
     }
-
-    return render(request, 'product/product_detail.html', context)
+    return render(request, "product/product_details.html", context)

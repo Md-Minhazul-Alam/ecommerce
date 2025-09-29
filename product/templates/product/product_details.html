@@ -1,0 +1,104 @@
+{% extends 'frontend/layouts/base.html' %}
+
+{% block content %}
+
+    <!-- Breadcrumb -->
+    <section class="breadcrumb-section border-top">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+
+     <section class="product-details-section">
+        <div class="container">
+            <div class="row">
+                <!-- Left Side - Product Images -->
+                <div class="col-lg-6">
+                    <div class="product-image-wrapper">
+                        {% if product.thumbnail %}
+                            <img src="{{ product.thumbnail.url }}" class="product-main-image" alt="{{ product.product_name }}" id="mainImage">
+                        {% elif product.image_url %}
+                            <img src="{{ product.image_url }}" class="product-main-image" alt="{{ product.product_name }}" id="mainImage">
+                        {% else %}
+                            <img src="https://via.placeholder.com/500x500?text=No+Image" class="product-main-image" alt="No Image" id="mainImage">
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Right Side - Product Info -->
+                <div class="col-lg-6">
+                    <div class="product-info-wrapper">
+                        <!-- Product Title -->
+                        <h1 class="product-detail-title">{{ product.product_name }}</h1>
+
+                        <!-- Rating -->
+                        {% if product.rating %}
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= product.rating|floatformat:0 %}
+                                        <i class="fas fa-star"></i>
+                                    {% elif forloop.counter == product.rating|floatformat:0|add:1 %}
+                                        <i class="fas fa-star-half-alt"></i>
+                                    {% else %}
+                                        <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <span class="rating-text">{{ product.rating }}/5</span>
+                        </div>
+                        {% endif %}
+
+                        <!-- Price -->
+                        <div class="product-detail-price">${{ product.base_price }}</div>
+
+                        <!-- Short Description -->
+                        {% if product.short_description %}
+                            <p class="product-short-desc">{{ product.short_description }}</p>
+                        {% endif %}
+
+                        <!-- Variations -->
+                        <div class="variation-section">
+                            <span class="variation-label">Color:</span>
+                            <select class="variation-select">
+                                <option value="blue">Blue</option>
+                                <option value="red">Red</option>
+                                <option value="green">Green</option>
+                                <option value="black">Black</option>
+                            </select>
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="quantity-selector">
+                            <span class="quantity-label">Quantity:</span>
+                            <div class="quantity-input">
+                                <button class="quantity-btn">-</button>
+                                <input type="text" class="quantity-value" value="1" id="quantity" readonly>
+                                <button class="quantity-btn">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Add to Cart Button -->
+                        <button class="btn-add-cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+{% endblock %}
+
+
+
+
