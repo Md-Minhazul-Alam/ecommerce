@@ -52,7 +52,12 @@
                         </a>
 
                         <div class="product-info">
-                            <h5 class="product-title">{{ product.product_name }}</h5>
+                           <h5 class="product-title">
+                                <a href="{% url 'product_detail' product.product_slug %}">
+                                    {{ product.product_name }}
+                                </a>
+                            </h5>
+
 
                             {% if product.rating %}
                             <div class="product-rating">
