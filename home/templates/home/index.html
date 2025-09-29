@@ -1,6 +1,7 @@
 {% extends 'frontend/layouts/base.html' %}
 
 {% block content %}
+{% load static %}
 <!-- Hero Slider -->
 <section class="hero-section">
     <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
@@ -49,7 +50,12 @@
             {% for category in categoryMenu %}
             <div class="category-item fade-in">
                 <div class="category-img">
-                    <img src="{{ category.category_image.url }}" alt="{{ category.category }}">
+                    {% if category.category_image %}
+                        <img src="{{ category.category_image.url }}" alt="{{ category.category }}">
+                    {% else %}
+                        <img src="{% static 'assets/images/default.jpg' %}" alt="{{ category.category }}">
+                    {% endif %}
+
                 </div>
                 <div class="category-name">{{ category.category }}</div>
             </div>

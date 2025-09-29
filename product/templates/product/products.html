@@ -1,7 +1,7 @@
 {% extends 'frontend/layouts/base.html' %}
 
 {% block content %}
-
+{% load static %}
     <!-- Breadcrumb -->
     <section class="breadcrumb-section border-top">
         <div class="container">
@@ -47,7 +47,7 @@
                             {% elif product.image_url %}
                                 <img src="{{ product.image_url }}" class="product-img" alt="{{ product.product_name }}">
                             {% else %}
-                                <img src="https://via.placeholder.com/300x300?text=No+Image" class="product-img" alt="No Image">
+                                <img src="{% static 'assets/images/default.jpg' %}" class="product-img" alt="No Image">
                             {% endif %}
                         </a>
 
@@ -72,7 +72,7 @@
                             {% endif %}
 
                             <p class="product-description">
-                                {{ product.short_description|default:"No description available." }}
+                                {{ product.short_description|default:"No description available."|truncatewords:10 }}
                             </p>
 
                             <div class="product-footer">

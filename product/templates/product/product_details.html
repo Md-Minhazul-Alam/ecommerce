@@ -1,7 +1,7 @@
 {% extends 'frontend/layouts/base.html' %}
 
 {% block content %}
-
+{% load static %}
     <!-- Breadcrumb -->
     <section class="breadcrumb-section border-top">
         <div class="container">
@@ -26,7 +26,7 @@
                         {% elif product.image_url %}
                             <img src="{{ product.image_url }}" class="product-main-image" alt="{{ product.product_name }}" id="mainImage">
                         {% else %}
-                            <img src="https://via.placeholder.com/500x500?text=No+Image" class="product-main-image" alt="No Image" id="mainImage">
+                            <img src="{% static 'assets/images/default.jpg' %}" class="product-main-image" alt="No Image" id="mainImage">
                         {% endif %}
                     </div>
                 </div>
