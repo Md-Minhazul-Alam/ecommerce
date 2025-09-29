@@ -23,10 +23,9 @@ function closeSidebar() {
     document.body.style.overflow = 'auto';
 }
 
-// Event listeners for mobile menu
-mobileToggle.addEventListener('click', openSidebar);
-sidebarClose.addEventListener('click', closeSidebar);
-overlay.addEventListener('click', closeSidebar);
+if (mobileToggle) mobileToggle.addEventListener('click', openSidebar);
+if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+if (overlay) overlay.addEventListener('click', closeSidebar);
 
 // Close sidebar on escape key
 document.addEventListener('keydown', function (e) {
@@ -37,11 +36,7 @@ document.addEventListener('keydown', function (e) {
 
 // Scroll animations
 function initScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -49,22 +44,16 @@ function initScrollAnimations() {
             }
         });
     }, observerOptions);
-
-    // Observe all elements with fade-in class
-    document.querySelectorAll('.fade-in').forEach(el => {
-        observer.observe(el);
-    });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 }
 
 // Product card hover effects
 function initProductEffects() {
     const productCards = document.querySelectorAll('.product-card');
-
     productCards.forEach(card => {
         card.addEventListener('mouseenter', function () {
             this.style.transform = 'translateY(-10px) scale(1.02)';
         });
-
         card.addEventListener('mouseleave', function () {
             this.style.transform = 'translateY(0) scale(1)';
         });
@@ -74,11 +63,9 @@ function initProductEffects() {
 // Header scroll effect
 function initHeaderEffects() {
     const header = document.querySelector('.main-nav');
-    let lastScrollTop = 0;
-
+    if (!header) return;
     window.addEventListener('scroll', () => {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
         if (scrollTop > 100) {
             header.style.background = 'rgba(255, 255, 255, 0.95)';
             header.style.backdropFilter = 'blur(10px)';
@@ -86,17 +73,12 @@ function initHeaderEffects() {
             header.style.background = 'white';
             header.style.backdropFilter = 'none';
         }
-
-        lastScrollTop = scrollTop;
     });
 }
 
 // Smooth scroll to top
 function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // Add scroll to top button
@@ -105,27 +87,25 @@ function initScrollToTop() {
     scrollButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
     scrollButton.className = 'scroll-to-top';
     scrollButton.style.cssText = `
-                position: fixed;
-                bottom: 30px;
-                right: 30px;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background: var(--primary-color);
-                color: white;
-                border: none;
-                font-size: 18px;
-                cursor: pointer;
-                z-index: 1000;
-                opacity: 0;
-                transform: translateY(20px);
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 12px rgba(0,123,255,0.3);
-            `;
-
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+    `;
     scrollButton.addEventListener('click', scrollToTop);
     document.body.appendChild(scrollButton);
-
     window.addEventListener('scroll', () => {
         if (window.pageYOffset > 300) {
             scrollButton.style.opacity = '1';
@@ -150,25 +130,57 @@ function initLazyLoading() {
             }
         });
     });
-
     images.forEach(img => imageObserver.observe(img));
 }
 
-// Initialize all functionality when DOM is loaded
-document.addEventListener('DOMContentLoaded', function () {
-    initCategorySlider();
-    initScrollAnimations();
-    initProductEffects();
-    initCategoryHandlers();
-    initHeaderEffects();
-    initScrollToTop();
-    initLazyLoading();
+// Category handlers
+function initCategoryHandlers() {
+    const categories = document.querySelectorAll('.category-item');
+    categories.forEach(category => {
+        category.addEventListener('click', () => {
+            showNotification(`You selected ${category.textContent}`, 'info');
+        });
+    });
+}
 
-    // Welcome message
+// Notification system
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.3s ease;
+        z-index: 2000;
+    `;
+    document.body.appendChild(notification);
+    requestAnimationFrame(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateY(0)';
+    });
     setTimeout(() => {
-        showNotification('Welcome to ShopEase! Enjoy shopping with us.', 'success');
-    }, 1000);
-});
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(-20px)';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Run all initializers immediately
+initScrollAnimations();
+initProductEffects();
+initCategoryHandlers();
+initHeaderEffects();
+initScrollToTop();
+initLazyLoading();
 
 // Handle window resize
 window.addEventListener('resize', function () {
@@ -182,15 +194,11 @@ document.addEventListener('keydown', function (e) {
     // Alt + S for search focus
     if (e.altKey && e.key === 's') {
         e.preventDefault();
-        searchInput.focus();
+        if (searchInput) searchInput.focus();
     }
-
     // Alt + C for cart
     if (e.altKey && e.key === 'c') {
         e.preventDefault();
         showNotification('Cart opened!', 'info');
     }
 });
-
-
-
