@@ -460,20 +460,22 @@ body {
 }
 
 .product-rating {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .rating-stars {
-            color: #ffc107;
-            font-size: 0.9rem;
-        }
-        .rating-text {
-            font-size: 0.9rem;
-            color: #666;
-            font-weight: 500;
-        }
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.rating-stars {
+    color: #ffc107;
+    font-size: 0.9rem;
+}
+
+.rating-text {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
 
 /* Product Filter */
 .filter-bar {
