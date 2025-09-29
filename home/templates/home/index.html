@@ -68,122 +68,50 @@
     <div class="container">
         <h2 class="section-title fade-in">Featured Products</h2>
         <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="product-card fade-in">
-                    <img src="https://img.freepik.com/free-vector/flat-world-graphics-day-illustration_23-2148880103.jpg?semt=ais_hybrid&w=740&q=80"
-                        class="product-img" alt="Wireless Headphones">
-                    <div class="product-info">
-                        <h5 class="product-title">Graphic Design 1</h5>
-                        <div class="product-rating">
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
+            {% for product in featured_products %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="product-card fade-in">
+                        {% if product.thumbnail %}
+                            <img src="{{ product.thumbnail.url }}" class="product-img" alt="{{ product.product_name }}">
+                        {% elif product.image_url %}
+                            <img src="{{ product.image_url }}" class="product-img" alt="{{ product.product_name }}">
+                        {% else %}
+                            <img src="{% static 'images/default.jpg' %}" class="product-img" alt="No Image">
+                        {% endif %}
+                        <div class="product-info">
+                            <h5 class="product-title">
+                                <a href="{% url 'product_detail' product.product_slug %}">
+                                    {{ product.product_name }}
+                                </a>
+                            </h5>
+
+                            <div class="product-rating">
+                                <div class="rating-stars">
+                                    {% for i in "12345" %}
+                                        <i class="fas fa-star"></i>
+                                    {% endfor %}
+                                </div>
+                                <span class="rating-text">{{ product.rating|default:"0.0" }}/5</span>
                             </div>
-                            <span class="rating-text">4.3/5</span>
-                        </div>
-                        <p class="product-description">It is a long established fact that a reader will be distracted by
-                            the readable content of a page when looking at its layout</p>
-                        <div class="product-footer">
-                            <div class="product-price">$129.99</div>
-                            <button class="btn-cart">
-                                <i class="fas fa-cart-plus me-1"></i>Add to Cart
-                            </button>
+
+                            <p class="product-description">
+                                {{ product.short_description|default:"No description available."|truncatewords:7 }}
+                            </p>
+
+                            <div class="product-footer">
+                                <div class="product-price">${{ product.base_price }}</div>
+                                <button class="btn-cart">
+                                    <i class="fas fa-cart-plus me-1"></i>Add to Cart
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="product-card fade-in">
-                    <img src="https://img.freepik.com/free-vector/flat-world-graphics-day-illustration_23-2148880103.jpg?semt=ais_hybrid&w=740&q=80"
-                        class="product-img" alt="Wireless Headphones">
-                    <div class="product-info">
-                        <h5 class="product-title">Graphic Design 1</h5>
-                        <div class="product-rating">
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <span class="rating-text">4.3/5</span>
-                        </div>
-                        <p class="product-description">It is a long established fact that a reader will be distracted by
-                            the readable content of a page when looking at its layout</p>
-                        <div class="product-footer">
-                            <div class="product-price">$129.99</div>
-                            <button class="btn-cart">
-                                <i class="fas fa-cart-plus me-1"></i>Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="product-card fade-in">
-                    <img src="https://img.freepik.com/free-vector/flat-world-graphics-day-illustration_23-2148880103.jpg?semt=ais_hybrid&w=740&q=80"
-                        class="product-img" alt="Wireless Headphones">
-                    <div class="product-info">
-                        <h5 class="product-title">Graphic Design 1</h5>
-                        <div class="product-rating">
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <span class="rating-text">4.3/5</span>
-                        </div>
-                        <p class="product-description">It is a long established fact that a reader will be distracted by
-                            the readable content of a page when looking at its layout</p>
-                        <div class="product-footer">
-                            <div class="product-price">$129.99</div>
-                            <button class="btn-cart">
-                                <i class="fas fa-cart-plus me-1"></i>Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="product-card fade-in">
-                    <img src="https://img.freepik.com/free-vector/flat-world-graphics-day-illustration_23-2148880103.jpg?semt=ais_hybrid&w=740&q=80"
-                        class="product-img" alt="Wireless Headphones">
-                    <div class="product-info">
-                        <h5 class="product-title">Graphic Design 1</h5>
-                        <div class="product-rating">
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <span class="rating-text">4.3/5</span>
-                        </div>
-                        <p class="product-description">It is a long established fact that a reader will be distracted by
-                            the readable content of a page when looking at its layout</p>
-                        <div class="product-footer">
-                            <div class="product-price">$129.99</div>
-                            <button class="btn-cart">
-                                <i class="fas fa-cart-plus me-1"></i>Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
+            {% endfor %}
         </div>
     </div>
 </section>
+
 
 
 
