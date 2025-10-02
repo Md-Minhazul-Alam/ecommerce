@@ -209,6 +209,25 @@ body {
     z-index: 9998;
     display: none;
 }
+.sidebar-dropdown > a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.sidebar-submenu {
+    display: none;
+    padding-left: 20px;
+    flex-direction: column;
+}
+
+.sidebar-submenu a {
+    font-size: 14px;
+    padding: 5px 0;
+    color: #555;
+}
+
 
 /* Hero Section */
 .hero-section {

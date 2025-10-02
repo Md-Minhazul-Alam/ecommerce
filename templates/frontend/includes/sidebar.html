@@ -6,16 +6,32 @@
         </button>
     </div>
     <div class="sidebar-menu">
-        <a href="/"><i class="fas fa-home me-2"></i>Home</a>
-        <a href="#"><i class="fas fa-tshirt me-2"></i>Fashion</a>
-        <a href="#"><i class="fas fa-laptop me-2"></i>Electronics</a>
-        <a href="#"><i class="fas fa-home me-2"></i>Home & Garden</a>
-        <a href="#"><i class="fas fa-running me-2"></i>Sports</a>
-        <a href="#"><i class="fas fa-car me-2"></i>Automotive</a>
-        <a href="#"><i class="fas fa-book me-2"></i>Books</a>
-        <a href="#"><i class="fas fa-tags me-2"></i>Deals</a>
-        <a href="#"><i class="fas fa-info-circle me-2"></i>About</a>
-        <a href="#"><i class="fas fa-envelope me-2"></i>Contact</a>
+        <a href="/">Home</a>
+        {% for cat in menuCategories %}
+            {% if cat.subcategories.all|length > 0 %}
+                <div class="sidebar-dropdown">
+                    <a href="{% url 'category' cat.category_slug %}">
+                        {{ cat.category }}
+                        <span class="toggle-icon">▼</span>
+                    </a>
+                    <div class="sidebar-submenu">
+                        {% for sub in cat.subcategories.all %}
+                            <a href="{% url 'category' sub.category_slug %}">
+                                {{ sub.category }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <a href="{% url 'category' cat.category_slug %}">
+                    {{ cat.category }}
+                </a>
+            {% endif %}
+        {% endfor %}
+        <a href="/products">Shop</a>
+        <a href="#">Deals</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
     </div>
 </div>
 <div class="overlay" id="overlay"></div>

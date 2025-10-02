@@ -87,7 +87,7 @@ class Category(models.Model):
             # For manually given
             base_slug = slugify(self.category_slug)
             slug = base_slug
-            count = 1
+            count = 1 
             while Category.objects.filter(category_slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{count}"
                 count += 1

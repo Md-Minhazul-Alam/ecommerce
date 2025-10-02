@@ -16,13 +16,11 @@ function openSidebar() {
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
 }
-
 function closeSidebar() {
     sidebar.classList.remove('active');
     overlay.style.display = 'none';
     document.body.style.overflow = 'auto';
 }
-
 if (mobileToggle) mobileToggle.addEventListener('click', openSidebar);
 if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
 if (overlay) overlay.addEventListener('click', closeSidebar);
@@ -39,9 +37,7 @@ function initScrollAnimations() {
     const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('visible');
         });
     }, observerOptions);
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
@@ -51,11 +47,11 @@ function initScrollAnimations() {
 function initProductEffects() {
     const productCards = document.querySelectorAll('.product-card');
     productCards.forEach(card => {
-        card.addEventListener('mouseenter', function () {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-10px) scale(1.02)';
         });
-        card.addEventListener('mouseleave', function () {
-            this.style.transform = 'translateY(0) scale(1)';
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0) scale(1)';
         });
     });
 }
@@ -84,7 +80,7 @@ function scrollToTop() {
 // Add scroll to top button
 function initScrollToTop() {
     const scrollButton = document.createElement('button');
-    scrollButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    scrollButton.textContent = '↑';
     scrollButton.className = 'scroll-to-top';
     scrollButton.style.cssText = `
         position: fixed;
@@ -143,6 +139,17 @@ function initCategoryHandlers() {
     });
 }
 
+// Sidebar dropdown toggle
+function initSidebarDropdowns() {
+    document.querySelectorAll('.sidebar-dropdown > a').forEach(toggle => {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            let submenu = this.nextElementSibling;
+            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+        });
+    });
+}
+
 // Notification system
 function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
@@ -181,6 +188,7 @@ initCategoryHandlers();
 initHeaderEffects();
 initScrollToTop();
 initLazyLoading();
+initSidebarDropdowns();
 
 // Handle window resize
 window.addEventListener('resize', function () {
@@ -202,3 +210,4 @@ document.addEventListener('keydown', function (e) {
         showNotification('Cart opened!', 'info');
     }
 });
+
