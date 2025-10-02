@@ -11,6 +11,9 @@ def home_page(request):
         parent_category__isnull=True
     ).prefetch_related("subcategories")
 
+    # Category List
+    categoryList = Category.objects.all()
+
     # Sliders
     sliders = HeroSlider.objects.all()
 
@@ -21,9 +24,8 @@ def home_page(request):
 
     context = {
         'menuCategories': menuCategories,
+        'categoryList': categoryList,
         'sliders': sliders,
         'featured_products': featured_products,
     }
     return render(request, "home/index.html", context)
-
-

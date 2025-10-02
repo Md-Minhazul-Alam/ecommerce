@@ -20,28 +20,30 @@ def all_products(request):
 
 
     context = {
-
+        'menuCategories': menuCategories,
         'products': products,
 
     }
     return render(request, "product/products.html", context)
 
 
-def category_products(request):
-
+def category_products(request, category_slug):
     # Menus
     menuCategories = Category.objects.filter(
         is_active=True,
         parent_category__isnull=True
     ).prefetch_related("subcategories")
 
-    # Show All Products 
-    products = Product.objects.all()
+    # Category object
+    category = get_object_or_404(Category, category_slug=category_slug, is_active=True)
+
+    # Filter products for this category
+    products = Product.objects.filter(category=category)
 
     context = {
-        'menuCategories': menuCategories,
-        'products': products,
-
+        "menuCategories": menuCategories,
+        "category": category,
+        "products": products,
     }
     return render(request, "product/products.html", context)
 
