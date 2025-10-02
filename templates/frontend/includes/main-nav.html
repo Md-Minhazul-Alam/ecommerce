@@ -9,11 +9,12 @@
             <!-- Search Bar -->
             <div class="col-12 col-lg-6 order-3 order-lg-2 mt-3 mt-lg-0">
                 <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Search for products, brands and more..."
-                        id="searchInput">
-                    <button class="search-btn" id="searchBtn">
-                        <i class="fas fa-search"></i>
-                    </button>
+                    <form method="get" action="{% url 'all_products' %}">
+                        <input type="text" name="q" class="search-input" placeholder="Search for products, brands and more..." value="{{ query|default:'' }}">
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
 
