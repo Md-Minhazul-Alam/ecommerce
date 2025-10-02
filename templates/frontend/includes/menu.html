@@ -5,39 +5,40 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Home</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                        Fashion
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Men's Clothing</a></li>
-                        <li><a class="dropdown-item" href="#">Women's Clothing</a></li>
-                        <li><a class="dropdown-item" href="#">Kids' Clothing</a></li>
-                        <li><a class="dropdown-item" href="#">Shoes & Accessories</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                        Electronics
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Smartphones</a></li>
-                        <li><a class="dropdown-item" href="#">Laptops & Computers</a></li>
-                        <li><a class="dropdown-item" href="#">Audio & Video</a></li>
-                        <li><a class="dropdown-item" href="#">Gaming</a></li>
-                    </ul>
-                </li>
+                {% for cat in menuCategories %}
+                        {% if cat.subcategories.all %}
+                            {% if cat.subcategories.all|length > 0 %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="{% url 'category' cat.category_slug %}" data-bs-toggle="dropdown">
+                                        {{ cat.category }}
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        {% for sub in cat.subcategories.all %}
+                                            <li>
+                                                <a class="dropdown-item" href="{% url 'category' sub.category_slug %}">
+                                                    {{ sub.category }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'category' cat.category_slug %}">
+                                        {{ cat.category }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'category' cat.category_slug %}">
+                                    {{ cat.category }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home & Garden</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Sports</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Automotive</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/products">Products</a>
+                    <a class="nav-link" href="/products">Shop</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-danger fw-bold" href="#">Hot Deals</a>
