@@ -714,6 +714,30 @@ body {
     background: #0056b3;
 }
 
+/* Product Tags */
+.product-tags {
+    margin-top: 15px;
+}
+.tags-label {
+    font-weight: bold;
+    margin-right: 8px;
+}
+.product-tag {
+    display: inline-block;
+    background: #f1f1f1;
+    color: #333;
+    padding: 4px 10px;
+    margin: 3px;
+    border-radius: 12px;
+    font-size: 14px;
+    text-decoration: none;
+}
+.product-tag:hover {
+    background: #e74c3c;
+    color: #fff;
+}
+
+
 
 
 /* Product Details & Reviews Section */

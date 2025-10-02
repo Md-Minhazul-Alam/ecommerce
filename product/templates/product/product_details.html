@@ -89,6 +89,21 @@
                             <i class="fas fa-shopping-cart"></i>
                             Add to Cart
                         </button>
+
+
+                        <!-- Tags -->
+                        {% if product.tags.all %}
+                        <div class="product-tags">
+                            <span class="tags-label">Tags:</span>
+                            {% for tag in product.tags.all %}
+                                <a href="" class="product-tag">
+                                    {{ tag.tag }}
+                                </a>
+                            {% empty %}
+                                <span>No tags available</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
