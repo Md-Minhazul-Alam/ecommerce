@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'home',
     'frontend',
     'product',
+    'bag',
     'businessprofile',
     'themeOption',
     

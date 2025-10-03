@@ -14,6 +14,7 @@ urlpatterns = [
     # path('', include('frontend.urls'))
     path('', include('home.urls')),
     path('products', include('product.urls')),
+    path('bag/', include('bag.urls')),
 ]
 
 # Serve static + media files during development only
