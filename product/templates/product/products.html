@@ -25,12 +25,28 @@
                 </div>
                 <div class="sort-dropdown">
                     <label for="sortSelect">Sort by:</label>
-                    <select id="sortSelect" class="form-select-sm">
-                        <option value="default">Default</option>
-                        <option value="price-low">Price: Low to High</option>
-                        <option value="price-high">Price: High to Low</option>
-                        <option value="name-az">Name: A to Z</option>
-                        <option value="name-za">Name: Z to A</option>
+                    <select id="sortSelect" class="form-select-sm" onchange="location = this.value;">
+                        <option value="{% url 'all_products' %}" {% if not sort %}selected{% endif %}>Default</option>
+                        <option value="{% url 'all_products' %}?sort=price&direction=asc"
+                            {% if sort == "price" and direction == "asc" %}selected{% endif %}>
+                            Price: Low to High
+                        </option>
+                        <option value="{% url 'all_products' %}?sort=price&direction=desc"
+                            {% if sort == "price" and direction == "desc" %}selected{% endif %}>
+                            Price: High to Low
+                        </option>
+                        <option value="{% url 'all_products' %}?sort=rating&direction=desc"
+                            {% if sort == "rating" and direction == "desc" %}selected{% endif %}>
+                            Rating: High to Low
+                        </option>
+                        <option value="{% url 'all_products' %}?sort=category&direction=asc"
+                            {% if sort == "category" and direction == "asc" %}selected{% endif %}>
+                            Name: A to Z
+                        </option>
+                        <option value="{% url 'all_products' %}?sort=category&direction=desc"
+                            {% if sort == "category" and direction == "desc" %}selected{% endif %}>
+                            Name: Z to A
+                        </option>
                     </select>
                 </div>
             </div>

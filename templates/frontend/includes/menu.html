@@ -3,32 +3,31 @@
         <div class="d-flex">
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
                 </li>
                 {% for cat in menuCategories %}
-                        {% if cat.subcategories.all %}
-                            {% if cat.subcategories.all|length > 0 %}
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="{% url 'category' cat.category_slug %}" data-bs-toggle="dropdown">
-                                        {{ cat.category }}
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        {% for sub in cat.subcategories.all %}
-                                            <li>
-                                                <a class="dropdown-item" href="{% url 'category' sub.category_slug %}">
-                                                    {{ sub.category }}
-                                                </a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% else %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'category' cat.category_slug %}">
-                                        {{ cat.category }}
-                                    </a>
-                                </li>
-                            {% endif %}
+                    {% if cat.subcategories.all %}
+                        {% if cat.subcategories.all|length > 0 %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="{% url 'category' cat.category_slug %}" data-bs-toggle="dropdown">
+                                    {{ cat.category }}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% for sub in cat.subcategories.all %}
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'category' sub.category_slug %}">
+                                                {{ sub.category }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'category' cat.category_slug %}?show_all=true">
+                                            All Products
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
                         {% else %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'category' cat.category_slug %}">
@@ -36,9 +35,24 @@
                                 </a>
                             </li>
                         {% endif %}
-                    {% endfor %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/products">Shop</a>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'category' cat.category_slug %}">
+                                {{ cat.category }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        All Products
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'all_products' %}?sort=price&direction=asc">By Price</a></li>
+                        <li><a class="dropdown-item" href="{% url 'all_products' %}?sort=rating&direction=desc">By Rating</a></li>
+                        <li><a class="dropdown-item" href="{% url 'all_products' %}?sort=category&direction=asc">By Category</a></li>
+                        <li><a class="dropdown-item" href="{% url 'all_products' %}">All Products</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-danger fw-bold" href="#">Hot Deals</a>

@@ -2,56 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from product.models import Category, Product
 from django.db.models import Q
 
-# Home Page 
-# def all_products(request):
-#     # Menus
-#     menuCategories = Category.objects.filter(
-#         is_active=True,
-#         parent_category__isnull=True
-#     ).prefetch_related("subcategories")
-
-#     # Search query
-#     query = request.GET.get("q")
-
-#     if query:
-#         products = Product.objects.filter(
-#             Q(product_name__icontains=query) |
-#             Q(short_description__icontains=query) |
-#             Q(description__icontains=query)
-#         ).distinct()
-#     else:
-#         products = Product.objects.all()
-
-#     context = {
-#         "menuCategories": menuCategories,
-#         "products": products,
-#         "query": query,
-#     }
-#     return render(request, "product/products.html", context)
-
-
-# def category_products(request, category_slug):
-#     # Menus
-#     menuCategories = Category.objects.filter(
-#         is_active=True,
-#         parent_category__isnull=True
-#     ).prefetch_related("subcategories")
-
-#     # Category object
-#     category = get_object_or_404(Category, category_slug=category_slug, is_active=True)
-
-#     # Filter products for this category
-#     products = Product.objects.filter(category=category)
-
-#     context = {
-#         "menuCategories": menuCategories,
-#         "category": category,
-#         "products": products,
-#     }
-#     return render(request, "product/products.html", context)
-
-
-
+# Products 
 def all_products(request, category_slug=None):
     # Menus
     menuCategories = Category.objects.filter(
@@ -61,15 +12,24 @@ def all_products(request, category_slug=None):
 
     # Search query
     query = request.GET.get("q")
+    show_all = request.GET.get("show_all")
 
     # Base queryset
     products = Product.objects.all()
 
-    # If category slug available, filtered category
+    # Category Filter
     category = None
     if category_slug:
         category = get_object_or_404(Category, category_slug=category_slug, is_active=True)
-        products = products.filter(category=category)
+        
+        if show_all:
+            # Get all subcategories
+            subcategories = category.subcategories.filter(is_active=True)
+            products = products.filter(
+                Q(category=category) | Q(category__in=subcategories)
+            )
+        else:
+            products = products.filter(category=category)
 
     # If search query available, filter by search
     if query:
@@ -79,11 +39,27 @@ def all_products(request, category_slug=None):
             Q(description__icontains=query)
         ).distinct()
 
+    # Product Sorting
+    sort = request.GET.get("sort")
+    direction = request.GET.get("direction", "asc")
+
+    if sort:
+        if sort == "price":
+            products = products.order_by("base_price" if direction == "asc" else "-base_price")
+        elif sort == "rating":
+            products = products.order_by("rating" if direction == "asc" else "-rating")
+        elif sort == "category":
+            products = products.order_by(
+                "category__category" if direction == "asc" else "-category__category"
+            )
+
     context = {
         "menuCategories": menuCategories,
         "products": products,
         "category": category,
         "query": query,
+        "sort": sort,
+        "direction": direction,
     }
     return render(request, "product/products.html", context)
 
