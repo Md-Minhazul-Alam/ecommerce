@@ -792,7 +792,7 @@ body {
 }
 
 .footer h5 {
-    color: var(--primary-color);
+    color: #fff;
     font-weight: 600;
     margin-bottom: 20px;
 }

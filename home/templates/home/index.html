@@ -84,16 +84,24 @@
                                     {{ product.product_name }}
                                 </a>
                             </h5>
-
+                            {% if product.rating %}
                             <div class="product-rating">
                                 <div class="rating-stars">
                                     {% for i in "12345" %}
-                                        <i class="fas fa-star"></i>
+                                        {% with star=forloop.counter %}
+                                            {% if product.rating >= star %}
+                                                <i class="fas fa-star"></i>
+                                            {% elif product.rating >= star|add:"-0.5" %}
+                                                <i class="fas fa-star-half-alt"></i>
+                                            {% else %}
+                                                <i class="far fa-star"></i>
+                                            {% endif %}
+                                        {% endwith %}
                                     {% endfor %}
                                 </div>
-                                <span class="rating-text">{{ product.rating|default:"0.0" }}/5</span>
+                                <span class="rating-text">{{ product.rating }}/5</span>
                             </div>
-
+                            {% endif %}
                             <p class="product-description">
                                 {{ product.short_description|default:"No description available."|truncatewords:7 }}
                             </p>
