@@ -12,7 +12,7 @@ def all_products(request, category_slug=None):
 
     # Search query
     query = request.GET.get("q")
-    show_all = request.GET.get("show_all")
+    show_all = request.GET.get("show_all") == "true"
 
     # Base queryset
     products = Product.objects.all()
@@ -23,11 +23,8 @@ def all_products(request, category_slug=None):
         category = get_object_or_404(Category, category_slug=category_slug, is_active=True)
         
         if show_all:
-            # Get all subcategories
-            subcategories = category.subcategories.filter(is_active=True)
-            products = products.filter(
-                Q(category=category) | Q(category__in=subcategories)
-            )
+            sub_categories = category.subcategories.filter(is_active=True).values_list('id', flat=True)
+            products = products.filter(Q(category=category) | Q(category__in=sub_categories))
         else:
             products = products.filter(category=category)
 
@@ -60,9 +57,9 @@ def all_products(request, category_slug=None):
         "query": query,
         "sort": sort,
         "direction": direction,
+        "show_all": show_all,
     }
     return render(request, "product/products.html", context)
-
 
 
 # Product Details

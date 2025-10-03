@@ -13,6 +13,19 @@
             </nav>
         </div>
     </section>
+
+    {% if category and show_all and category.subcategories.exists %}
+    <section class="subcategories-section py-4">
+        <div class="container text-center">
+            {% for sub in category.subcategories.all %}
+                <a href="{% url 'category' sub.category_slug %}" class="btn btn-md btn-outline-secondary mx-1 mb-1">
+                    {{ sub.category }}
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
     
     <!-- Product Display -->
     <section class="product-section">
@@ -66,6 +79,11 @@
                         </a>
 
                         <div class="product-info">
+                            {% if product.category %}
+                                <p class="product-category text-muted">
+                                    {{ product.category.category }}
+                                </p>
+                            {% endif %}
                            <h5 class="product-title">
                                 <a href="{% url 'product_detail' product.product_slug %}">
                                     {{ product.product_name }}
