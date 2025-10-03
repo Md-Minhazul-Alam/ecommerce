@@ -6,11 +6,86 @@
         <div class="container">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Shopping Bag</li>
                 </ol>
             </nav>
         </div>
     </section>
+
+
+
+
+    <div class="container pb-5">
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+
+                <div class="cart-item">
+                    <div class="row align-items-center">
+                        <div class="col-md-2 col-3">
+                            <img src="https://i5.walmartimages.com/asr/26742ee1-6da1-4273-a531-d59796d5399d.20d8a4bde0ae61dee4c6b381ac8fd18d.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF" class="item-img me-2 me-md-3" alt="Product">
+                        </div>
+                        <div class="col-md-4 col-9">
+                            <div class="item-details">
+                                <h5>Premium Wireless Headphones</h5>
+                                <p class="text-muted mb-2"><small>Color: Black | Size: One Size</small></p>
+                                <p class="text-success mb-0"><small><i class="fas fa-check-circle me-1"></i>In Stock</small></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-4 text-center mt-3 mt-md-0">
+                            <div class="item-price">$129.99</div>
+                        </div>
+                        <div class="col-md-3 col-5 text-center mt-3 mt-md-0">
+                            <div class="quantity-control">
+                                <button><i class="fas fa-minus"></i></button>
+                                <input type="number" value="1" min="1" max="10" readonly>
+                                <button><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-3 text-end mt-3 mt-md-0">
+                            <button class="btn-remove">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="col-lg-4">
+                <div class="cart-summary">
+                    <h4><i class="fas fa-receipt me-2"></i>Order Summary</h4>
+                    <div class="summary-row">
+                        <span>Subtotal (4 items)</span>
+                        <span class="fw-semibold" id="subtotal">$629.96</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span class="fw-semibold text-success">FREE</span>
+                    </div>
+                    
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span class="amount" id="total">$692.96</span>
+                    </div>
+
+                    <button class="btn btn-primary btn-checkout">
+                        <i class="fas fa-lock me-2"></i>Proceed to Checkout
+                    </button>
+                    <button class="btn btn-outline-primary btn-continue">
+                        <i class="fas fa-arrow-left me-2"></i>Continue Shopping
+                    </button>
+
+                    <div class="mt-4 pt-3 border-top">
+                        <p class="text-muted mb-2"><small><i class="fas fa-shield-alt me-1"></i>Secure Checkout</small></p>
+                        <p class="text-muted mb-0"><small><i class="fas fa-truck me-1"></i>Free shipping on orders over $50</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
