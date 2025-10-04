@@ -47,3 +47,32 @@ def remove_from_bag(request, item_id):
 
     return redirect(redirect_url)
 
+
+def increment_bag_item(request, item_id):
+    bag = request.session.get('bag', {})
+    redirect_url = request.POST.get('redirect_url') or request.META.get('HTTP_REFERER', '/')
+
+    if str(item_id) in bag:
+        if bag[str(item_id)] < 99:
+            bag[str(item_id)] += 1
+    else:
+        bag[str(item_id)] = 1
+
+    request.session['bag'] = bag
+    return redirect(redirect_url)
+
+
+def decrement_bag_item(request, item_id):
+    bag = request.session.get('bag', {})
+    redirect_url = request.POST.get('redirect_url') or request.META.get('HTTP_REFERER', '/')
+
+    if str(item_id) in bag:
+        if bag[str(item_id)] > 1:
+            bag[str(item_id)] -= 1
+        else:
+            bag[str(item_id)] = 1 
+
+    request.session['bag'] = bag
+    return redirect(redirect_url)
+
+
