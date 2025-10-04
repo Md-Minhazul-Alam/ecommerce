@@ -2,154 +2,194 @@
 
 {% block content %}
 {% load static %}
-    <!-- Breadcrumb -->
-    <section class="breadcrumb-section border-top">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ product.product_name }}</li>
-                </ol>
-            </nav>
-        </div>
-    </section>
+<!-- Breadcrumb -->
+<section class="breadcrumb-section border-top">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ product.product_name }}</li>
+            </ol>
+        </nav>
+    </div>
+</section>
 
 
-     <section class="product-details-section">
-        <div class="container">
-            <div class="row">
-                <!-- Left Side - Product Images -->
-                <div class="col-lg-6">
-                    <div class="product-image-wrapper">
-                        {% if product.thumbnail %}
-                            <img src="{{ product.thumbnail.url }}" class="product-main-image" alt="{{ product.product_name }}" id="mainImage">
-                        {% elif product.image_url %}
-                            <img src="{{ product.image_url }}" class="product-main-image" alt="{{ product.product_name }}" id="mainImage">
-                        {% else %}
-                            <img src="{% static 'assets/images/default.jpg' %}" class="product-main-image" alt="No Image" id="mainImage">
-                        {% endif %}
-                    </div>
+<section class="product-details-section">
+    <div class="container">
+        <div class="row">
+            <!-- Left Side - Product Images -->
+            <div class="col-lg-6">
+                <div class="product-image-wrapper">
+                    {% if product.thumbnail %}
+                    <img src="{{ product.thumbnail.url }}" class="product-main-image" alt="{{ product.product_name }}"
+                        id="mainImage">
+                    {% elif product.image_url %}
+                    <img src="{{ product.image_url }}" class="product-main-image" alt="{{ product.product_name }}"
+                        id="mainImage">
+                    {% else %}
+                    <img src="{% static 'assets/images/default.jpg' %}" class="product-main-image" alt="No Image"
+                        id="mainImage">
+                    {% endif %}
                 </div>
+            </div>
 
-                <!-- Right Side - Product Info -->
-                <div class="col-lg-6">
-                    <div class="product-info-wrapper">
-                        <!-- Product Title -->
-                        <h1 class="product-detail-title">{{ product.product_name }}</h1>
+            <!-- Right Side - Product Info -->
+            <div class="col-lg-6">
+                <div class="product-info-wrapper">
+                    <!-- Product Title -->
+                    <h1 class="product-detail-title">{{ product.product_name }}</h1>
 
-                        <!-- Rating -->
-                        {% if product.rating %}
-                        <div class="product-rating">
-                            <div class="rating-stars">
-                                {% for i in "12345" %}
-                                    {% with star=forloop.counter %}
-                                        {% if product.rating >= star %}
-                                            <i class="fas fa-star"></i>
-                                        {% elif product.rating >= star|add:"-0.5" %}
-                                            <i class="fas fa-star-half-alt"></i>
-                                        {% else %}
-                                            <i class="far fa-star"></i>
-                                        {% endif %}
-                                    {% endwith %}
-                                {% endfor %}
-                            </div>
-                            <span class="rating-text">{{ product.rating }}/5</span>
-                        </div>
-                        {% endif %}
-
-                        <!-- Price -->
-                        <div class="product-detail-price">${{ product.base_price }}</div>
-
-                        <!-- Short Description -->
-                        {% if product.short_description %}
-                            <p class="product-short-desc">{{ product.short_description }}</p>
-                        {% endif %}
-
-                        <!-- Variations -->
-                        <div class="variation-section">
-                            <span class="variation-label">Color:</span>
-                            <select class="variation-select">
-                                <option value="blue">Blue</option>
-                                <option value="red">Red</option>
-                                <option value="green">Green</option>
-                                <option value="black">Black</option>
-                            </select>
-                        </div>
-
-                        <!-- Quantity -->
-                        <div class="quantity-selector">
-                            <span class="quantity-label">Quantity:</span>
-                            <div class="quantity-input">
-                                <button class="quantity-btn">-</button>
-                                <input type="text" class="quantity-value" value="1" id="quantity" readonly>
-                                <button class="quantity-btn">+</button>
-                            </div>
-                        </div>
-
-                        <!-- Add to Cart Button -->
-                        <button class="btn-add-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                            Add to Cart
-                        </button>
-
-
-                        <!-- Tags -->
-                        {% if product.tags.all %}
-                        <div class="product-tags">
-                            <span class="tags-label">Tags:</span>
-                            {% for tag in product.tags.all %}
-                                <a href="" class="product-tag">
-                                    {{ tag.tag }}
-                                </a>
-                            {% empty %}
-                                <span>No tags available</span>
+                    <!-- Rating -->
+                    {% if product.rating %}
+                    <div class="product-rating">
+                        <div class="rating-stars">
+                            {% for i in "12345" %}
+                            {% with star=forloop.counter %}
+                            {% if product.rating >= star %}
+                            <i class="fas fa-star"></i>
+                            {% elif product.rating >= star|add:"-0.5" %}
+                            <i class="fas fa-star-half-alt"></i>
+                            {% else %}
+                            <i class="far fa-star"></i>
+                            {% endif %}
+                            {% endwith %}
                             {% endfor %}
                         </div>
-                        {% endif %}
+                        <span class="rating-text">{{ product.rating }}/5</span>
                     </div>
+                    {% endif %}
+
+                    <!-- Price -->
+                    <div class="product-detail-price">${{ product.base_price }}</div>
+
+                    <!-- Short Description -->
+                    {% if product.short_description %}
+                    <p class="product-short-desc">{{ product.short_description }}</p>
+                    {% endif %}
+
+                    <!-- Add to Cart Button -->
+                    <form class="form" action="{% url 'add_to_bag' product.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-row">
+
+                            <!-- Color Variation -->
+                            <div class="variation-section mt-3">
+                                <span class="variation-label d-block mb-2 fw-bold">Color:</span>
+                                <select class="variation-select form-select w-50" name="color" required>
+                                    <option value="blue">Blue</option>
+                                    <option value="red">Red</option>
+                                    <option value="green">Green</option>
+                                    <option value="black">Black</option>
+                                </select>
+                            </div>
+
+                            <!-- Quantity -->
+                            <div class="quantity-selector mt-4">
+                                <div class="quantity-input d-flex align-items-center w-50">
+                                    <button type="button"
+                                        class="quantity-btn btn btn-outline-secondary rounded-0 px-3">-</button>
+                                    <input type="number" class="form-control text-center rounded-0 mx-2" name="quantity"
+                                        value="1" min="1" max="99" data-item_id="{{ product.id }}"
+                                        id="id_qty_{{ product.id }}">
+                                    <button type="button"
+                                        class="quantity-btn btn btn-outline-secondary rounded-0 px-3">+</button>
+                                </div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="col-12 mt-5">
+                                <a href="{% url 'all_products' %}" class="btn btn-secondary rounded-0 me-2">
+                                    <i class="fas fa-chevron-left me-1"></i> Keep Shopping
+                                </a>
+                                <button type="submit" class="btn btn-dark text-uppercase">
+                                    <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                                </button>
+                            </div>
+
+                            <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                        </div>
+                    </form>
+                    <!-- Tags -->
+                    {% if product.tags.all %}
+                    <div class="product-tags">
+                        <span class="tags-label">Tags:</span>
+                        {% for tag in product.tags.all %}
+                        <a href="" class="product-tag">
+                            {{ tag.tag }}
+                        </a>
+                        {% empty %}
+                        <span>No tags available</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="details-review-section">
-        <div class="container">
-            <!-- Tabs -->
-            <ul class="nav nav-tabs" id="productTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">
-                        Description
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">
-                        Reviews (128)
-                    </button>
-                </li>
-            </ul>
+<section class="details-review-section">
+    <div class="container">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" id="productTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description"
+                    type="button" role="tab">
+                    Description
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button"
+                    role="tab">
+                    Reviews (128)
+                </button>
+            </li>
+        </ul>
 
-            <!-- Tab Content -->
-            <div class="tab-content" id="productTabContent">
-                <!-- Description Tab -->
-                <div class="tab-pane fade show active" id="description" role="tabpanel">
-                    <div class="product-description">
-                        <h5>Product Overview</h5>
-                        {{ product.description | safe }}
-                    </div>
-                </div>
-
-                <!-- Reviews Tab -->
-                <div class="tab-pane fade" id="reviews" role="tabpanel">
-                    
+        <!-- Tab Content -->
+        <div class="tab-content" id="productTabContent">
+            <!-- Description Tab -->
+            <div class="tab-pane fade show active" id="description" role="tabpanel">
+                <div class="product-description">
+                    <h5>Product Overview</h5>
+                    {{ product.description | safe }}
                 </div>
             </div>
+
+            <!-- Reviews Tab -->
+            <div class="tab-pane fade" id="reviews" role="tabpanel">
+
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 
 
 
 {% endblock %}
 
 
+{% block additional_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const quantitySections = document.querySelectorAll('.quantity-selector');
 
+        quantitySections.forEach(section => {
+            const minusBtn = section.querySelector('.quantity-btn:first-child');
+            const plusBtn = section.querySelector('.quantity-btn:last-child');
+            const input = section.querySelector('input[type="number"]');
 
+            minusBtn.addEventListener('click', () => {
+                let value = parseInt(input.value) || 1;
+                if (value > parseInt(input.min)) input.value = value - 1;
+            });
+
+            plusBtn.addEventListener('click', () => {
+                let value = parseInt(input.value) || 1;
+                if (value < parseInt(input.max)) input.value = value + 1;
+            });
+        });
+    });
+</script>
+{% endblock %}
