@@ -31,3 +31,19 @@ def add_to_bag(request, item_id):
     request.session['bag'] = bag
     print(request.session['bag'])
     return redirect(redirect_url)
+
+
+def remove_from_bag(request, item_id):
+    # Remove iTem
+    bag = request.session.get('bag', {})
+    redirect_url = request.POST.get('redirect_url') or request.META.get('HTTP_REFERER', '/')
+
+    if str(item_id) in bag:
+        bag.pop(str(item_id))
+        request.session['bag'] = bag
+        print("Updated bag:", bag)
+    else:
+        print("Item not found in bag:", item_id)
+
+    return redirect(redirect_url)
+

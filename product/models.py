@@ -116,7 +116,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name='products')
 
-    base_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
 
     short_description = models.CharField(max_length=255, blank=True, null=True)
     description = HTMLField(blank=True, null=True)

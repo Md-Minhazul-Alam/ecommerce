@@ -17,50 +17,74 @@
     <div class="row">
         <!-- Cart Items -->
         <div class="col-lg-8">
+
             {% if bag_items %}
-            <div class="cart-item">
-                <div class="row align-items-center">
-                    <div class="col-md-2 col-3">
-                        <img src="https://i5.walmartimages.com/asr/26742ee1-6da1-4273-a531-d59796d5399d.20d8a4bde0ae61dee4c6b381ac8fd18d.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF"
-                            class="item-img me-2 me-md-3" alt="Product">
-                    </div>
-                    <div class="col-md-4 col-9">
-                        <div class="item-details">
-                            <h5>Premium Wireless Headphones</h5>
-                            <p class="text-muted mb-2"><small>Color: Black | Size: One Size</small></p>
-                            <p class="text-success mb-0"><small><i class="fas fa-check-circle me-1"></i>In Stock</small>
-                            </p>
+                {% for item in bag_items %}
+                <div class="cart-item mb-4 p-3 border rounded">
+                    <div class="row align-items-center">
+
+                        <!-- Product Image -->
+                        <div class="col-md-2 col-3">
+                            {% if item.product.thumbnail %}
+                                <img src="{{ item.product.thumbnail.url }}" class="item-img me-2 me-md-3 img-fluid" alt="{{ item.product.product_name }}">
+                            {% elif item.product.image_url %}
+                                <img src="{{ item.product.image_url }}" class="item-img me-2 me-md-3 img-fluid" alt="{{ item.product.product_name }}">
+                            {% else %}
+                                <img src="{% static 'assets/images/default.jpg' %}" class="item-img me-2 me-md-3 img-fluid" alt="{{ item.product.product_name }}">
+                            {% endif %}
                         </div>
-                    </div>
-                    <div class="col-md-2 col-4 text-center mt-3 mt-md-0">
-                        <div class="item-price">$129.99</div>
-                    </div>
-                    <div class="col-md-3 col-5 text-center mt-3 mt-md-0">
-                        <div class="quantity-control">
-                            <button><i class="fas fa-minus"></i></button>
-                            <input type="number" value="1" min="1" max="10" readonly>
-                            <button><i class="fas fa-plus"></i></button>
+
+                        <!-- Product Info -->
+                        <div class="col-md-4 col-9">
+                            <div class="item-details">
+                                <h5 class="mb-1">{{ item.product.product_name }}</h5>
+                                {% if item.product.brand %}
+                                    <p class="text-muted mb-1"><small>Brand: {{ item.product.brand.name }}</small></p>
+                                {% endif %}
+                                <p class="text-success mb-0"><small><i class="fas fa-check-circle me-1"></i>In Stock</small></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-1 col-3 text-end mt-3 mt-md-0">
-                        <button class="btn-remove">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
+
+                        <!-- Price -->
+                        <div class="col-md-2 col-4 text-center mt-3 mt-md-0">
+                            <div class="item-price fw-bold">${{ item.product.price }}</div>
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="col-md-3 col-5 text-center mt-3 mt-md-0">
+                            <div class="quantity-control d-flex justify-content-center align-items-center">
+                                <button type="button" class="btn btn-outline-secondary btn-sm px-2"><i class="fas fa-minus"></i></button>
+                                <input type="number" class="form-control text-center mx-1" value="{{ item.quantity }}" min="1" max="99" readonly style="width:60px;">
+                                <button type="button" class="btn btn-outline-secondary btn-sm px-2"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Remove Button -->
+                        <div class="col-md-1 col-3 text-end mt-3 mt-md-0">
+                            <form action="{% url 'remove_from_bag' item.item_id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm" title="Remove item">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
-            </div>
+                {% endfor %}
 
             {% else %}
-            <div class="text-center py-5">
-                <h4 class="mb-2">Your cart is empty</h4>
-                <p class="text-muted mb-4">Looks like you haven’t added anything yet.</p>
-                <a href="{% url 'all_products' %}" class="btn btn-primary">
-                    <i class="fas fa-shopping-bag me-2"></i>Shop Now
-                </a>
-            </div>
+                <div class="text-center py-5">
+                    <h4 class="mb-2">Your cart is empty</h4>
+                    <p class="text-muted mb-4">Looks like you haven’t added anything yet.</p>
+                    <a href="{% url 'all_products' %}" class="btn btn-primary">
+                        <i class="fas fa-shopping-bag me-2"></i>Shop Now
+                    </a>
+                </div>
             {% endif %}
 
         </div>
+
 
         <!-- Cart Summary -->
         <div class="col-lg-4">
