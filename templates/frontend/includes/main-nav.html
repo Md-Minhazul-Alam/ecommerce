@@ -10,7 +10,8 @@
             <div class="col-12 col-lg-6 order-3 order-lg-2 mt-3 mt-lg-0">
                 <div class="search-container">
                     <form method="get" action="{% url 'all_products' %}">
-                        <input type="text" name="q" class="search-input" placeholder="Search for products, brands and more..." value="{{ query|default:'' }}">
+                        <input type="text" name="q" class="search-input"
+                            placeholder="Search for products, brands and more..." value="{{ query|default:'' }}">
                         <button type="submit" class="search-btn">
                             <i class="fas fa-search"></i>
                         </button>
@@ -29,7 +30,13 @@
                     <!-- Cart -->
                     <a href="{% url 'view_bag' %}" class="header-icon">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-badge" id="cartCount">3</span>
+                        <span class="cart-badge" id="cartCount">
+                            {% if product_count %}
+                            {{ product_count }}
+                            {% else %}
+                            0
+                            {% endif %}
+                        </span>
                     </a>
 
                     <!-- User Account -->
@@ -39,17 +46,20 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             {% if user.is_authenticated %}
-                                <li><a class="dropdown-item" href=""><i class="fas fa-user-circle me-2"></i>My Account</a></li>
-                                <li><a class="dropdown-item" href=""><i class="fas fa-box me-2"></i>My Orders</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item" href="">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                    </a>
-                                </li>
+                            <li><a class="dropdown-item" href=""><i class="fas fa-user-circle me-2"></i>My Account</a>
+                            </li>
+                            <li><a class="dropdown-item" href=""><i class="fas fa-box me-2"></i>My Orders</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li>
                             {% else %}
-                                <li><a class="dropdown-item" href=""><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
-                                <li><a class="dropdown-item" href=""><i class="fas fa-user-plus me-2"></i>Register</a></li>
+                            <li><a class="dropdown-item" href=""><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
+                            <li><a class="dropdown-item" href=""><i class="fas fa-user-plus me-2"></i>Register</a></li>
                             {% endif %}
                         </ul>
                     </div>
