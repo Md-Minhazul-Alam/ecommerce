@@ -64,26 +64,6 @@ def all_products(request, category_slug=None):
 
 
 # Product Details
-# def product_detail(request, product_slug):
-
-    
-#     # Menus
-#     menuCategories = Category.objects.filter(
-#         is_active=True,
-#         parent_category__isnull=True
-#     ).prefetch_related("subcategories")
-    
-#     # Product Details
-#     product = get_object_or_404(Product, product_slug=product_slug)
-
-#     context = {
-#         'menuCategories': menuCategories,
-#         "product": product,
-#     }
-#     return render(request, "product/product_details.html", context)
-
-
-
 def product_detail(request, product_slug):
     # Menus
     menuCategories = Category.objects.filter(
@@ -94,10 +74,10 @@ def product_detail(request, product_slug):
     # Product Details
     product = get_object_or_404(Product, product_slug=product_slug)
 
-    # Get all variations for this product
+    # All variations
     variations = product.product_variations.select_related('variation').all()
 
-    # Group variations
+    # Group Variations
     grouped_variations = {}
     for name, group in groupby(sorted(variations, key=lambda v: v.variation.name), key=lambda v: v.variation.name):
         grouped_variations[name] = list(group)
