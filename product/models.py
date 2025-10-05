@@ -112,6 +112,8 @@ class Product(models.Model):
     product_name = models.CharField(max_length=200)
     product_slug = models.SlugField(max_length=255, unique=True, blank=True)
 
+    sku = models.CharField(max_length=200, unique=True, blank=True, null=True)
+
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name='products')
@@ -120,6 +122,8 @@ class Product(models.Model):
 
     short_description = models.CharField(max_length=255, blank=True, null=True)
     description = HTMLField(blank=True, null=True)
+
+    has_variation = models.BooleanField(default=False, null=True, blank=True)
 
     rating = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     image_url = models.URLField(max_length=1024, null=True, blank=True)

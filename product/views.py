@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from product.models import Category, Product
 from django.db.models import Q
+from itertools import groupby
 
 # Products 
 def all_products(request, category_slug=None):
@@ -63,20 +64,47 @@ def all_products(request, category_slug=None):
 
 
 # Product Details
-def product_detail(request, product_slug):
+# def product_detail(request, product_slug):
 
     
+#     # Menus
+#     menuCategories = Category.objects.filter(
+#         is_active=True,
+#         parent_category__isnull=True
+#     ).prefetch_related("subcategories")
+    
+#     # Product Details
+#     product = get_object_or_404(Product, product_slug=product_slug)
+
+#     context = {
+#         'menuCategories': menuCategories,
+#         "product": product,
+#     }
+#     return render(request, "product/product_details.html", context)
+
+
+
+def product_detail(request, product_slug):
     # Menus
     menuCategories = Category.objects.filter(
         is_active=True,
         parent_category__isnull=True
     ).prefetch_related("subcategories")
-    
+
     # Product Details
     product = get_object_or_404(Product, product_slug=product_slug)
 
+    # Get all variations for this product
+    variations = product.product_variations.select_related('variation').all()
+
+    # Group variations
+    grouped_variations = {}
+    for name, group in groupby(sorted(variations, key=lambda v: v.variation.name), key=lambda v: v.variation.name):
+        grouped_variations[name] = list(group)
+
     context = {
         'menuCategories': menuCategories,
-        "product": product,
+        'product': product,
+        'grouped_variations': grouped_variations,
     }
     return render(request, "product/product_details.html", context)

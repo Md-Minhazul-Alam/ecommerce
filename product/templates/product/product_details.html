@@ -72,32 +72,35 @@
                     <form class="form" action="{% url 'add_to_bag' product.id %}" method="POST">
                         {% csrf_token %}
                         <div class="form-row">
-
-                            <!-- Color Variation -->
-                            <div class="variation-section mt-3">
-                                <span class="variation-label d-block mb-2 fw-bold">Color:</span>
-                                <select class="variation-select form-select w-50" name="color" required>
-                                    <option value="blue">Blue</option>
-                                    <option value="red">Red</option>
-                                    <option value="green">Green</option>
-                                    <option value="black">Black</option>
-                                </select>
-                            </div>
+                            {% if grouped_variations %}
+                                {% for variation_name, variations in grouped_variations.items %}
+                                    <div class="variation-section mt-3">
+                                        <span class="variation-label d-block mb-2 fw-bold">{{ variation_name }}:</span>
+                                        <select class="variation-select form-select w-50" name="{{ variation_name|lower }}" required>
+                                            {% for pv in variations %}
+                                                <option value="{{ pv.variation.value|lower }}">{{ pv.variation.value }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
 
                             <!-- Quantity -->
                             <div class="quantity-selector mt-4">
                                 <div class="quantity-input d-flex align-items-center w-50">
-                                    <button type="button"
-                                        class="quantity-btn btn btn-outline-secondary rounded-0 px-3">-</button>
-                                    <input type="number" class="form-control text-center rounded-0 mx-2" name="quantity"
-                                        value="1" min="1" max="99" data-item_id="{{ product.id }}"
+                                    <button type="button" class="quantity-btn btn btn-outline-secondary rounded-0 px-3">-</button>
+                                    <input type="number"
+                                        class="form-control text-center rounded-0 mx-2"
+                                        name="quantity"
+                                        value="1"
+                                        min="1"
+                                        max="99"
+                                        data-item_id="{{ product.id }}"
                                         id="id_qty_{{ product.id }}">
-                                    <button type="button"
-                                        class="quantity-btn btn btn-outline-secondary rounded-0 px-3">+</button>
+                                    <button type="button" class="quantity-btn btn btn-outline-secondary rounded-0 px-3">+</button>
                                 </div>
                             </div>
 
-                            <!-- Buttons -->
                             <div class="col-12 mt-5">
                                 <a href="{% url 'all_products' %}" class="btn btn-secondary rounded-0 me-2">
                                     <i class="fas fa-chevron-left me-1"></i> Keep Shopping
@@ -110,6 +113,7 @@
                             <input type="hidden" name="redirect_url" value="{{ request.path }}">
                         </div>
                     </form>
+
                     <!-- Tags -->
                     {% if product.tags.all %}
                     <div class="product-tags">

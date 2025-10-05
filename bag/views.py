@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from product.models import Category
+from django.shortcuts import render, redirect, get_object_or_404
+from product.models import Category, Product
 
 # Create your views here.
 def view_bag(request):
@@ -17,20 +17,70 @@ def view_bag(request):
     return render(request, "bag/bag.html", context)
 
 
-def add_to_bag(request, item_id):
+# def add_to_bag(request, item_id):
    
-    quantity = int(request.POST.get('quantity'))
+#     quantity = int(request.POST.get('quantity'))
+#     redirect_url = request.POST.get('redirect_url')
+#     bag = request.session.get('bag', {})
+
+#     if item_id in list(bag.keys()):
+#         bag[item_id] += quantity
+#     else:
+#         bag[item_id] = quantity
+
+#     request.session['bag'] = bag
+#     print(request.session['bag'])
+#     return redirect(redirect_url)
+
+
+
+
+def add_to_bag(request, item_id):
+    # Product Info
+    product = get_object_or_404(Product, pk=item_id)
+    quantity = int(request.POST.get('quantity', 1))
     redirect_url = request.POST.get('redirect_url')
     bag = request.session.get('bag', {})
 
-    if item_id in list(bag.keys()):
-        bag[item_id] += quantity
+    # Collect variation data dynamically from POST
+    variations = {}
+    for key, value in request.POST.items():
+        if key not in ['csrfmiddlewaretoken', 'quantity', 'redirect_url']:
+            variations[key] = value
+
+    # Unique identifier 
+    variation_key = '-'.join([f"{k}:{v}" for k, v in variations.items()]) if variations else None
+
+    # Bag items
+    if product.has_variation and variation_key:
+        # Has Variation
+        if str(item_id) in bag:
+            if variation_key in bag[str(item_id)]['items_by_variation']:
+                bag[str(item_id)]['items_by_variation'][variation_key]['quantity'] += quantity
+            else:
+                bag[str(item_id)]['items_by_variation'][variation_key] = {
+                    'quantity': quantity,
+                    'variations': variations,
+                }
+        else:
+            bag[str(item_id)] = {
+                'items_by_variation': {
+                    variation_key: {
+                        'quantity': quantity,
+                        'variations': variations,
+                    }
+                }
+            }
     else:
-        bag[item_id] = quantity
+        # No variation
+        if str(item_id) in bag:
+            bag[str(item_id)]['quantity'] = bag[str(item_id)].get('quantity', 0) + quantity
+        else:
+            bag[str(item_id)] = {'quantity': quantity}
 
     request.session['bag'] = bag
-    print(request.session['bag'])
     return redirect(redirect_url)
+
 
 
 def remove_from_bag(request, item_id):
