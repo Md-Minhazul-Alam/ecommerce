@@ -175,21 +175,47 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const quantitySections = document.querySelectorAll('.quantity-selector');
-
+        
         quantitySections.forEach(section => {
-            const minusBtn = section.querySelector('.quantity-btn:first-child');
-            const plusBtn = section.querySelector('.quantity-btn:last-child');
-            const input = section.querySelector('input[type="number"]');
+            const minusBtn = section.querySelector('.quantity-btn:first-child'); 
+            const plusBtn = section.querySelector('.quantity-btn:last-child'); 
+            const input = section.querySelector('input[type="number"]');  
 
+            // Disable or Enable minus button
+            function checkMinusButton() {
+                let currentValue = parseInt(input.value);
+                let minValue = parseInt(input.min);
+                if (currentValue <= minValue) {
+                    minusBtn.disabled = true;
+                } else {
+                    minusBtn.disabled = false;
+                }
+            }
+
+            checkMinusButton();
+
+            // Minus
             minusBtn.addEventListener('click', () => {
-                let value = parseInt(input.value) || 1;
-                if (value > parseInt(input.min)) input.value = value - 1;
+                let value = parseInt(input.value);
+                let min = parseInt(input.min);
+                if (value > min) {
+                    input.value = value - 1;
+                    checkMinusButton();
+                }
             });
 
+            // Plus
             plusBtn.addEventListener('click', () => {
-                let value = parseInt(input.value) || 1;
-                if (value < parseInt(input.max)) input.value = value + 1;
+                let value = parseInt(input.value);
+                let max = parseInt(input.max);
+                if (value < max) {
+                    input.value = value + 1;
+                    checkMinusButton();
+                }
             });
+
+            // if user types manually
+            input.addEventListener('input', checkMinusButton);
         });
     });
 </script>
