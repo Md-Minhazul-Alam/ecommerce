@@ -65,21 +65,40 @@
                         <!-- Quantity -->
                         <div class="col-md-3 col-5 text-center mt-3 mt-md-0">
                             <div class="quantity-control d-flex justify-content-center align-items-center">
-                                <form action="{% url 'decrement_bag_item' item.item_id %}" method="POST">
+                                <!-- Decrease -->
+                                <form action="{% url 'decrement_bag_item' item.item_id %}" method="POST" class="me-1">
                                     {% csrf_token %}
                                     <input type="hidden" name="redirect_url" value="{{ request.path }}">
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm px-2"><i class="fas fa-minus"></i></button>
+                                    <button 
+                                        type="submit" 
+                                        class="btn btn-outline-secondary btn-sm px-2"
+                                        {% if item.quantity <= 1 %}disabled{% endif %}>
+                                        <i class="fas fa-minus"></i>
+                                    </button>
                                 </form>
 
-                                <input type="number" class="form-control text-center mx-1" value="{{ item.quantity }}" readonly style="width:60px;">
+                                <!-- Quantity -->
+                                <input 
+                                    type="number" 
+                                    class="form-control text-center mx-1" 
+                                    value="{{ item.quantity }}" 
+                                    readonly 
+                                    style="width:60px;">
 
-                                <form action="{% url 'increment_bag_item' item.item_id %}" method="POST">
+                                <!-- Increase -->
+                                <form action="{% url 'increment_bag_item' item.item_id %}" method="POST" class="ms-1">
                                     {% csrf_token %}
                                     <input type="hidden" name="redirect_url" value="{{ request.path }}">
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm px-2"><i class="fas fa-plus"></i></button>
+                                    <button 
+                                        type="submit" 
+                                        class="btn btn-outline-secondary btn-sm px-2"
+                                        {% if item.quantity >= 99 %}disabled{% endif %}>
+                                        <i class="fas fa-plus"></i>
+                                    </button>
                                 </form>
                             </div>
                         </div>
+
                         <!-- Remove Button -->
                         <div class="col-md-1 col-3 text-end mt-3 mt-md-0">
                             <form action="{% url 'remove_from_bag' item.item_id %}" method="POST">
