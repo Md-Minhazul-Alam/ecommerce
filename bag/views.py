@@ -84,11 +84,22 @@ def increment_bag_item(request, item_id):
     bag = request.session.get('bag', {})
     redirect_url = request.POST.get('redirect_url') or request.META.get('HTTP_REFERER', '/')
 
+    variation_key = request.POST.get('variation_key')
+
     if str(item_id) in bag:
-        if bag[str(item_id)] < 99:
-            bag[str(item_id)] += 1
-    else:
-        bag[str(item_id)] = 1
+        item_data = bag[str(item_id)]
+
+        # Product has variations
+        if 'items_by_variation' in item_data and variation_key:
+            if variation_key in item_data['items_by_variation']:
+                current_qty = item_data['items_by_variation'][variation_key]['quantity']
+                if current_qty < 99:
+                    item_data['items_by_variation'][variation_key]['quantity'] = current_qty + 1
+
+        # No variation
+        elif 'quantity' in item_data:
+            if item_data['quantity'] < 99:
+                item_data['quantity'] += 1
 
     request.session['bag'] = bag
     return redirect(redirect_url)
@@ -97,14 +108,30 @@ def increment_bag_item(request, item_id):
 def decrement_bag_item(request, item_id):
     bag = request.session.get('bag', {})
     redirect_url = request.POST.get('redirect_url') or request.META.get('HTTP_REFERER', '/')
+    variation_key = request.POST.get('variation_key')
 
     if str(item_id) in bag:
-        if bag[str(item_id)] > 1:
-            bag[str(item_id)] -= 1
-        else:
-            bag[str(item_id)] = 1 
+        item_data = bag[str(item_id)]
+
+        # Product has variations
+        if 'items_by_variation' in item_data and variation_key:
+            if variation_key in item_data['items_by_variation']:
+                current_qty = item_data['items_by_variation'][variation_key]['quantity']
+                if current_qty > 1:
+                    item_data['items_by_variation'][variation_key]['quantity'] = current_qty - 1
+                else:
+                    item_data['items_by_variation'][variation_key]['quantity'] = 1
+
+        # No variations
+        elif 'quantity' in item_data:
+            if item_data['quantity'] > 1:
+                item_data['quantity'] -= 1
+            else:
+                item_data['quantity'] = 1
 
     request.session['bag'] = bag
     return redirect(redirect_url)
+
+
 
 

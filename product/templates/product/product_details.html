@@ -168,13 +168,10 @@
         </div>
     </div>
 </section>
-
-
-
 {% endblock %}
 
 
-{% block additional_js %}
+{% block postloadjs %}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const quantitySections = document.querySelectorAll('.quantity-selector');
