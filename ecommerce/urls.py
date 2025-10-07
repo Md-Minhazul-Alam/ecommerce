@@ -13,7 +13,7 @@ urlpatterns = [
     # Frontend URLs
     # path('', include('frontend.urls'))
     path('', include('home.urls')),
-    path('products', include('product.urls')),
+    path('products/', include('product.urls')),
     path('bag/', include('bag.urls')),
 ]
 
