@@ -43,7 +43,7 @@ def all_products(request, category_slug=None):
 
     if sort:
         if sort == "price":
-            products = products.order_by("base_price" if direction == "asc" else "-base_price")
+            products = products.order_by("price" if direction == "asc" else "-price")
         elif sort == "rating":
             products = products.order_by("rating" if direction == "asc" else "-rating")
         elif sort == "category":
