@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'frontend',
     'product',
     'bag',
+    'checkout',
     'businessprofile',
     'themeOption',
     
