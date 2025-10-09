@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from product.models import Category, Product
 from django.contrib import messages
+from decimal import Decimal
 
-# Create your views here.
+# View Bag
 def view_bag(request):
    # Menus
     menuCategories = Category.objects.filter(
@@ -185,8 +186,4 @@ def decrement_bag_item(request, item_id):
     except Exception as e:
         messages.error(request, f"Something went wrong: {str(e)}")
         return redirect(request.META.get('HTTP_REFERER', '/'))
-
-
-
-
 
