@@ -1,5 +1,6 @@
 from django import forms
-from .models import Order, OrderLineItem
+from .models import Order
+from .models import OrderLineItem
 
 
 class OrderForm(forms.ModelForm):
@@ -20,7 +21,6 @@ class OrderForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        # Placeholders and styling
         placeholders = {
             'full_name': 'Full Name',
             'email': 'Email Address',
@@ -33,9 +33,13 @@ class OrderForm(forms.ModelForm):
             'county': 'County / State / Region',
         }
 
+        self.fields['full_name'].widget.attrs['autofocus'] = True
+
         for field in self.fields:
-            self.fields[field].widget.attrs['placeholder'] = placeholders[field]
-            self.fields[field].widget.attrs['class'] = 'form-control'
+            self.fields[field].widget.attrs.update({
+                'placeholder': placeholders[field],
+                'class': 'stripe-style-input',
+            })
             self.fields[field].label = False
 
 
@@ -46,6 +50,6 @@ class OrderLineItemForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['product'].widget.attrs.update({'class': 'form-select'})
-        self.fields['product_variation'].widget.attrs.update({'class': 'form-control'})
-        self.fields['quantity'].widget.attrs.update({'class': 'form-control', 'min': 1})
+        self.fields['product'].widget.attrs.update({'class': 'stripe-style-input'})
+        self.fields['product_variation'].widget.attrs.update({'class': 'stripe-style-input'})
+        self.fields['quantity'].widget.attrs.update({'class': 'stripe-style-input', 'min': 1})
