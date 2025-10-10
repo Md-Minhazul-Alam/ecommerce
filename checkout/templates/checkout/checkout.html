@@ -58,7 +58,7 @@
                                         <label class="form-check-label" for="id-save-info">
                                             Save this delivery info to my profile
                                         </label>
-                                        <input class="form-check-input ms-2" type="checkbox" id="id-save-info" name="save-info" checked>
+                                        <input class="form-check-input ms-2 me-2" type="checkbox" id="id-save-info" name="save-info" checked>
                                     {% else %}
                                         <label class="form-check-label" for="id-save-info">
                                             <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or
@@ -68,19 +68,21 @@
                                 </div>
                             </fieldset>
 
-                            <!-- Payment Section -->
-                            <fieldset class="rounded px-3 mb-4">
-                                <legend class="small text-dark px-2 w-auto fw-semibold">Payment</legend>
+                            <fieldset class="px-3">
+                                <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
+                                <!-- A Stripe card element -->
                                 <div class="mb-3" id="card-element"></div>
+
+                                <!-- Errors -->
                                 <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
                             </fieldset>
 
                             <!-- Submit -->
                             <div class="text-end mt-4">
-                                <a href="{% url 'view_bag' %}" class="btn btn-outline-dark rounded-0 me-2">
+                                <a href="{% url 'view_bag' %}" class="btn btn-outline-dark rounded-pill me-2 ps-4 pe-4">
                                     <i class="fas fa-chevron-left me-1"></i> Adjust Bag
                                 </a>
-                                <button id="submit-button" type="submit" class="btn btn-dark rounded-0">
+                                <button id="submit-button" type="submit" class="btn btn-dark rounded-pill ps-4 pe-4">
                                     <i class="fas fa-lock me-2"></i> Complete Order
                                 </button>
                                 <p class="small text-danger mt-2 mb-0">
@@ -152,4 +154,11 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block postloadjs %}
+    {{ block.super }}
+    {{ stripe_public_key|json_script:"id_stripe_public_key" }}
+    {{ client_secret|json_script:"id_client_secret" }}
+    <script src="{% static 'assets/js/stripe.js' %}"></script>
 {% endblock %}

@@ -26,6 +26,8 @@ def checkout(request):
     context = {
         'menuCategories': menuCategories,
         'order_form': form,  
+        'stripe_public_key': 'pk_test_51SEo4T0MegBTlRFBITARzKwOGFvT8hbZW1vzFKulla3z3ciWTOMkSs4ZpVN7095qKAz1aefyGy4o88aXm6opl5c100jQOxWUNk',
+        'client_secret': 'test client secret',
     }
 
     return render(request, "checkout/checkout.html", context)
