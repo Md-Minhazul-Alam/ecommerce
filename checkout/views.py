@@ -43,7 +43,6 @@ def checkout(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             form.save()
-            # You can later handle redirect or payment confirmation here
     else:
         form = OrderForm()
 
