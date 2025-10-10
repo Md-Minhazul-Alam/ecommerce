@@ -1,4 +1,10 @@
 {% extends 'frontend/layouts/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'assets/css/checkout.css' %}">
+{% endblock %}
 
 {% block content %}
 <section class="breadcrumb-section border-top py-3 bg-light">
@@ -10,9 +16,7 @@
                         <i class="fas fa-home"></i> Home
                     </a>
                 </li>
-                <li class="breadcrumb-item active text-dark" aria-current="page">
-                    Checkout
-                </li>
+                <li class="breadcrumb-item active text-dark" aria-current="page">Checkout</li>
             </ol>
         </nav>
     </div>
@@ -25,30 +29,64 @@
             <div class="col-lg-7">
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-transparent border-0">
-                        <h4 class="fw-bold mb-0 text-dark">Billing Details</h4>
+                        <h4 class="fw-bold mb-0 text-dark">Billing & Delivery</h4>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{% url 'checkout' %}">
+                        <form method="POST" action="{% url 'checkout' %}" id="payment-form">
                             {% csrf_token %}
-                            {{ order_form.non_field_errors }}
 
-                            <div class="row g-3">
-                                {% for field in order_form %}
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            {{ field }}
-                                            {% if field.errors %}
-                                                <div class="text-danger small">{{ field.errors|join:", " }}</div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
+                            <!-- Details Section -->
+                            <fieldset class="rounded px-3 mb-4">
+                                <legend class="small text-dark px-2 w-auto fw-semibold">Details</legend>
+                                {{ order_form.full_name|as_crispy_field }}
+                                {{ order_form.email|as_crispy_field }}
+                            </fieldset>
 
-                            <div class="mt-4 text-end">
-                                <button type="submit" class="btn btn-dark btn-lg px-4 fw-semibold">
-                                    <i class="fas fa-lock me-2"></i> Place Order
+                            <!-- Delivery Section -->
+                            <fieldset class="rounded px-3 mb-4">
+                                <legend class="small text-dark px-2 w-auto fw-semibold">Delivery</legend>
+                                {{ order_form.phone_number|as_crispy_field }}
+                                {{ order_form.country|as_crispy_field }}
+                                {{ order_form.postcode|as_crispy_field }}
+                                {{ order_form.town_or_city|as_crispy_field }}
+                                {{ order_form.street_address1|as_crispy_field }}
+                                {{ order_form.street_address2|as_crispy_field }}
+                                {{ order_form.county|as_crispy_field }}
+
+                                <div class="form-check form-check-inline float-end mt-2">
+                                    {% if user.is_authenticated %}
+                                        <label class="form-check-label" for="id-save-info">
+                                            Save this delivery info to my profile
+                                        </label>
+                                        <input class="form-check-input ms-2" type="checkbox" id="id-save-info" name="save-info" checked>
+                                    {% else %}
+                                        <label class="form-check-label" for="id-save-info">
+                                            <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or
+                                            <a class="text-info" href="{% url 'account_login' %}">login</a> to save this info
+                                        </label>
+                                    {% endif %}
+                                </div>
+                            </fieldset>
+
+                            <!-- Payment Section -->
+                            <fieldset class="rounded px-3 mb-4">
+                                <legend class="small text-dark px-2 w-auto fw-semibold">Payment</legend>
+                                <div class="mb-3" id="card-element"></div>
+                                <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+                            </fieldset>
+
+                            <!-- Submit -->
+                            <div class="text-end mt-4">
+                                <a href="{% url 'view_bag' %}" class="btn btn-outline-dark rounded-0 me-2">
+                                    <i class="fas fa-chevron-left me-1"></i> Adjust Bag
+                                </a>
+                                <button id="submit-button" type="submit" class="btn btn-dark rounded-0">
+                                    <i class="fas fa-lock me-2"></i> Complete Order
                                 </button>
+                                <p class="small text-danger mt-2 mb-0">
+                                    <i class="fas fa-exclamation-circle me-1"></i>
+                                    Your card will be charged <strong>${{ grand_total|floatformat:2 }}</strong>
+                                </p>
                             </div>
                         </form>
                     </div>
@@ -59,33 +97,51 @@
             <div class="col-lg-5">
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-transparent border-0">
-                        <h4 class="fw-bold mb-0 text-dark">Order Summary</h4>
+                        <h4 class="fw-bold mb-0 text-dark">Order Summary ({{ product_count }})</h4>
                     </div>
                     <div class="card-body">
                         {% if bag_items %}
-                            <ul class="list-group list-group-flush">
-                                {% for item in bag_items %}
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <strong class="text-dark">{{ item.product.product_name }}</strong><br>
-                                            <small class="text-muted">Qty: {{ item.quantity }}</small>
-                                        </div>
-                                        <span class="text-dark">{{ item.product.price|floatformat:2 }}</span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                            {% for item in bag_items %}
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-shrink-0 me-3" style="width:60px;">
+                                        {% if item.product.thumbnail %}
+                                            <img src="{{ item.product.thumbnail.url }}" class="img-fluid rounded" alt="{{ item.product.name }}">
+                                        {% else %}
+                                            <img src="{% static 'images/default.jpg' %}" class="product-img" alt="{{ item.product.name }}">
+                                        {% endif %}
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="mb-0 fw-semibold text-dark">{{ item.product.name }}</p>
+                                        {% if item.variations %}
+                                            <small class="text-muted d-block">
+                                                {% for key, value in item.variations.items %}
+                                                    {{ key|title }}: {{ value }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </small>
+                                        {% endif %}
+                                        <small class="text-muted d-block">Qty: {{ item.quantity }}</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0 text-dark fw-semibold">
+                                            ${{ item.product.price|floatformat:2 }}
+                                        </p>
+                                        <small class="text-muted">× {{ item.quantity }}</small><br>
+                                        <strong class="text-dark">${{ item.product.price|floatformat:2|add:"0"|floatformat:2 }}</strong>
+                                    </div>
+                                </div>
+                            {% endfor %}
                             <hr>
-                            <div class="d-flex justify-content-between mb-2">
+                            <div class="d-flex justify-content-between">
                                 <span class="text-muted">Order Total</span>
-                                <span class="text-dark fw-semibold">{{ total|floatformat:2 }}</span>
+                                <span class="text-dark">${{ total|floatformat:2 }}</span>
                             </div>
-                            <div class="d-flex justify-content-between mb-2">
+                            <div class="d-flex justify-content-between">
                                 <span class="text-muted">Delivery</span>
-                                <span class="text-dark fw-semibold">{{ delivery|floatformat:2 }}</span>
+                                <span class="text-dark">${{ delivery|floatformat:2 }}</span>
                             </div>
-                            <div class="d-flex justify-content-between fw-bold fs-5 text-dark">
+                            <div class="d-flex justify-content-between fw-bold fs-5 mt-2">
                                 <span>Grand Total</span>
-                                <span>{{ grand_total|floatformat:2 }}</span>
+                                <span>${{ grand_total|floatformat:2 }}</span>
                             </div>
                         {% else %}
                             <p class="text-muted">Your cart is empty.</p>
@@ -96,32 +152,4 @@
         </div>
     </div>
 </section>
-
-<style>
-    .stripe-style-input {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        color: #000;
-        width: 100%;
-        padding: 10px 12px;
-        border-radius: 5px;
-        outline: none;
-        transition: all 0.2s ease;
-    }
-
-    .stripe-style-input:focus {
-        border-color: #000;
-        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.15);
-    }
-
-    .btn-dark {
-        background-color: #000;
-        border-color: #000;
-    }
-
-    .btn-dark:hover {
-        background-color: #333;
-        border-color: #333;
-    }
-</style>
 {% endblock %}

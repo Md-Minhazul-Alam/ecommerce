@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
+from django.contrib import messages
 from .forms import OrderForm
 from product.models import Category 
 
@@ -8,6 +9,11 @@ def checkout(request):
         is_active=True,
         parent_category__isnull=True
     ).prefetch_related("subcategories")
+
+    bag = request.session.get('bag', {})
+    if not bag:
+        messages.error(request, "There's nothing in your bag at the moment")
+        return redirect(reverse('all_products'))
 
     # Initialize form
     if request.method == 'POST':

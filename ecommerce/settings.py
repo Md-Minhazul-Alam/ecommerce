@@ -52,6 +52,9 @@ INSTALLED_APPS = [
     'checkout',
     'businessprofile',
     'themeOption',
+
+    'crispy_forms',
+    "crispy_bootstrap5",
     
 ]
 
@@ -81,6 +84,9 @@ SOCIALACCOUNT_PROVIDERS = {
 
 ROOT_URLCONF = 'ecommerce.urls'
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = ["bootstrap5"]
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -92,6 +98,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'bag.contexts.bag_contents',
+            ],
+            'builtins': [
+                'crispy_forms.templatetags.crispy_forms_tags',
+                'crispy_forms.templatetags.crispy_forms_field',
             ],
         },
     },
