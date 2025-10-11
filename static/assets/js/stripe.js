@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const stripe = Stripe(stripePublicKey);
     const elements = stripe.elements();
-
     const card = elements.create('card', {
         style: {
             base: {
@@ -21,35 +20,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 fontSize: '16px',
                 '::placeholder': { color: '#aab7c4' },
             },
-            invalid: {
-                color: '#dc3545',
-                iconColor: '#dc3545',
-            },
+            invalid: { color: '#dc3545', iconColor: '#dc3545' },
         },
     });
-
     card.mount('#card-element');
 
     const form = document.getElementById('payment-form');
     const errorDiv = document.getElementById('card-errors');
     const submitBtn = document.getElementById('submit-button');
+    const loader = document.getElementById('loader-overlay');
 
-    // Show errors
     card.addEventListener('change', (event) => {
         errorDiv.innerHTML = event.error
             ? `<span class="icon" role="alert"><i class="fas fa-times"></i></span> <span>${event.error.message}</span>`
             : '';
     });
 
-    // Handle form submission
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-
         submitBtn.disabled = true;
         card.update({ disabled: true });
 
+        // Show loader
+        loader.classList.remove('d-none');
+
         const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: { card },
+            payment_method: {
+                card: card,
+            }
         });
 
         if (error) {
@@ -59,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             submitBtn.disabled = false;
             card.update({ disabled: false });
+            loader.classList.add('d-none'); // hide loader
         } else if (paymentIntent.status === 'succeeded') {
             form.submit();
         }
