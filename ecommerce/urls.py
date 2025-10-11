@@ -11,7 +11,6 @@ urlpatterns = [
     path('tinymce/', include('tinymce.urls')),
     path('accounts/', include('allauth.urls')),
     # Frontend URLs
-    # path('', include('frontend.urls'))
     path('', include('home.urls')),
     path('products/', include('product.urls')),
     path('bag/', include('bag.urls')),

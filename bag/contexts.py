@@ -16,6 +16,7 @@ def bag_contents(request):
         if 'items_by_variation' in item_data:
             for variation_key, variation_info in item_data['items_by_variation'].items():
                 quantity = variation_info['quantity']
+                item_total = quantity * product.price
                 total += quantity * product.price
                 product_count += quantity
                 bag_items.append({
@@ -23,11 +24,13 @@ def bag_contents(request):
                     'quantity': quantity,
                     'product': product,
                     'variations': variation_info['variations'],
+                    'item_total': item_total,
                 })
 
         # No Variations
         else:
             quantity = item_data['quantity']
+            item_total = quantity * product.price
             total += quantity * product.price
             product_count += quantity
             bag_items.append({
@@ -35,6 +38,7 @@ def bag_contents(request):
                 'quantity': quantity,
                 'product': product,
                 'variations': None,
+                'item_total': item_total,
             })
 
     # Delivery

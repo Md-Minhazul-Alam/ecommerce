@@ -13,7 +13,7 @@
     </div>
 </section>
 
-<div class="container pb-5">
+<div class="container mt-5 pb-5">
     <div class="row">
         <!-- Cart Items -->
         <div class="col-lg-8">
@@ -60,6 +60,9 @@
                         <!-- Price -->
                         <div class="col-md-2 col-4 text-center mt-3 mt-md-0">
                             <div class="item-price fw-bold">${{ item.product.price }}</div>
+                            <p class="mb-0 fw-bold text-dark">
+                                = ${{ item.item_total|floatformat:2 }}
+                            </p>
                         </div>
 
                         <!-- Quantity -->

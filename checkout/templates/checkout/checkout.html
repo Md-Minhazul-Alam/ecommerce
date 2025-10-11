@@ -128,7 +128,10 @@
                                             ${{ item.product.price|floatformat:2 }}
                                         </p>
                                         <small class="text-muted">× {{ item.quantity }}</small><br>
-                                        <strong class="text-dark">${{ item.product.price|floatformat:2|add:"0"|floatformat:2 }}</strong>
+                                        <strong class="text-dark">
+                                            ${{ item.item_total|floatformat:2 }}
+                                        </strong>
+
                                     </div>
                                 </div>
                             {% endfor %}
