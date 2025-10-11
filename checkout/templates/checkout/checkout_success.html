@@ -5,7 +5,7 @@
 <section class="breadcrumb-section border-top py-3 bg-light">
     <div class="container">
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0">
+            <ol class="breadcrumb mb-0 bg-light">
                 <li class="breadcrumb-item">
                     <a href="{% url 'home' %}" class="text-decoration-none text-dark">
                         <i class="fas fa-home"></i> Home
@@ -17,5 +17,70 @@
     </div>
 </section>
 
-{% endblock %}
+<section class="container py-5">
+    <div class="text-center mb-4">
+        <h2 class="text-success">Thank you for your order!</h2>
+        <p>Your order has been successfully processed. Your order number is <strong>{{ order.order_number }}</strong>.</p>
+        <p>A confirmation email has been sent to <strong>{{ order.email }}</strong>.</p>
+    </div>
 
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Order Summary</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Product</th>
+                        <th>Variation</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in line_items %}
+                        <tr>
+                            <td>{{ item.product.product_name }}</td>
+                            <td>
+                                {% if item.product_variation %}
+                                    <span class="badge bg-secondary">{{ item.product_variation }}</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ item.product.price }}</td>
+                            <td>${{ item.lineitem_total }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row justify-content-end">
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Subtotal:</span>
+                    <strong>${{ order.order_total }}</strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Delivery:</span>
+                    <strong>${{ order.delivery_cost }}</strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-between bg-dark text-white">
+                    <span>Grand Total:</span>
+                    <strong>${{ order.grand_total }}</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-dark rounded-pill px-4 py-2">Continue Shopping</a>
+    </div>
+</section>
+{% endblock %}
