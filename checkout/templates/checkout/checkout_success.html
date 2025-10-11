@@ -1,0 +1,21 @@
+{% extends 'frontend/layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="breadcrumb-section border-top py-3 bg-light">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'home' %}" class="text-decoration-none text-dark">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="breadcrumb-item active text-dark" aria-current="page">Order Details</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+{% endblock %}
+
