@@ -109,34 +109,40 @@ def increment_bag_item(request, item_id):
         redirect_url = request.POST.get('redirect_url') or request.META.get('HTTP_REFERER', '/')
         variation_key = request.POST.get('variation_key')
 
-        if str(item_id) in bag:
-            item_data = bag[str(item_id)]
+        product = get_object_or_404(Product, pk=item_id)
+        item_data = bag.get(str(item_id))
 
-            # Product has variations
-            if 'items_by_variation' in item_data and variation_key:
-                if variation_key in item_data['items_by_variation']:
-                    current_qty = item_data['items_by_variation'][variation_key]['quantity']
-                    if current_qty < 99:
-                        item_data['items_by_variation'][variation_key]['quantity'] = current_qty + 1
-                        messages.success(request, "Quantity increased.")
-                    else:
-                        messages.error(request, "Maximum quantity reached for this item.")
+        if not item_data:
+            messages.error(request, "Item not found in your bag.")
+            return redirect(redirect_url)
+
+        # Product with variations
+        if product.has_variation:
+            if 'items_by_variation' not in item_data:
+                messages.error(request, "Item data missing variations.")
+            elif not variation_key or variation_key not in item_data['items_by_variation']:
+                messages.error(request, f"Variation not found in your bag. Available keys: {list(item_data.get('items_by_variation', {}).keys())}")
+            else:
+                current_qty = item_data['items_by_variation'][variation_key]['quantity']
+                if current_qty < 99:
+                    item_data['items_by_variation'][variation_key]['quantity'] += 1
+                    messages.success(request, "Quantity increased.")
                 else:
-                    messages.error(request, "Variation not found in your bag.")
+                    messages.error(request, "Maximum quantity reached for this item.")
 
-            # No variation
-            elif 'quantity' in item_data:
+        # Product without variations
+        else:
+            if 'quantity' not in item_data:
+                messages.error(request, "Item data missing quantity.")
+            else:
                 if item_data['quantity'] < 99:
                     item_data['quantity'] += 1
                     messages.success(request, "Quantity increased.")
                 else:
                     messages.error(request, "Maximum quantity reached for this item.")
-            else:
-                messages.error(request, "Item data is invalid.")
 
-        else:
-            messages.error(request, "Item not found in your bag.")
-
+        # Save back to session
+        bag[str(item_id)] = item_data
         request.session['bag'] = bag
         return redirect(redirect_url)
 

@@ -12,32 +12,34 @@ def bag_contents(request):
     for item_id, item_data in bag.items():
         product = get_object_or_404(Product, pk=item_id)
 
-        # Has Variations
+        # Product has variations
         if 'items_by_variation' in item_data:
             for variation_key, variation_info in item_data['items_by_variation'].items():
                 quantity = variation_info['quantity']
                 item_total = quantity * product.price
-                total += quantity * product.price
+                total += item_total
                 product_count += quantity
                 bag_items.append({
                     'item_id': item_id,
                     'quantity': quantity,
                     'product': product,
                     'variations': variation_info['variations'],
+                    'variation_key': variation_key,
                     'item_total': item_total,
                 })
 
-        # No Variations
+        # Product without variations
         else:
             quantity = item_data['quantity']
             item_total = quantity * product.price
-            total += quantity * product.price
+            total += item_total
             product_count += quantity
             bag_items.append({
                 'item_id': item_id,
                 'quantity': quantity,
                 'product': product,
                 'variations': None,
+                'variation_key': None,
                 'item_total': item_total,
             })
 
@@ -46,12 +48,12 @@ def bag_contents(request):
         delivery = total * Decimal(settings.STANDARD_DELIVERY_PERCENTAGE / 100)
         free_delivery_delta = settings.FREE_DELIVERY_THRESHOLD - total
     else:
-        delivery = 0
-        free_delivery_delta = 0
+        delivery = Decimal(0)
+        free_delivery_delta = Decimal(0)
     
-    grand_total = delivery + total
+    grand_total = total + delivery
 
-    context = {
+    return {
         'bag_items': bag_items,
         'total': total,
         'product_count': product_count,
@@ -60,5 +62,3 @@ def bag_contents(request):
         'free_delivery_threshold': settings.FREE_DELIVERY_THRESHOLD,
         'grand_total': grand_total,
     }
-
-    return context
