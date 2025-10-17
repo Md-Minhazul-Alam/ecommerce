@@ -42,46 +42,64 @@ document.addEventListener("DOMContentLoaded", () => {
         card.update({ disabled: true });
         loader.classList.remove('d-none');
 
-        // Collect billing info from form
-        const fullName = document.getElementById('id_full_name').value.trim();
-        const email = document.getElementById('id_email').value.trim();
-        const phone = document.getElementById('id_phone_number').value.trim();
-        const address1 = document.getElementById('id_street_address1').value.trim();
-        const address2 = document.getElementById('id_street_address2').value.trim();
-        const city = document.getElementById('id_town_or_city').value.trim();
-        const state = document.getElementById('id_county').value.trim();
-        const country = document.getElementById('id_country').value.trim();
-        const postcode = document.getElementById('id_postcode').value.trim();
-        const saveInfo = document.getElementById('id-save-info')?.checked || false;
+        // Collect form data using the actual form inputs
+        // Django crispy forms creates inputs with names matching the model fields
+        const fullName = document.querySelector('input[name="full_name"]')?.value.trim() || '';
+        const email = document.querySelector('input[name="email"]')?.value.trim() || '';
+        const phone = document.querySelector('input[name="phone_number"]')?.value.trim() || '';
+        const address1 = document.querySelector('input[name="street_address1"]')?.value.trim() || '';
+        const address2 = document.querySelector('input[name="street_address2"]')?.value.trim() || '';
+        const city = document.querySelector('input[name="town_or_city"]')?.value.trim() || '';
+        const state = document.querySelector('input[name="county"]')?.value.trim() || '';
+        const country = document.querySelector('select[name="country"]')?.value.trim() || '';
+        const postcode = document.querySelector('input[name="postcode"]')?.value.trim() || '';
+        const saveInfo = document.querySelector('input[name="save-info"]')?.checked || false;
 
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
-        // Cache checkout data
-        const postData = {
+        // Cache checkout data - NOW WITH ALL FORM FIELDS!
+        const postData = new URLSearchParams({
             csrfmiddlewaretoken: csrfToken,
             client_secret: clientSecret,
             save_info: saveInfo,
-        };
+            full_name: fullName,
+            email: email,
+            phone_number: phone,
+            street_address1: address1,
+            street_address2: address2,
+            town_or_city: city,
+            county: state,
+            country: country,
+            postcode: postcode,
+        });
+
         const url = '/checkout/cache_checkout_data/';
 
         try {
-            await fetch(url, { method: 'POST', body: new URLSearchParams(postData) });
+            const cacheResponse = await fetch(url, { 
+                method: 'POST', 
+                body: postData
+            });
+
+            if (!cacheResponse.ok) {
+                console.warn('Cache checkout data warning:', cacheResponse.status);
+            }
 
             // Confirm payment
             const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
                     card: card,
                     billing_details: {
-                        name: fullName || 'Unknown',
-                        email: email || 'no-email@example.com',
-                        phone: phone || '',
+                        name: fullName,
+                        email: email,
+                        phone: phone,
                         address: {
-                            line1: address1 || '',
-                            line2: address2 || '',
-                            city: city || '',
-                            state: state || '',
-                            postal_code: postcode || '',
-                            country: country || '',
+                            line1: address1,
+                            line2: address2,
+                            city: city,
+                            state: state,
+                            postal_code: postcode,
+                            country: country,
                         }
                     }
                 },
@@ -111,8 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
         } catch (err) {
+            console.error('Checkout error:', err);
             location.reload();
         }
     });
 });
-

@@ -22,7 +22,16 @@ def cache_checkout_data(request):
         stripe.PaymentIntent.modify(pid, metadata={
             'bag': json.dumps(request.session.get('bag', {})),
             'save_info': request.POST.get('save_info'),
-            'username': str(request.user),  # username as string
+            'username': str(request.user),
+            'full_name': request.POST.get('full_name', ''),
+            'email': request.POST.get('email', ''),
+            'phone_number': request.POST.get('phone_number', ''),
+            'street_address1': request.POST.get('street_address1', ''),
+            'street_address2': request.POST.get('street_address2', ''),
+            'town_or_city': request.POST.get('town_or_city', ''),
+            'postcode': request.POST.get('postcode', ''),
+            'country': request.POST.get('country', ''),
+            'county': request.POST.get('county', ''),
         })
         return HttpResponse(status=200)
     except Exception as e:
@@ -56,12 +65,31 @@ def checkout(request):
     )
 
     if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
+        form_data = {
+            'full_name': request.POST['full_name'],
+            'email': request.POST['email'],
+            'phone_number': request.POST['phone_number'],
+            'country': request.POST['country'],
+            'postcode': request.POST['postcode'],
+            'town_or_city': request.POST['town_or_city'],
+            'street_address1': request.POST['street_address1'],
+            'street_address2': request.POST['street_address2'],
+            'county': request.POST['county'],
+        }
+        order_form = OrderForm(form_data)
+
+        if order_form.is_valid():
+            order = order_form.save(commit=False)
+
+            # Stripe payment ID
+            client_secret = request.POST.get('client_secret')
+            if client_secret:
+                pid = client_secret.split('_secret')[0]
+                order.stripe_pid = pid
+            order.original_bag = json.dumps(bag)
             order.save()
 
-            # OrderLineItem for each item in bag
+            # Create order line items
             for item_id, item_data in bag.items():
                 try:
                     product = Product.objects.get(pk=item_id)
@@ -73,13 +101,13 @@ def checkout(request):
                             OrderLineItem.objects.create(
                                 order=order,
                                 product=product,
-                                product_variation=str(variation_info['variations']),
+                                product_variation=str(variation_info.get('variations', '')),
                                 quantity=quantity,
                                 lineitem_total=product.price * quantity
                             )
                     # No variations
                     else:
-                        quantity = item_data['quantity']
+                        quantity = item_data.get('quantity', 1)
                         OrderLineItem.objects.create(
                             order=order,
                             product=product,
@@ -105,13 +133,14 @@ def checkout(request):
         else:
             messages.error(request, "There was an error with your form. Please double-check your information.")
     else:
-        form = OrderForm()
+        order_form = OrderForm()
+
         if not stripe_public_key:
             messages.warning(request, "Stripe public key is missing. Check your environment variables.")
 
     context = {
         'menuCategories': menuCategories,
-        'order_form': form,
+        'order_form': order_form,
         'stripe_public_key': stripe_public_key,
         'client_secret': intent.client_secret,
     }
