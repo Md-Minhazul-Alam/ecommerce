@@ -1,10 +1,13 @@
 from django.shortcuts import render, get_object_or_404
+from businessprofile.models import WebsiteSetting
 from product.models import Category, Product
 from django.db.models import Q
 from itertools import groupby
 
 # Products 
 def all_products(request, category_slug=None):
+    # Setting 
+    setting = WebsiteSetting.objects.first()
     # Menus
     menuCategories = Category.objects.filter(
         is_active=True,
@@ -52,6 +55,7 @@ def all_products(request, category_slug=None):
             )
 
     context = {
+        "setting": setting,
         "menuCategories": menuCategories,
         "products": products,
         "category": category,
@@ -65,6 +69,8 @@ def all_products(request, category_slug=None):
 
 # Product Details
 def product_detail(request, product_slug):
+    # Setting 
+    setting = WebsiteSetting.objects.first()
     # Menus
     menuCategories = Category.objects.filter(
         is_active=True,
@@ -83,6 +89,7 @@ def product_detail(request, product_slug):
         grouped_variations[name] = list(group)
 
     context = {
+        "setting": setting,
         'menuCategories': menuCategories,
         'product': product,
         'grouped_variations': grouped_variations,

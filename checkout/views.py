@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404, HttpResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+
+from businessprofile.models import WebsiteSetting
 from .forms import OrderForm
 from product.models import Category, Product
 from checkout.models import Order, OrderLineItem
@@ -42,6 +44,9 @@ def cache_checkout_data(request):
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
+
+    # Setting 
+    setting = WebsiteSetting.objects.first()
 
     # Menu categories for header
     menuCategories = Category.objects.filter(
@@ -139,6 +144,7 @@ def checkout(request):
             messages.warning(request, "Stripe public key is missing. Check your environment variables.")
 
     context = {
+        'setting': setting,
         'menuCategories': menuCategories,
         'order_form': order_form,
         'stripe_public_key': stripe_public_key,
@@ -160,6 +166,9 @@ def checkout_success(request, order_number):
     if 'bag' in request.session:
         del request.session['bag']
 
+    # Setting 
+    setting = WebsiteSetting.objects.first()
+
     # Menu categories
     menuCategories = Category.objects.filter(
         is_active=True,
@@ -170,6 +179,7 @@ def checkout_success(request, order_number):
     line_items = order.lineitems.select_related('product')
 
     context = {
+        'setting': setting,
         'order': order,
         'line_items': line_items,
         'menuCategories': menuCategories,

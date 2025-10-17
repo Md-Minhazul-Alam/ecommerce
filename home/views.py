@@ -1,10 +1,13 @@
 from django.shortcuts import render
+from businessprofile.models import WebsiteSetting
 from product.models import Category, Product
 from themeOption.models import HeroSlider
 import random
 
 # Home Page 
 def home_page(request):
+    # Setting 
+    setting = WebsiteSetting.objects.first()
     # Menus
     menuCategories = Category.objects.filter(
         is_active=True,
@@ -23,6 +26,7 @@ def home_page(request):
     featured_products = featured_products[:8]
 
     context = {
+        'setting': setting,
         'menuCategories': menuCategories,
         'categoryList': categoryList,
         'sliders': sliders,

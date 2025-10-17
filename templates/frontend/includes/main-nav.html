@@ -3,8 +3,15 @@
         <div class="row align-items-center">
             <!-- Logo -->
             <div class="col-6 col-lg-2">
-                <a href="/" class="logo">GraphicsShop</a>
+                {% if setting.website_logo %}
+                    <a href="/">
+                        <img src="{{ setting.website_logo.url }}" alt="{{ setting.website_name }}" class="logo" style="width:180px; height: auto;">
+                    </a>
+                {% else %}
+                    <a href="/" class="logo">{{ website_setting.website_name }}</a>
+                {% endif %}
             </div>
+
 
             <!-- Search Bar -->
             <div class="col-12 col-lg-8 order-3 order-lg-2 mt-3 mt-lg-0">

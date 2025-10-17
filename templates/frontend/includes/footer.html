@@ -4,8 +4,13 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4">
                     <h5>
-                        <i class="fas fa-store me-2"></i>
-                        GraphicShop
+                        {% if setting.website_logo %}
+                            <a href="/">
+                                <img src="{{ setting.website_logo.url }}" alt="{{ setting.website_name }}" class="logo" style="width:180px; height: auto;">
+                            </a>
+                        {% else %}
+                            <a href="/" class="logo">{{ website_setting.website_name }}</a>
+                        {% endif %}
                     </h5>
                     <p class="mb-4">Your trusted online shopping destination offering quality products, competitive prices, and exceptional customer service since 2020.</p>
                     <div class="social-icons">

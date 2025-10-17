@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from businessprofile.models import WebsiteSetting
 from product.models import Category, Product
 from django.contrib import messages
 from decimal import Decimal
 
 # View Bag
 def view_bag(request):
+    # Setting 
+    setting = WebsiteSetting.objects.first()
    # Menus
     menuCategories = Category.objects.filter(
         is_active=True,
@@ -12,6 +15,7 @@ def view_bag(request):
     ).prefetch_related("subcategories")
 
     context = {
+        'setting': setting,
         'menuCategories': menuCategories,
     }
 
