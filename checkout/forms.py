@@ -1,6 +1,5 @@
 from django import forms
-from .models import Order
-from .models import OrderLineItem
+from .models import Order, OrderLineItem
 
 
 class OrderForm(forms.ModelForm):
@@ -33,14 +32,19 @@ class OrderForm(forms.ModelForm):
             'county': 'County / State / Region',
         }
 
+        # Set autofocus on first field
         self.fields['full_name'].widget.attrs['autofocus'] = True
 
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({
-                'placeholder': placeholders[field],
+        for field_name, field in self.fields.items():
+            placeholder = placeholders.get(field_name, '')
+            if field.required:
+                placeholder += ' *'
+
+            field.widget.attrs.update({
+                'placeholder': placeholder,
                 'class': 'stripe-style-input',
             })
-            self.fields[field].label = False
+            field.label = False
 
 
 class OrderLineItemForm(forms.ModelForm):

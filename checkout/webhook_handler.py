@@ -25,29 +25,36 @@ class StripeWH_Handler:
             intent = event.data.object
             pid = intent.id
 
-            # Extract from PaymentIntent metadata (this is where cache_checkout_data stored it)
-            metadata = intent.metadata
-            bag = getattr(metadata, 'bag', '{}')
-            save_info = getattr(metadata, 'save_info', False)
-            
-            # Get ALL billing info from metadata
-            full_name = getattr(metadata, 'full_name', '')
-            email = getattr(metadata, 'email', '')
-            phone_number = getattr(metadata, 'phone_number', '')
-            street_address1 = getattr(metadata, 'street_address1', '')
-            street_address2 = getattr(metadata, 'street_address2', '')
-            town_or_city = getattr(metadata, 'town_or_city', '')
-            postcode = getattr(metadata, 'postcode', '')
-            country = getattr(metadata, 'country', '')
-            county = getattr(metadata, 'county', '')
+            # Use empty JSON string if metadata.bag does not exist
+            bag = getattr(intent.metadata, 'bag', '{}')
+            save_info = getattr(intent.metadata, 'save_info', False)
 
-            # Get amount from charge
+            # Safely get the latest charge
             latest_charge_id = getattr(intent, 'latest_charge', None)
             if latest_charge_id:
                 stripe_charge = stripe.Charge.retrieve(latest_charge_id)
+                billing_details = stripe_charge.billing_details
                 grand_total = round(stripe_charge.amount / 100, 2)
             else:
+                billing_details = intent.charges.data[0].billing_details if intent.charges.data else None
                 grand_total = round(intent.amount / 100, 2)
+
+            shipping_details = getattr(intent, 'shipping', None)
+
+            # Clean empty fields in shipping
+            if shipping_details and shipping_details.address:
+                for field, value in shipping_details.address.items():
+                    if value == "":
+                        shipping_details.address[field] = None
+
+            # Extract email - try multiple sources
+            email = None
+            if billing_details and hasattr(billing_details, 'email'):
+                email = billing_details.email
+            if not email and hasattr(intent.metadata, 'email'):
+                email = intent.metadata.email
+            if not email:
+                email = ''  # Fallback to empty string if still not found
 
             # --- Try finding existing order ---
             order_exists = False
@@ -57,15 +64,15 @@ class StripeWH_Handler:
             while attempt <= 5:
                 try:
                     order = Order.objects.get(
-                        full_name__iexact=full_name,
+                        full_name__iexact=getattr(shipping_details, 'name', ''),
                         email__iexact=email,
-                        phone_number__iexact=phone_number,
-                        country__iexact=country,
-                        postcode__iexact=postcode,
-                        town_or_city__iexact=town_or_city,
-                        street_address1__iexact=street_address1,
-                        street_address2__iexact=street_address2,
-                        county__iexact=county,
+                        phone_number__iexact=getattr(shipping_details, 'phone', ''),
+                        country__iexact=getattr(shipping_details.address, 'country', '') if shipping_details else '',
+                        postcode__iexact=getattr(shipping_details.address, 'postal_code', '') if shipping_details else '',
+                        town_or_city__iexact=getattr(shipping_details.address, 'city', '') if shipping_details else '',
+                        street_address1__iexact=getattr(shipping_details.address, 'line1', '') if shipping_details else '',
+                        street_address2__iexact=getattr(shipping_details.address, 'line2', '') if shipping_details else '',
+                        county__iexact=getattr(shipping_details.address, 'state', '') if shipping_details else '',
                         grand_total=grand_total,
                         original_bag=bag,
                         stripe_pid=pid,
@@ -84,15 +91,15 @@ class StripeWH_Handler:
 
             # --- Create order if not found ---
             order = Order.objects.create(
-                full_name=full_name,
+                full_name=getattr(shipping_details, 'name', ''),
                 email=email,
-                phone_number=phone_number,
-                country=country,
-                postcode=postcode,
-                town_or_city=town_or_city,
-                street_address1=street_address1,
-                street_address2=street_address2,
-                county=county,
+                phone_number=getattr(shipping_details, 'phone', ''),
+                country=getattr(shipping_details.address, 'country', '') if shipping_details else '',
+                postcode=getattr(shipping_details.address, 'postal_code', '') if shipping_details else '',
+                town_or_city=getattr(shipping_details.address, 'city', '') if shipping_details else '',
+                street_address1=getattr(shipping_details.address, 'line1', '') if shipping_details else '',
+                street_address2=getattr(shipping_details.address, 'line2', '') if shipping_details else '',
+                county=getattr(shipping_details.address, 'state', '') if shipping_details else '',
                 grand_total=grand_total,
                 original_bag=bag,
                 stripe_pid=pid,
