@@ -62,7 +62,7 @@ def checkout(request):
     # Calculate totals from bag
     current_bag = bag_contents(request)
     total = current_bag['grand_total']
-    stripe_total = round(total * 100)  # Stripe expects cents
+    stripe_total = round(total * 100)  
     stripe.api_key = stripe_secret_key
     intent = stripe.PaymentIntent.create(
         amount=stripe_total,
@@ -84,57 +84,15 @@ def checkout(request):
         order_form = OrderForm(form_data)
 
         if order_form.is_valid():
-            order = order_form.save(commit=False)
-
-            # Stripe payment ID
             client_secret = request.POST.get('client_secret')
             if client_secret:
-                pid = client_secret.split('_secret')[0]
-                order.stripe_pid = pid
-            order.original_bag = json.dumps(bag)
-            order.save()
-
-            # Create order line items
-            for item_id, item_data in bag.items():
-                try:
-                    product = Product.objects.get(pk=item_id)
-
-                    # Has variations
-                    if 'items_by_variation' in item_data:
-                        for variation_key, variation_info in item_data['items_by_variation'].items():
-                            quantity = variation_info['quantity']
-                            OrderLineItem.objects.create(
-                                order=order,
-                                product=product,
-                                product_variation=str(variation_info.get('variations', '')),
-                                quantity=quantity,
-                                lineitem_total=product.price * quantity
-                            )
-                    # No variations
-                    else:
-                        quantity = item_data.get('quantity', 1)
-                        OrderLineItem.objects.create(
-                            order=order,
-                            product=product,
-                            quantity=quantity,
-                            lineitem_total=product.price * quantity
-                        )
-
-                except Product.DoesNotExist:
-                    messages.error(request, (
-                        "One of the products in your bag wasn't found in our database. "
-                        "Please call us for assistance!"
-                    ))
-                    order.delete()
-                    return redirect(reverse('view_bag'))
-
-            # Recalculate totals
-            order.update_total()
-
-            # Save info 
+                request.session['checkout_data'] = form_data
+                request.session.modified = True
+            
+            # Save info preference
             request.session['save_info'] = 'save-info' in request.POST
 
-            return redirect(reverse('checkout_success', args=[order.order_number]))
+            return redirect(reverse('checkout_success', args=['pending']))
         else:
             messages.error(request, "There was an error with your form. Please double-check your information.")
     else:
@@ -156,8 +114,23 @@ def checkout(request):
 
 def checkout_success(request, order_number):
     # Handle successful checkouts
-
     save_info = request.session.get('save_info')
+    
+    # If order_number is 'pending', wait for webhook or show temporary message
+    if order_number == 'pending':
+        setting = WebsiteSetting.objects.first()
+        menuCategories = Category.objects.filter(
+            is_active=True,
+            parent_category__isnull=True
+        ).prefetch_related("subcategories")
+        
+        context = {
+            'setting': setting,
+            'menuCategories': menuCategories,
+            'pending': True,
+        }
+        return render(request, 'checkout/checkout_success.html', context)
+    
     order = get_object_or_404(Order, order_number=order_number)
 
     messages.success(request, f'Order successfully processed! Your order number is {order_number}. '
