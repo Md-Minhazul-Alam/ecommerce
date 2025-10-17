@@ -1,4 +1,4 @@
-// Stripe payment handling
+// Stripe Payment Handling
 // Docs: https://stripe.com/docs/payments/accept-a-payment
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,17 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const stripe = Stripe(stripePublicKey);
     const elements = stripe.elements();
-    const card = elements.create('card', {
-        style: {
-            base: {
-                color: '#000',
-                fontFamily: 'Helvetica, sans-serif',
-                fontSize: '16px',
-                '::placeholder': { color: '#aab7c4' },
-            },
-            invalid: { color: '#dc3545', iconColor: '#dc3545' },
-        },
-    });
+
+    const cardStyle = {
+        base: { color: '#000', fontFamily: 'Helvetica, sans-serif', fontSize: '16px', '::placeholder': { color: '#aab7c4' } },
+        invalid: { color: '#dc3545', iconColor: '#dc3545' },
+    };
+
+    const card = elements.create('card', { style: cardStyle });
     card.mount('#card-element');
 
     const form = document.getElementById('payment-form');
@@ -31,35 +27,92 @@ document.addEventListener("DOMContentLoaded", () => {
     const loader = document.getElementById('loader-overlay');
 
     card.addEventListener('change', (event) => {
-        errorDiv.innerHTML = event.error
-            ? `<span class="icon" role="alert"><i class="fas fa-times"></i></span> <span>${event.error.message}</span>`
-            : '';
+        if (event.error) {
+            errorDiv.innerHTML = `<span class="icon" role="alert"><i class="fas fa-times"></i></span>
+                                  <span>${event.error.message}</span>`;
+        } else {
+            errorDiv.textContent = '';
+        }
     });
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
         submitBtn.disabled = true;
         card.update({ disabled: true });
-
-        // Show loader
         loader.classList.remove('d-none');
 
-        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: card,
-            }
-        });
+        // Collect billing info from form
+        const fullName = document.getElementById('id_full_name').value.trim();
+        const email = document.getElementById('id_email').value.trim();
+        const phone = document.getElementById('id_phone_number').value.trim();
+        const address1 = document.getElementById('id_street_address1').value.trim();
+        const address2 = document.getElementById('id_street_address2').value.trim();
+        const city = document.getElementById('id_town_or_city').value.trim();
+        const state = document.getElementById('id_county').value.trim();
+        const country = document.getElementById('id_country').value.trim();
+        const postcode = document.getElementById('id_postcode').value.trim();
+        const saveInfo = document.getElementById('id-save-info')?.checked || false;
 
-        if (error) {
-            errorDiv.innerHTML = `
-                <span class="icon" role="alert"><i class="fas fa-times"></i></span>
-                <span>${error.message}</span>
-            `;
-            submitBtn.disabled = false;
-            card.update({ disabled: false });
-            loader.classList.add('d-none'); // hide loader
-        } else if (paymentIntent.status === 'succeeded') {
-            form.submit();
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+        // Cache checkout data
+        const postData = {
+            csrfmiddlewaretoken: csrfToken,
+            client_secret: clientSecret,
+            save_info: saveInfo,
+        };
+        const url = '/checkout/cache_checkout_data/';
+
+        try {
+            await fetch(url, { method: 'POST', body: new URLSearchParams(postData) });
+
+            // Confirm payment
+            const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: fullName || 'Unknown',
+                        email: email || 'no-email@example.com',
+                        phone: phone || '',
+                        address: {
+                            line1: address1 || '',
+                            line2: address2 || '',
+                            city: city || '',
+                            state: state || '',
+                            postal_code: postcode || '',
+                            country: country || '',
+                        }
+                    }
+                },
+                shipping: {
+                    name: fullName,
+                    phone: phone,
+                    address: {
+                        line1: address1,
+                        line2: address2,
+                        city: city,
+                        state: state,
+                        postal_code: postcode,
+                        country: country,
+                    }
+                }
+            });
+
+            // Handle errors or success
+            if (error) {
+                errorDiv.innerHTML = `<span class="icon" role="alert"><i class="fas fa-times"></i></span>
+                                      <span>${error.message}</span>`;
+                submitBtn.disabled = false;
+                card.update({ disabled: false });
+                loader.classList.add('d-none');
+            } else if (paymentIntent.status === 'succeeded') {
+                form.submit();
+            }
+
+        } catch (err) {
+            location.reload();
         }
     });
 });
+
