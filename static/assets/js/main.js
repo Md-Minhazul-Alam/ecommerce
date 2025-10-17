@@ -129,16 +129,6 @@ function initLazyLoading() {
     images.forEach(img => imageObserver.observe(img));
 }
 
-// Category handlers
-function initCategoryHandlers() {
-    const categories = document.querySelectorAll('.category-item');
-    categories.forEach(category => {
-        category.addEventListener('click', () => {
-            showNotification(`You selected ${category.textContent}`, 'info');
-        });
-    });
-}
-
 // Sidebar dropdown toggle
 function initSidebarDropdowns() {
     document.querySelectorAll('.sidebar-dropdown > a').forEach(toggle => {

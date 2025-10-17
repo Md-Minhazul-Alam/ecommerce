@@ -41,7 +41,6 @@
     </div>
 </section>
 
-
 <!-- Categories -->
 <section class="category-section">
     <div class="container">
@@ -49,15 +48,18 @@
         <div class="category-slider">
             {% for category in categoryList %}
             <div class="category-item fade-in">
-                <div class="category-img">
-                    {% if category.category_image %}
-                        <img src="{{ category.category_image.url }}" alt="{{ category.category }}">
-                    {% else %}
-                        <img src="{% static 'assets/images/default.jpg' %}" alt="{{ category.category }}">
-                    {% endif %}
-
-                </div>
-                <div class="category-name">{{ category.category }}</div>
+                <a href="{% url 'category' category.category_slug %}" class="text-decoration-none">
+                    <div class="category-img">
+                        {% if category.category_image %}
+                            <img src="{{ category.category_image.url }}" alt="{{ category.category }}">
+                        {% else %}
+                            <img src="{% static 'assets/images/default.jpg' %}" alt="{{ category.category }}">
+                        {% endif %}
+                    </div>
+                    <div class="category-name text-center mt-2">
+                        {{ category.category }}
+                    </div>
+                </a>
             </div>
             {% endfor %}
         </div>
