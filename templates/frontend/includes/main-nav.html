@@ -53,20 +53,20 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             {% if user.is_authenticated %}
-                            <li><a class="dropdown-item" href=""><i class="fas fa-user-circle me-2"></i>My Account</a>
+                            <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user-circle me-2"></i>My Account</a>
                             </li>
                             <li><a class="dropdown-item" href=""><i class="fas fa-box me-2"></i>My Orders</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item" href="{% url 'account_logout' %}">
                                     <i class="fas fa-sign-out-alt me-2"></i>Logout
                                 </a>
                             </li>
                             {% else %}
-                            <li><a class="dropdown-item" href=""><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
-                            <li><a class="dropdown-item" href=""><i class="fas fa-user-plus me-2"></i>Register</a></li>
+                            <li><a class="dropdown-item" href="{% url 'account_login' %}"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
+                            <li><a class="dropdown-item" href="{% url 'account_signup' %}"><i class="fas fa-user-plus me-2"></i>Register</a></li>
                             {% endif %}
                         </ul>
                     </div>

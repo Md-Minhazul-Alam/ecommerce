@@ -1,0 +1,28 @@
+/* Profile Form Styling (Bootstrap 5 override) */
+#profile-update-form .form-control,
+#profile-update-form .form-select {
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 50rem !important;   /* pill shape */
+    padding: 0.6rem 1rem !important;
+    box-shadow: none !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Focus effect */
+#profile-update-form .form-control:focus,
+#profile-update-form .form-select:focus {
+    border-color: #333 !important;
+    box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.05);
+}
+
+/* Labels */
+#profile-update-form label {
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+/* Button */
+#profile-update-form button {
+    border-radius: 50rem !important;
+    padding: 0.6rem 1.4rem !important;
+}
