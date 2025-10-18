@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from checkout.models import Order, OrderLineItem
 from product.models import Product
+from profiles.models import UserProfile
 import json
 import stripe
 import time
@@ -56,6 +57,24 @@ class StripeWH_Handler:
             if not email:
                 email = ''  # Fallback to empty string if still not found
 
+            # Update profile information if save_info was checked
+            profile = None
+            username = getattr(intent.metadata, 'username', 'AnonymousUser')
+            if username != 'AnonymousUser':
+                try:
+                    profile = UserProfile.objects.get(user__username=username)
+                    if save_info:
+                        profile.phone = getattr(shipping_details, 'phone', '')
+                        profile.country = getattr(shipping_details.address, 'country', '') if shipping_details else ''
+                        profile.postal_code = getattr(shipping_details.address, 'postal_code', '') if shipping_details else ''
+                        profile.city = getattr(shipping_details.address, 'city', '') if shipping_details else ''
+                        profile.address_line1 = getattr(shipping_details.address, 'line1', '') if shipping_details else ''
+                        profile.address_line2 = getattr(shipping_details.address, 'line2', '') if shipping_details else ''
+                        profile.state = getattr(shipping_details.address, 'state', '') if shipping_details else ''
+                        profile.save()
+                except UserProfile.DoesNotExist:
+                    profile = None
+
             # --- Try finding existing order ---
             order_exists = False
             attempt = 1
@@ -92,6 +111,7 @@ class StripeWH_Handler:
             # --- Create order if not found ---
             order = Order.objects.create(
                 full_name=getattr(shipping_details, 'name', ''),
+                user_profile=profile,
                 email=email,
                 phone_number=getattr(shipping_details, 'phone', ''),
                 country=getattr(shipping_details.address, 'country', '') if shipping_details else '',
