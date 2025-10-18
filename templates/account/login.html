@@ -1,0 +1,59 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n crispy_forms_tags %}
+
+{% block page_title %}{% trans "Sign In" %}{% endblock page_title %}
+
+{% block entrance %}
+<h2 class="text-center mb-4">{% trans "Sign In" %}</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if not SOCIALACCOUNT_ONLY %}
+    <p class="text-center small mb-4">
+        {% blocktranslate %}If you have not created an account yet, then please
+        <a href="{{ signup_url }}">sign up</a> first.{% endblocktranslate %}
+    </p>
+
+    <form method="post" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        {% if redirect_field %}
+            {{ redirect_field }}
+        {% endif %}
+
+        <button type="submit" class="btn btn-dark w-100 rounded-pill mt-3">
+            {% trans "Sign In" %}
+        </button>
+    </form>
+{% endif %}
+
+{% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
+    <hr class="my-4">
+    <div class="d-grid gap-2">
+        {% if PASSKEY_LOGIN_ENABLED %}
+            <button type="submit" form="mfa_login" id="passkey_login" class="btn btn-outline-primary rounded-pill">
+                {% trans "Sign in with a passkey" %}
+            </button>
+        {% endif %}
+        {% if LOGIN_BY_CODE_ENABLED %}
+            <a href="{{ request_login_code_url }}" class="btn btn-outline-primary rounded-pill">
+                {% trans "Send me a sign-in code" %}
+            </a>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if SOCIALACCOUNT_ENABLED %}
+    <div class="mt-4">
+        {% include "socialaccount/snippets/login.html" %}
+    </div>
+{% endif %}
+{% endblock entrance %}

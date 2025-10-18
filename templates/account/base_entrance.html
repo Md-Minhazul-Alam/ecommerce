@@ -1,0 +1,21 @@
+{% extends "frontend/layouts/base.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% block page_title %}{% trans "Account" %}{% endblock %} - PC Shop
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card border-0">
+                <div class="card-body p-5">
+                    {% block entrance %}
+                    {% endblock entrance %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
