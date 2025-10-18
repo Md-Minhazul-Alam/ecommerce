@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -46,3 +46,28 @@ def profile(request):
     }
 
     return render(request, "profiles/profile.html", context)
+
+
+@login_required
+def order_history(request, order_number):
+    """
+    Display a past order confirmation page for the logged-in user.
+    """
+    # Get the order or 404
+    order = get_object_or_404(Order, order_number=order_number, email=request.user.email)
+
+    # Show message
+    messages.info(
+        request,
+        f'This is a past confirmation for order number {order_number}. '
+        'A confirmation email was sent on the order date.'
+    )
+
+    return render(
+        request,
+        'checkout/checkout_success.html',
+        {
+            'order': order,
+            'from_profile': True,
+        }
+    )
