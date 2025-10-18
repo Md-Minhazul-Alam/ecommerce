@@ -1,0 +1,53 @@
+{% extends 'frontend/layouts/base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+
+{% endblock %}
+
+{% block content %}
+<section class="breadcrumb-section border-top py-3 bg-light">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'home' %}" class="text-decoration-none text-dark">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="breadcrumb-item active text-dark" aria-current="page">User Profile</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<section class="checkout-section py-5">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Checkout Form -->
+            <div class="col-lg-7">
+            
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-5">
+               
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Loader Overlay -->
+<div id="loader-overlay" class="d-none">
+    <div class="loader"></div>
+    <p class="text-white mt-3">Processing your payment, please wait...</p>
+</div>
+
+{% endblock %}
+
+{% block postloadjs %}
+    {{ block.super }}
+    {{ stripe_public_key|json_script:"id_stripe_public_key" }}
+    {{ client_secret|json_script:"id_client_secret" }}
+    <script src="{% static 'assets/js/stripe.js' %}"></script>
+{% endblock %}
