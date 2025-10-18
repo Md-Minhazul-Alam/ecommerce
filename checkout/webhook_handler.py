@@ -1,4 +1,8 @@
 from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
+
 from checkout.models import Order, OrderLineItem
 from product.models import Product
 from profiles.models import UserProfile
@@ -12,6 +16,23 @@ class StripeWH_Handler:
 
     def __init__(self, request):
         self.request = request
+
+    def _send_confirmation_email(self, order):
+        """Send the user a confirmation email"""
+        cust_email = order.email
+        subject = render_to_string(
+            'checkout/confirmation_emails/confirmation_email_subject.txt',
+            {'order': order})
+        body = render_to_string(
+            'checkout/confirmation_emails/confirmation_email_body.txt',
+            {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
+        
+        send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            [cust_email]
+        )
 
     def handle_event(self, event):
         """Handle generic or unknown webhook event"""
@@ -75,7 +96,7 @@ class StripeWH_Handler:
                 except UserProfile.DoesNotExist:
                     profile = None
 
-            # --- Try finding existing order ---
+            # Try finding existing order
             order_exists = False
             attempt = 1
             order = None
@@ -103,12 +124,13 @@ class StripeWH_Handler:
                     time.sleep(1)
 
             if order_exists:
+                self._send_confirmation_email(order)
                 return HttpResponse(
                     content=f'Webhook received: {event["type"]} | SUCCESS: Verified existing order',
                     status=200
                 )
 
-            # --- Create order if not found ---
+            # Create order if not found
             order = Order.objects.create(
                 full_name=getattr(shipping_details, 'name', ''),
                 user_profile=profile,
@@ -125,7 +147,7 @@ class StripeWH_Handler:
                 stripe_pid=pid,
             )
 
-            # --- Create OrderLineItems safely ---
+            # Create OrderLineItems safely
             bag_data = json.loads(bag)
             for item_id, item_data in bag_data.items():
                 product = Product.objects.get(id=item_id)
@@ -159,6 +181,7 @@ class StripeWH_Handler:
                         lineitem_total=product.price * item_data
                     )
 
+            self._send_confirmation_email(order)
             return HttpResponse(
                 content=f'Webhook received: {event["type"]} | SUCCESS: Created order {order.id}',
                 status=200
