@@ -76,7 +76,7 @@ class StripeWH_Handler:
             if not email and hasattr(intent.metadata, 'email'):
                 email = intent.metadata.email
             if not email:
-                email = ''  # Fallback to empty string if still not found
+                email = ''  
 
             # Update profile information if save_info was checked
             profile = None
