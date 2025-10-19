@@ -8,6 +8,7 @@ urlpatterns = [
     path('tinymce/', include('tinymce.urls')),
     path('accounts/', include('allauth.urls')),
     path('', include('home.urls')),
+    path('', include('businessprofile.urls')),
     path('products/', include('product.urls')),
     path('bag/', include('bag.urls')),
     path('checkout/', include('checkout.urls')),

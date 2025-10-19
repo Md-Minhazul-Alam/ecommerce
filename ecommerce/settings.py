@@ -106,6 +106,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'bag.contexts.bag_contents',
                 'businessprofile.context_processors.website_settings',
+                'businessprofile.context_processors.footer_quick_links',
+                'businessprofile.context_processors.footer_legal_links',
                 'product.context_processors.menu_categories',
                 'product.context_processors.footer_categories',
             ],

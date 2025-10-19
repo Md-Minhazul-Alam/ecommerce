@@ -1,83 +1,87 @@
 <!-- Footer -->
- {% load static %}
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <h5>
-                        {% if setting.website_logo %}
-                            <a href="/">
-                                <img src="{{ setting.website_logo.url }}" alt="{{ setting.website_name }}" class="logo" style="width:180px; height: auto;">
-                            </a>
-                        {% else %}
-                            <a href="/" class="logo">{{ setting.website_name }}</a>
-                        {% endif %}
-                    </h5>
-                    <p class="mb-4">{{ setting.website_description }}</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Quick Links</h5>
-                    <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Careers</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Categories</h5>
-                    <ul class="footer-links">
-                        {% for category in footerCategories %}
-                            <li>
-                                <a href="{% url 'category' category.category_slug %}">
-                                    {{ category.category }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Customer Care</h5>
-                    <ul class="footer-links">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Track Order</a></li>
-                        <li><a href="#">Returns</a></li>
-                        <li><a href="#">Shipping Info</a></li>
-                        <li><a href="#">Size Guide</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Legal</h5>
-                    <ul class="footer-links">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">Refund Policy</a></li>
-                    </ul>
-                </div>
+{% load static %}
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5>
+                    {% if setting.website_logo %}
+                    <a href="/">
+                        <img src="{{ setting.website_logo.url }}" alt="{{ setting.website_name }}" class="logo"
+                            style="width:180px; height: auto;">
+                    </a>
+                    {% else %}
+                    <a href="/" class="logo">{{ setting.website_name }}</a>
+                    {% endif %}
+                </h5>
+                <p class="mb-4">{{ setting.website_description }}</p>
+                <!-- <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div> -->
             </div>
-            <hr class="my-4" style="border-color: #495057;">
-            <div class="row align-items-center">
-                <div class="col-md-6 mb-3 mb-md-0">
-                    <p class="mb-0">
-                        <i class="fas fa-copyright me-1"></i>
-                        {% now "Y" %} {{ website_setting.website_name }}. All rights reserved.
-                    </p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="payment-methods">
-                        <img src="{% static 'assets/images/payment.png' %}" alt="Payment Methods">
-                    </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5>Quick Links</h5>
+                <ul class="footer-links">
+                    {% for link in footerQuickLinks %}
+                    <li>
+                        <a href="{% url 'quick_link_detail' link.slug %}">
+                            {{ link.title }}
+                        </a>
+                    </li>
+                    {% empty %}
+                    <li>No links available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5>Categories</h5>
+                <ul class="footer-links">
+                    {% for category in footerCategories %}
+                    <li>
+                        <a href="{% url 'category' category.category_slug %}">
+                            {{ category.category }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5>Legal</h5>
+                <ul class="footer-links">
+                    {% for link in footerLegalLinks %}
+                    <li>
+                        <a href="{% url 'legal_link_detail' link.slug %}">
+                            {{ link.title }}
+                        </a>
+                    </li>
+                    {% empty %}
+                    <li>No links available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <hr class="my-4" style="border-color: #495057;">
+
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <p class="mb-0">
+                    <i class="fas fa-copyright me-1"></i>
+                    {% now "Y" %} {{ website_setting.website_name }}. All rights reserved.
+                </p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="payment-methods">
+                    <img src="{% static 'assets/images/payment.png' %}" alt="Payment Methods">
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
