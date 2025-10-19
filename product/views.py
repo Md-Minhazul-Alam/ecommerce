@@ -88,10 +88,17 @@ def product_detail(request, product_slug):
     for name, group in groupby(sorted(variations, key=lambda v: v.variation.name), key=lambda v: v.variation.name):
         grouped_variations[name] = list(group)
 
+    # Related Products
+    related_products = Product.objects.filter(
+        category=product.category,
+        is_active=True
+    ).exclude(pk=product.pk)[:4]
+
     context = {
         "setting": setting,
         'menuCategories': menuCategories,
         'product': product,
         'grouped_variations': grouped_variations,
+        'related_products': related_products,
     }
     return render(request, "product/product_details.html", context)
