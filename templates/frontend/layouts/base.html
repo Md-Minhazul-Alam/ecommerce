@@ -4,18 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}GraphicShop{% endblock %}</title>
-    {% block main_css %}
+    
+    <!-- Dynamic Meta Tags from WebsiteSetting -->
+    <title>{% block title %}{{ setting.website_name }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ setting.website_description }}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{{ setting.website_tagline }}{% endblock %}">
+    <meta name="author" content="{% block meta_author %}{{ setting.website_name }}{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}{{ setting.website_name }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ setting.website_description }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% if setting.website_thumbnail %}{{ setting.website_thumbnail.url }}{% endif %}{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    <meta property="og:site_name" content="{% block og_site_name %}{{ setting.website_name }}{% endblock %}">
+    
+    <!-- Favicon and Logo -->
+    {% if setting.website_favicon %}
+    <link rel="icon" type="image/x-icon" href="{{ setting.website_favicon.url }}">
+    {% endif %}
+    <link rel="apple-touch-icon" href="{% if setting.website_logo %}{{ setting.website_logo.url }}{% endif %}">
+    
+    <!-- Preconnect to External Resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Stylesheets -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
-    {% endblock %}
-    {% block extra_css %}
-    {% endblock %}
-
+    
+    <!-- Contact Information -->
+    <meta name="contact" content="{{ setting.website_contact_email }}">
+    <meta name="phone" content="{{ setting.website_contact_phone }}">
+    
+    {% block main_css %}{% endblock %}
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     {% if messages %}
