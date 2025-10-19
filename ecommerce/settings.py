@@ -107,6 +107,7 @@ TEMPLATES = [
                 'bag.contexts.bag_contents',
                 'businessprofile.context_processors.website_settings',
                 'product.context_processors.menu_categories',
+                'product.context_processors.footer_categories',
             ],
             'builtins': [
                 'crispy_forms.templatetags.crispy_forms_tags',
