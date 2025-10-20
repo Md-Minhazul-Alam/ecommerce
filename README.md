@@ -295,22 +295,22 @@ User Stories
 FEATURES
 ------------------------------------------------------------
 
-| SECTION | DESCRIPTION |
-|----------|--------------|
-| Header | Top bar with free shipping message (left) and contact number (right). Main header with logo (left), search bar (center), cart & user icons (right). Cart icon shows product count. |
-| User Authentication | Login, signup, and password reset handled via Django Allauth. Displays “My Account” if logged in or “Login / Sign up” otherwise. |
-| Hero Slider | Displays running offers and promotions. Each slide links to a relevant category or product. |
-| Homepage Categories | Selected featured categories displayed as clickable cards that redirect to category listings. |
-| Featured Products | Displays highlighted or exclusive products pulled dynamically from database. |
-| Footer | Four columns — (1) Logo & description, (2) Quick links, (3) Category links, (4) Legal pages. |
-| Category Page | Shows products of a selected category with breadcrumbs. Includes filters: price (low→high / high→low), rating, and alphabetical (A→Z / Z→A). |
-| Product Details | Product images (left), details (right): title, rating, price, short description, quantity selector, variation dropdown (if available), add to cart, and related products section. |
-| Add-to-Cart Popup | Notification appears showing added items, subtotal, and free shipping progress bar. |
-| Cart Page | Displays items with plus/minus quantity controls and remove option. Right side shows order summary with total, delivery, and free shipping indicator. |
-| Checkout Page | Simple form with billing/shipping info, country dropdown, and Stripe payment form. |
-| Order Confirmation | Success page showing order number, details, billing, and shipping info. Sends email confirmation. |
-| User Profile | Editable user info: name, phone, address, country. Lists past orders with date and total. |
-| Admin Panel | Django Admin for full CRUD control on products, brands, categories, and orders. |
+| SECTION             | DESCRIPTION                                                                                                     | Screenshot / Image                                       |
+|---------------------|-----------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| Header              | Top bar with free shipping message (left) and contact number (right). Main header with logo (left), search bar (center), cart & user icons (right). Cart icon shows product count. | ![Header](/static/screenshots/header.png)               |
+| User Authentication | Login, signup, and password reset handled via Django Allauth. Displays “My Account” if logged in or “Login / Sign up” otherwise. | ![Auth](/static/screenshots/auth.png)                   |
+| Hero Slider         | Displays running offers and promotions. Each slide links to a relevant category or product.                     | ![Slider](/static/screenshots/slider.png)               |
+| Homepage Categories | Selected featured categories displayed as clickable cards that redirect to category listings.                  | ![Categories](/static/screenshots/categories.png)       |
+| Featured Products   | Displays highlighted or exclusive products pulled dynamically from database.                                    | ![Featured Products](/static/screenshots/featured.png)  |
+| Footer              | Four columns — (1) Logo & description, (2) Quick links, (3) Category links, (4) Legal pages.                   | ![Footer](/static/screenshots/footer.png)               |
+| Category Page       | Shows products of a selected category with breadcrumbs. Includes filters: price (low→high / high→low), rating, and alphabetical (A→Z / Z→A). | ![Category](/static/screenshots/category.png)           |
+| Product Details     | Product images (left), details (right): title, rating, price, short description, quantity selector, variation dropdown (if available), add to cart, and related products section. | ![Product Details](/static/screenshots/details.png)     |
+| Add-to-Cart Popup   | Notification appears showing added items, subtotal, and free shipping progress bar.                             | ![Add-to-Cart](/static/screenshots/add_to_cart.png)     |
+| Cart Page           | Displays items with plus/minus quantity controls and remove option. Right side shows order summary with total, delivery, and free shipping indicator. | ![Cart](/static/screenshots/cart.png)                   |
+| Checkout Page       | Simple form with billing/shipping info, country dropdown, and Stripe payment form.                              | ![Checkout](/static/screenshots/checkout.png)           |
+| Order Confirmation  | Success page showing order number, details, billing, and shipping info. Sends email confirmation.               | ![Order Success](/static/screenshots/success.png)       |
+| User Profile        | Editable user info: name, phone, address, country. Lists past orders with date and total.                       | ![Profile](/static/screenshots/profile.png)             |
+| Admin Panel         | Django Admin for full CRUD control on products, brands, categories, and orders.                                  | ![Admin](/static/screenshots/admin.png)                 |
 
 
 Tools & Technologies
@@ -333,7 +333,7 @@ Agile Development
 
 Deployment
 ----------
-- Hosted on Render.com for testing
+- Hosted on Purchased Hosting for testing
 - Stripe payment integration active
 - Email notifications for orders enabled
 
