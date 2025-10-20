@@ -218,13 +218,17 @@ STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
 
-# Default sender email
+# Email configuration
 DEFAULT_FROM_EMAIL = 'contact@pcshop.zpos.top'
 
-# Email backend: for production use SMTP
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'pcshop.zpos.top'    
-EMAIL_PORT = 465                     
-EMAIL_USE_TLS = True                  
-EMAIL_HOST_USER = 'contact@pcshop.zpos.top'
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = 'pcshop.zpos.top'  # Exactly as shown in cPanel
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False  
+EMAIL_HOST_USER = 'contact@pcshop.zpos.top'  
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') 
+
+# Recommended timeouts
+EMAIL_TIMEOUT = 10
+EMAIL_CONNECTION_TIMEOUT = 10
