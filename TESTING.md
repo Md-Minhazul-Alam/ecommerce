@@ -2,6 +2,22 @@
 
 [Return to README.md](README.md)
 
+## Code Validation
+
+All HTML and Django template files were validated using the [W3C HTML Validator](https://validator.w3.org) to ensure clean and accessible markup.  
+Minor warnings related to Django template tags (`{% %}` / `{{ }}`) were ignored as they are not standard HTML.
+
+| Page             | Template File                          | Screenshot                                           |
+| ---------------- | -------------------------------------- | ---------------------------------------------------- |
+| Home Page        | `templates/home/index.html`             | ![Home](/static/testing/html-home.png)               |
+| Product Listing  | `templates/product/category.html`       | ![Category](/static/testing/html-category.png)       |
+| Product Details  | `templates/product/product_detail.html` | ![Details](/static/testing/html-details.png)         |
+| Cart Page        | `templates/bag/bag.html`                | ![Cart](/static/testing/html-cart.png)               |
+| Checkout Page    | `templates/checkout/checkout.html`      | ![Checkout](/static/testing/html-checkout.png)       |
+| Order Success    | `templates/checkout/order_success.html` | ![Success](/static/testing/html-success.png)         |
+| Profile Page     | `templates/profiles/profile.html`       | ![Profile](/static/testing/html-profile.png)         |
+| Legal Page         | `templates/businessprofile/legal_link_detail.html`               | ![Legal](/static/testing/html-legal.png)                 |
+| Quick Page         | `templates/businessprofile/quick_link_detail.html`               | ![Quick](/static/testing/html-quick.png)                 |
 
 
 ## Responsiveness

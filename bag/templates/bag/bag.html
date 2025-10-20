@@ -4,9 +4,14 @@
 {% load static %}
 <section class="breadcrumb-section border-top">
     <div class="container">
+        <h2 class="visually-hidden">Breadcrumb Navigation</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'home' %}">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
                 <li class="breadcrumb-item active" aria-current="page">Shopping Bag</li>
             </ol>
         </nav>
