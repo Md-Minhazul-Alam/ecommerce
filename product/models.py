@@ -1,6 +1,12 @@
 from django.db import models
 from django.utils.text import slugify
 from tinymce.models import HTMLField
+from django.contrib import admin
+
+# Customizing the admin interface
+admin.site.site_header = "PCSHOP Admin"
+admin.site.site_title = "PCSHOP Admin Portal"
+admin.site.index_title = "PCSHOP to the Admin Panel"
 
 
 # Tag Model
