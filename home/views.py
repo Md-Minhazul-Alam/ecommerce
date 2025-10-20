@@ -4,6 +4,11 @@ from product.models import Category, Product
 from themeOption.models import HeroSlider
 import random
 
+
+# 404 Page
+def custom_404(request, exception):
+    return render(request, "home/404.html", status=404)
+
 # Home Page 
 def home_page(request):
     # Setting 
