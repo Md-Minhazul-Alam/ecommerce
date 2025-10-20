@@ -108,6 +108,35 @@ Audited with Lighthouse for performance, accessibility, SEO, and best practices.
 | Checkout process  | Stripe payment and order summary correct      | Completed test checkout                      | Payment succeeds       | ![Checkout](/static/testing/features/checkout.png)                                          |
 | Profile update    | Update personal info and view orders         | Edited profile info, viewed past orders     | Changes saved correctly | ![Profile](/static/testing/features/profile.png)                                           |
 
+# PC SHOP - User Story Testing
+
+This file documents all user story tests for the PC Shop e-commerce project, including steps, expected results, and screenshots for verification.
+
+---
+
+## User Story Testing
+
+| User Story | Steps | Expected Result | Screenshot |
+| ---------- | ----- | --------------- | ---------- |
+| **Browse Products** | 1. Open Home Page<br>2. Click on a category | Products of selected category are displayed | ![Home](/static/testing/user-story/home.png) |
+| **Filter / Sort Products** | 1. Go to Product Listing<br>2. Apply price/rating/name filter | Products are correctly filtered/sorted | ![Filter](/static/testing/user-story/filter.png) |
+| **Select Product Variation** | 1. Open Product Details<br>2. Select variation from dropdown | Selected variation is displayed; price updates if applicable | ![Variation](/static/testing/user-story/variation.png) |
+| **Adjust Quantity** | 1. On Product Details or Cart<br>2. Increase/decrease quantity | Quantity updates; line total recalculates correctly | ![Quantity](/static/testing/user-story/quantity.png) |
+| **Add to Cart** | 1. Select variation & quantity<br>2. Click “Add to Cart” | Cart updates with correct product, variation, quantity, subtotal | ![Add to Cart](/static/testing/user-story/add-to-cart.png) |
+| **Cart Management** | 1. Open Cart Page<br>2. Increase/decrease quantity, remove items | Cart updates totals and item list correctly | ![Cart](/static/testing/user-story/cart.png) |
+| **Checkout Validation** | 1. Proceed to Checkout<br>2. Leave required fields empty<br>3. Attempt to submit | Warning messages displayed; checkout blocked | ![Checkout Validation](/static/testing/user-story/checkout-validation.png) |
+| **Successful Checkout** | 1. Fill all required fields<br>2. Complete Stripe payment | Order processed; confirmation page displayed; email sent | ![Checkout Success](/static/testing/user-story/checkout-success.png) |
+| **Profile Update** | 1. Open Profile Page<br>2. Update personal info<br>3. Save changes | Updated info saved; reflected immediately | ![Profile Update](/static/testing/user-story/profile-update.png) |
+| **Quick & Legal Links** | 1. Click Quick/Legal link in Footer | Opens correct page in new tab | ![Quick Link](/static/testing/user-story/quick-link.png) |
+
+---
+
+## Notes
+
+- All required fields on Checkout and Profile pages must be validated.
+- Cart totals should recalculate correctly when quantities are adjusted.
+- Screenshots should be updated whenever UI changes occur.
+- Additional device-specific testing (desktop, tablet, mobile) can be added in separate columns if needed.
 
 
 ## Bugs
