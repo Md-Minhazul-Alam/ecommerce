@@ -20,6 +20,29 @@ Minor warnings related to Django template tags (`{% %}` / `{{ }}`) were ignored 
 | Quick Page         | `templates/businessprofile/quick_link_detail.html`               | ![Quick](/static/testing/html-quick.png)                 |
 
 
+## CSS Validation
+
+All CSS files were validated using the [W3C CSS Validator](https://jigsaw.w3.org/css-validator) to ensure proper syntax and browser compatibility.  
+Minor warnings related to vendor prefixes were ignored as they enhance cross-browser support.
+
+| CSS File                                       | Template Files                                                                                                        | Screenshot                                         |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `static/assets/css/style.css`                  | `templates/home/index.html`, `templates/product/category.html`, `templates/product/product_detail.html`, `templates/home/404.html` | ![style.css Validation](/static/testing/css-style.png) |
+| `static/assets/css/profile.css`                | `templates/profiles/profile.html`                                                                                     | ![profile.css Validation](/static/testing/css-profile.png) |
+| `static/assets/css/checkout.css`               | `templates/checkout/checkout.html`, `templates/checkout/order_success.html`, `templates/bag/bag.html`                 | ![checkout.css Validation](/static/testing/css-checkout.png) |
+
+
+## JS Validation  
+
+All JavaScript files were validated using [JSHint](https://jshint.com/) to ensure clean, maintainable, and error-free code.  
+Minor warnings related to ES6 syntax and Stripe API functions were ignored as they are intentional.
+
+| Location                     | File / Purpose                                 | Screenshot                                         |
+| ----------------------------- | ---------------------------------------------- | ------------------------------------------------- |
+| `static/assets/js/main.js`    | Handles site-wide interactivity: menu toggle, cart updates, and dynamic UI elements | ![main.js Validation](/static/testing/js-main.png) |
+| `static/assets/js/stripe.js`  | Manages Stripe payment integration on checkout page | ![stripe.js Validation](/static/testing/js-stripe.png) |
+
+
 ## Responsiveness
 
 Tested on desktop, tablet, and mobile devices.
