@@ -78,3 +78,58 @@ All features, including Stripe payment, cart management, and responsive navigati
 | Legal Page         | ![Chrome Legal](/static/testing/browser/chrome/chrome-legal.png)                      | ![Firefox Legal](/static/testing/browser/firefox/firefox-legal.png)                   | Works as expected |
 
 
+## Lighthouse Audit
+
+Audited with Lighthouse for performance, accessibility, SEO, and best practices.
+
+| Page                                | Desktop Screenshot                                                        | Mobile Screenshot                                                        |
+| ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Home Page                            | ![Home Desktop](/static/testing/lighthouse/light-desktop-home.png)        | ![Home Mobile](/static/testing/lighthouse/light-mobile-home.png)         |
+| Product Listing / Category Page      | ![Category Desktop](/static/testing/lighthouse/light-desktop-category.png) | ![Category Mobile](/static/testing/lighthouse/light-mobile-category.png) |
+| Product Details Page                 | ![Details Desktop](/static/testing/lighthouse/light-desktop-details.png)   | ![Details Mobile](/static/testing/lighthouse/light-mobile-details.png)   |
+| Cart Page                            | ![Cart Desktop](/static/testing/lighthouse/light-desktop-cart.png)         | ![Cart Mobile](/static/testing/lighthouse/light-mobile-cart.png)         |
+| Checkout Page                        | ![Checkout Desktop](/static/testing/lighthouse/light-desktop-checkout.png) | ![Checkout Mobile](/static/testing/lighthouse/light-mobile-checkout.png) |
+| User Profile Page                     | ![Profile Desktop](/static/testing/lighthouse/light-desktop-profile.png)   | ![Profile Mobile](/static/testing/lighthouse/light-mobile-profile.png)   |
+| About / Contact / Privacy Policy     | ![Page Desktop](/static/testing/lighthouse/light-desktop-page.png)         | ![Page Mobile](/static/testing/lighthouse/light-mobile-page.png)         |
+| Search Page                          | ![Search Desktop](/static/testing/lighthouse/light-desktop-search.png)     | ![Search Mobile](/static/testing/lighthouse/light-mobile-search.png)     |
+
+
+---
+
+## Defensive Programming
+
+| Feature           | Expectation                                   | Test                                         | Result                 | Screenshot                                                                                  |
+| ----------------- | --------------------------------------------- | ------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------- |
+| Navigation bar    | Adaptive on desktop, tablet, mobile          | Tested all device widths                     | Works consistently     | ![Navbar Desktop](/static/testing/features/navbar.png) ![Navbar Mobile](/static/testing/features/mobile-navbar.png) |
+| Hero / Offer slider| Displays current promotions correctly        | Checked slider for active promotions        | Works as expected      | ![Hero Slider](/static/testing/features/sliders.png)                                        |
+| Product Listing   | Displays products correctly with filters     | Checked categories, sorting, and pagination | Works as expected      | ![Product Listing](/static/testing/features/product-listing.png)                             |
+| Product search    | Filters products by name, price, rating      | Entered test search terms                    | Correct products listed | ![Search Modal](/static/testing/features/search.png) ![Search Results](/static/testing/features/search-result.png) |
+| Cart functionality| Add/remove/update quantity, calculate totals | Added multiple products, changed quantity   | Totals update correctly | ![Cart Function](/static/testing/features/cart-update.png)                                   |
+| Checkout process  | Stripe payment and order summary correct      | Completed test checkout                      | Payment succeeds       | ![Checkout](/static/testing/features/checkout.png)                                          |
+| Profile update    | Update personal info and view orders         | Edited profile info, viewed past orders     | Changes saved correctly | ![Profile](/static/testing/features/profile.png)                                           |
+
+
+
+## Bugs
+
+* **Automated email notifications not sending correctly in some environments**  
+  **Fix:** Ensure SMTP credentials and Django email backend are properly configured → Pending  
+
+* **Minor layout misalignment on mobile for cart and checkout pages**  
+  **Fix:** Adjusted CSS flex/grid rules and media queries → Resolved  
+
+* **Product variation dropdown not updating quantity correctly**  
+  **Fix:** Added JS fallback logic → Resolved  
+
+* **Quick links or legal links sometimes display empty if inactive**  
+  **Fix:** Added conditional rendering in templates → Resolved  
+
+* **Hero slider images not scaling properly on small screens**  
+  **Fix:** Added responsive image classes and object-fit → Resolved  
+
+---
+
+## Known Issues
+
+* Automated email notifications may still fail in local development if SMTP server is not running.  
+* Minor responsive issues may appear in very small screen widths (<320px) — non-critical.
