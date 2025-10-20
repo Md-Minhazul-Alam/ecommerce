@@ -324,12 +324,36 @@ Tools & Technologies
 - Git & GitHub – Version control
 - VSCode – Development IDE
 - Font Awesome – Icons
+- HackMD – For README / testing documentation
 
 Agile Development
 -----------------
 - GitHub Projects & Issues for task management
 - MoSCoW prioritization for features
 - Responsiveness and functionality testing
+- Used for Kanban style task management with epics and issues
+
+Screenshot / Example:
+![Agile Kanban](/static/screenshots/agile_kanban.png)
+
+GitHub Issues
+-------------
+All reported errors, feature requests, and improvements were tracked through GitHub Issues.  
+Common issues included model relationships, view routing bugs, and API response mismatches during integration with Stripe and Allauth.
+
+MoSCoW Prioritization
+---------------------
+Must Have: Product CRUD, cart, checkout, and Stripe payment integration  
+Should Have: User profile management and category filtering  
+Could Have: Wishlist and product reviews  
+Won’t Have: Discount coupons or referral system (planned for future release)
+
+Testing
+-------
+All features were manually tested on desktop, tablet, and mobile for responsiveness and functionality.  
+Stripe test mode was used for payment verification.  
+User registration and login were validated through Django Allauth flows.  
+Errors, test logs, and screenshots are documented separately in `TESTING.md`.
 
 Deployment
 ----------
@@ -337,10 +361,46 @@ Deployment
 - Stripe payment integration active
 - Email notifications for orders enabled
 
+Local vs Deployment
+-------------------
+Minor differences may exist between the local and deployed versions due to environment settings, database connections, and API keys.
+
+Local Development
+-----------------
+**Cloning the Repository**
+1. Go to the GitHub repository.
+2. Click the green **Code** button and copy the URL (HTTPS, SSH, or GitHub CLI).
+3. Open Terminal or Git Bash and navigate to your desired project directory.
+4. Run:  
+   ```bash
+   git clone <repository-url>
+
+---
+
 Future Features
 ---------------
 - Dark mode toggle
 - Wishlist/favorites
 - Product reviews & ratings
 - Discount coupons and promo codes
+
+## Credits
+
+### Content
+| Source | Notes |
+| --- | --- |
+| ChatGPT | Helped debug and explain Django/JS issues |
+| Claude AI | Helped debug and explain Django/JS issues |
+| W3Schools | References for CSS/JS |
+| Django Docs | Backend reference |
+
+### Media
+- [Google Images](https://images.google.com) → Product and promotional images  
+- [Freepik](https://www.freepik.com) → Icons, mockups, and design elements  
+- [Font Awesome](https://fontawesome.com) → Icons used across UI  
+
+### Acknowledgements
+- Django and open-source community for documentation and discussions.  
+- Code Institute and online developer communities for guidance and testing insights.  
+
 
