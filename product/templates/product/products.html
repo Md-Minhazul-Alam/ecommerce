@@ -29,7 +29,13 @@
     <!-- Product Display -->
     <section class="product-section">
         <div class="container">
-            <h2 class="section-title fade-in">Products</h2>
+            <h2 class="section-title fade-in">
+                {% if category %}
+                    {{ category.category }}
+                {% else %}
+                    Products
+                {% endif %}
+            </h2>
             <!-- Filter -->
             <div class="filter-bar">
                 <div class="showing-text">
