@@ -222,7 +222,7 @@ STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
 DEFAULT_FROM_EMAIL = 'contact@pcshop.zpos.top'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'pcshop.zpos.top'  # Exactly as shown in cPanel
+EMAIL_HOST = 'pcshop.zpos.top'  
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False  
