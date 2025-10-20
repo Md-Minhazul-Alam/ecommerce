@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import mark_safe
 from .models import Tag, Brand, Category, Variation, Product, ProductVariation
 
 # Register Tag
@@ -40,12 +41,22 @@ class ProductVariationInline(admin.TabularInline):
     autocomplete_fields = ['variation']  
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('product_name', 'product_slug', 'brand', 'category')
+    list_display = ('product_name', 'get_thumbnail_preview', 'product_slug', 'brand', 'category')
     search_fields = ('product_name', 'product_slug')
     list_filter = ('brand', 'category', 'is_active', 'is_featured')
     filter_horizontal = ('tags',)
     inlines = [ProductVariationInline] 
-    
+
+    # Show image preview in list view and edit form
+    def get_thumbnail_preview(self, obj):
+        if obj.thumbnail:
+            return mark_safe(f'<img src="{obj.thumbnail.url}" width="60" height="60" style="object-fit:cover; border-radius:4px;" />')
+        return "—"
+    get_thumbnail_preview.short_description = "Thumbnail"
+
+    # Make the preview appear in the edit form
+    readonly_fields = ('get_thumbnail_preview',)
+
 admin.site.register(Product, ProductAdmin)
 
 # Register Product Variation Admin
