@@ -217,3 +217,14 @@ STRIPE_CURRENCY = 'usd'
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
+
+# Default sender email
+DEFAULT_FROM_EMAIL = 'contact@pcshop.zpos.top'
+
+# Email backend: for production use SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'pcshop.zpos.top'    
+EMAIL_PORT = 465                     
+EMAIL_USE_TLS = True                  
+EMAIL_HOST_USER = 'contact@pcshop.zpos.top'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
