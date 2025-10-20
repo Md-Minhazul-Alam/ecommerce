@@ -1,13 +1,13 @@
-PC Shop Django
+# [PC SHOP](https://pcshop.zpos.top/)
 ==============
 
 Developer: Md Minhazul Alam (https://github.com/Md-Minhazul-Alam)
 
 Project Overview
 ----------------
-This is a full-stack e-commerce platform for a PC shop built with Django (Python) as the backend
-and a responsive frontend using HTML, CSS, Bootstrap, and custom JavaScript. The platform
-supports browsing products, filtering, cart management, checkout with Stripe, and user profiles.
+This is an end-to-end e-commerce site for a PC shop built using Django (Python) as the backend
+and a client-side responsive implementation using HTML, CSS, Bootstrap, and custom JavaScript. The platform
+supports filter, product browsing, cart management, user profiles, and Stripe checkout.
 
 The goal is to provide a complete PC shopping experience with responsive design and real-world
 functionality.
@@ -35,6 +35,7 @@ Scope & Features
 Homepage:
 - Header with top bar (free shipping info, contact number)
 - Logo, search bar, cart icon, user account/login toggle
+- Product Categories
 - Offer slider for promotions
 - Selected category sections
 - Featured products section
@@ -261,6 +262,19 @@ Typography
 ----------
 - Fonts: "DM Sans", sans-serif (Google Free Font)
 - Icons: Font Awesome
+
+
+Skeleton / Wireframes
+--------------------
+| Page             | Description                                   | Screenshot / Wireframe               |
+|------------------|-----------------------------------------------|-------------------------------------|
+| Home Page        | Header, slider, categories, featured products, footer | ![Home](screenshots/home.png)       |
+| Product Listing  | Product grid, filters, sorting, pagination   | ![Listing](screenshots/listing.png) |
+| Product Details  | Image gallery, title, price, description, variations, add to cart | ![Details](screenshots/details.png) |
+| Cart Page        | Selected items, quantity update, order summary | ![Cart](screenshots/cart.png)       |
+| Checkout Page    | Shipping & billing forms, Stripe payment, summary | ![Checkout](screenshots/checkout.png) |
+| Order Success    | Confirmation, order summary, email notification | ![Success](screenshots/success.png) |
+| User Profile     | Profile update, order history                 | ![Profile](screenshots/profile.png) |
 
 User Stories
 ------------
