@@ -57,3 +57,24 @@ Tested on desktop, tablet, and mobile devices.
 | Order Success    | Confirmation, order summary, email notification | ![Success Desktop](/static/screenshots/success.png) | ![Success Tablet](/static/screenshots/success_tablet.png) | ![Success Mobile](/static/screenshots/success_mobile.png) |
 | User Profile     | Profile update, order history                 | ![Profile Desktop](/static/screenshots/profile.png) | ![Profile Tablet](/static/screenshots/profile_tablet.png) | ![Profile Mobile](/static/screenshots/profile_mobile.png) |
 | 404 Page         | Show Page not Found                           | ![404 Desktop](/static/screenshots/404.png) | ![404 Tablet](/static/screenshots/404_tablet.png) | ![404 Mobile](/static/screenshots/404_mobile.png) |
+
+
+## Browser Compatibility
+
+The site was tested on Chrome and Firefox to ensure consistent layout, styling, and interactivity.  
+All features, including Stripe payment, cart management, and responsive navigation, performed as expected.
+
+| Page             | Chrome Screenshot                                                                 | Firefox Screenshot                                                                | Notes             |
+| ---------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ----------------- |
+| Home Page        | ![Chrome Home](/static/testing/browser/chrome/chrome-home.png)                   | ![Firefox Home](/static/testing/browser/firefox/firefox-home.png)                 | Works as expected |
+| Product Listing  | ![Chrome Listing](/static/testing/browser/chrome/chrome-category.png)            | ![Firefox Listing](/static/testing/browser/firefox/firefox-category.png)          | Works as expected |
+| Product Details  | ![Chrome Details](/static/testing/browser/chrome/chrome-details.png)              | ![Firefox Details](/static/testing/browser/firefox/firefox-details.png)           | Works as expected |
+| Cart Page        | ![Chrome Cart](/static/testing/browser/chrome/chrome-cart.png)                    | ![Firefox Cart](/static/testing/browser/firefox/firefox-cart.png)                 | Works as expected |
+| Checkout Page    | ![Chrome Checkout](/static/testing/browser/chrome/chrome-checkout.png)            | ![Firefox Checkout](/static/testing/browser/firefox/firefox-checkout.png)         | Works as expected |
+| Order Success    | ![Chrome Success](/static/testing/browser/chrome/chrome-success.png)              | ![Firefox Success](/static/testing/browser/firefox/firefox-success.png)           | Works as expected |
+| Profile Page     | ![Chrome Profile](/static/testing/browser/chrome/chrome-profile.png)              | ![Firefox Profile](/static/testing/browser/firefox/firefox-profile.png)           | Works as expected |
+| 404 Page         | ![Chrome 404](/static/testing/browser/chrome/chrome-404.png)                      | ![Firefox 404](/static/testing/browser/firefox/firefox-404.png)                   | Works as expected |
+| Quick Links       | ![Chrome Quick](/static/testing/browser/chrome/chrome-quick.png)                      | ![Firefox Quick](/static/testing/browser/firefox/firefox-quick.png)                   | Works as expected |
+| Legal Page         | ![Chrome Legal](/static/testing/browser/chrome/chrome-legal.png)                      | ![Firefox Legal](/static/testing/browser/firefox/firefox-legal.png)                   | Works as expected |
+
+
