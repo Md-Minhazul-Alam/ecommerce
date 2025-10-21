@@ -52,7 +52,7 @@ class Brand(models.Model):
 
 # Category Model
 class Category(models.Model):
-    category = models.CharField(max_length=100, default='Men')
+    category = models.CharField(max_length=100, default='')
     category_slug = models.SlugField(max_length=100, unique=True, blank=True)
     category_image = models.ImageField(upload_to='category_images/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
