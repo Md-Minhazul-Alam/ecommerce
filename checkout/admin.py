@@ -3,8 +3,8 @@ from .models import Order, OrderLineItem
 
 class OrderLineItemAdminInline(admin.TabularInline):
     model = OrderLineItem
-    readonly_fields = ('lineitem_total',)
-
+    readonly_fields = ('product_variation', 'lineitem_total') 
+    fields = ('product', 'product_variation', 'quantity', 'lineitem_total') 
     extra = 0
 
 @admin.register(Order)

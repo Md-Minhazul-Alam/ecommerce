@@ -142,7 +142,7 @@ This file documents all user story tests for the PC Shop e-commerce project, inc
 ## Bugs
 
 * **Automated email notifications not sending correctly in some environments**  
-  **Fix:** Ensure SMTP credentials and Django email backend are properly configured → Pending  
+  **Fix:** Ensure SMTP credentials and Django email backend are properly configured → Done 
 
 * **Minor layout misalignment on mobile for cart and checkout pages**  
   **Fix:** Adjusted CSS flex/grid rules and media queries → Resolved  
