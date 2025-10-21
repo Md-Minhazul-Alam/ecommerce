@@ -76,6 +76,7 @@ def checkout(request):
     )
 
     if request.method == 'POST':
+        # Collect form data
         form_data = {
             'full_name': request.POST['full_name'],
             'email': request.POST['email'],
@@ -101,19 +102,27 @@ def checkout(request):
             order.original_bag = json.dumps(bag)
             order.save()
 
-            # Create order line items
             for item_id, item_data in bag.items():
                 try:
                     product = Product.objects.get(pk=item_id)
 
-                    # Handle variations
                     if 'items_by_variation' in item_data:
                         for variation_key, variation_info in item_data['items_by_variation'].items():
                             quantity = variation_info['quantity']
+
+                            # Extract variation(s)
+                            variations = variation_info.get('variations', {})
+                            if isinstance(variations, dict):
+                                # Join multiple variations into readable text
+                                variation_text = ", ".join([f"{v}" for v in variations.values()])
+                            else:
+                                variation_text = str(variations)
+
+                            # Save readable variation (e.g. "64 gb")
                             OrderLineItem.objects.create(
                                 order=order,
                                 product=product,
-                                product_variation=str(variation_info.get('variations', '')),
+                                product_variation=variation_text,
                                 quantity=quantity,
                                 lineitem_total=product.price * quantity
                             )
