@@ -202,7 +202,7 @@ OrderLineItem
 - id (PK)
 - order: FK → Order
 - product: FK → Product
-- product_variation: Char(2)
+- product_variation: Char(255)
 - quantity: Integer
 - lineitem_total: Decimal
 
