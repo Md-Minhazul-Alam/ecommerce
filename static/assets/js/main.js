@@ -56,21 +56,6 @@ function initProductEffects() {
     });
 }
 
-// Category handlers (added to fix ReferenceError)
-function initCategoryHandlers() {
-    const categories = document.querySelectorAll('.category-item');
-    if (!categories.length) return;
-    categories.forEach(cat => {
-        cat.addEventListener('click', (e) => {
-            e.preventDefault();
-            const name = cat.dataset.name || cat.textContent.trim();
-            categories.forEach(c => c.classList.remove('active'));
-            cat.classList.add('active');
-            console.log('Category selected:', name);
-        });
-    });
-}
-
 // Header scroll effect
 function initHeaderEffects() {
     const header = document.querySelector('.main-nav');
@@ -189,7 +174,6 @@ function showNotification(message, type = 'info') {
 // Run all initializers immediately
 initScrollAnimations();
 initProductEffects();
-initCategoryHandlers();
 initHeaderEffects();
 initScrollToTop();
 initLazyLoading();
