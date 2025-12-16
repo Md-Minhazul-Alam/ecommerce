@@ -246,19 +246,20 @@ CLOUDINARY_STORAGE = {
 #     },
 # }
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
 
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.StaticFilesStorage",
     },
 }
 
 
-WHITENOISE_MANIFEST_STRICT = False
+# WHITENOISE_MANIFEST_STRICT = False
 # WHITENOISE_AUTOREFRESH = False
 
 # STORAGES = {
