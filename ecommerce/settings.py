@@ -224,7 +224,7 @@ STATICFILES_DIRS = [
 ]
 
 # WhiteNoise configuration
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Cloudinary config
@@ -256,7 +256,7 @@ STORAGES = {
 }
 
 WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_AUTOREFRESH = False
+# WHITENOISE_AUTOREFRESH = False
 
 # STORAGES = {
 #     "default": {
