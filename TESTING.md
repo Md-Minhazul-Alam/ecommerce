@@ -137,6 +137,8 @@ This file documents all user story tests for the PC Shop e-commerce project, inc
 - Cart totals should recalculate correctly when quantities are adjusted.
 - Screenshots should be updated whenever UI changes occur.
 - Additional device-specific testing (desktop, tablet, mobile) can be added in separate columns if needed.
+- Previously, I had deployed my project on my purchased hosting because I was facing issues with Heroku. However, I was unable to submit the assessment using that link. Therefore, I had to redeploy the project on Heroku for the assessment, which required editing several files in the project. Here is the link from the previous deployment for your reference.
+- https://pcshop.zpos.top/
 
 
 ## Bugs
