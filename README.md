@@ -1,4 +1,4 @@
-# [PC SHOP](https://pcshop.zpos.top/)
+# [PC SHOP](https://pcshop-ff340fe41fef.herokuapp.com/)
 ==============
 
 Developer: Md Minhazul Alam (https://github.com/Md-Minhazul-Alam)
