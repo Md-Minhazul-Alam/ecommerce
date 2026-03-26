@@ -34,6 +34,13 @@ class VariationAdmin(admin.ModelAdmin):
 
 admin.site.register(Variation, VariationAdmin)
 
+# Review Inline
+class ReviewInline(admin.TabularInline):
+    model = Review
+    extra = 0
+    readonly_fields = ('user', 'rating', 'comment', 'created_at')
+    can_delete = True
+
 # Register Product & Variation Inline
 class ProductVariationInline(admin.TabularInline):
     model = ProductVariation
@@ -45,16 +52,14 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('product_name', 'product_slug')
     list_filter = ('brand', 'category', 'is_active', 'is_featured')
     filter_horizontal = ('tags',)
-    inlines = [ProductVariationInline] 
+    inlines = [ProductVariationInline, ReviewInline]
 
-    # Show image preview in list view and edit form
     def get_thumbnail_preview(self, obj):
         if obj.thumbnail:
             return mark_safe(f'<img src="{obj.thumbnail.url}" width="60" height="60" style="object-fit:cover; border-radius:4px;" />')
         return "—"
     get_thumbnail_preview.short_description = "Thumbnail"
 
-    # Make the preview appear in the edit form
     readonly_fields = ('get_thumbnail_preview',)
 
 admin.site.register(Product, ProductAdmin)
