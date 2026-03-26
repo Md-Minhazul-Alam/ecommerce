@@ -3,6 +3,7 @@ from businessprofile.models import WebsiteSetting
 from product.models import Category, Product
 from django.db.models import Q
 from itertools import groupby
+from .forms import ReviewForm
 
 # Products 
 def all_products(request, category_slug=None):
@@ -94,11 +95,15 @@ def product_detail(request, product_slug):
         is_active=True
     ).exclude(pk=product.pk)[:4]
 
+    # Review Form
+    form = ReviewForm()
+
     context = {
         "setting": setting,
         'menuCategories': menuCategories,
         'product': product,
         'grouped_variations': grouped_variations,
         'related_products': related_products,
+        'form': form,
     }
     return render(request, "product/product_details.html", context)
