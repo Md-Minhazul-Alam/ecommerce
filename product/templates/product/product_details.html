@@ -158,10 +158,17 @@
                     Description
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews"
+                    type="button" role="tab">
+                    Reviews
+                </button>
+            </li>
         </ul>
 
         <!-- Tab Content -->
         <div class="tab-content" id="productTabContent">
+
             <!-- Description Tab -->
             <div class="tab-pane fade show active" id="description" role="tabpanel">
                 <div class="product-description">
@@ -169,6 +176,65 @@
                     {{ product.description | safe }}
                 </div>
             </div>
+
+            <!-- Reviews Tab -->
+            <div class="tab-pane fade" id="reviews" role="tabpanel">
+                <div class="reviews-wrapper mt-4">
+
+                    <!-- Existing Reviews -->
+                    <div class="reviews-list mb-4">
+                        <h5>Customer Reviews</h5>
+
+                        <!-- Single Review -->
+                        <div class="review-item border rounded p-3 mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <strong>Mr X</strong>
+                                <span class="text-warning">★★★★★</span>
+                            </div>
+                            <p class="text-muted small mb-1">March 20, 2026</p>
+                            <p class="mb-0">Great product! Really happy with the build quality and performance.</p>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <!-- Write a Review Form -->
+                    <div class="review-form-wrapper">
+                        <h5>Write a Review</h5>
+                        <form>
+                            <!-- Star Rating -->
+                            <div class="mb-3">
+                                <label class="form-label">Your Rating <span class="text-danger">*</span></label>
+                                <div class="d-flex gap-2">
+                                    <input class="form-check-input" type="radio" name="rating" id="star5" value="5">
+                                    <label for="star5">5 ★</label>
+                                    <input class="form-check-input" type="radio" name="rating" id="star4" value="4">
+                                    <label for="star4">4 ★</label>
+                                    <input class="form-check-input" type="radio" name="rating" id="star3" value="3">
+                                    <label for="star3">3 ★</label>
+                                    <input class="form-check-input" type="radio" name="rating" id="star2" value="2">
+                                    <label for="star2">2 ★</label>
+                                    <input class="form-check-input" type="radio" name="rating" id="star1" value="1">
+                                    <label for="star1">1 ★</label>
+                                </div>
+                            </div>
+
+                            <!-- Comment -->
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Your Review <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="comment" name="comment" rows="4"
+                                    placeholder="Share your experience with this product..."></textarea>
+                            </div>
+
+                            <!-- Submit -->
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
