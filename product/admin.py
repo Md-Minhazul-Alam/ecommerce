@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
-from .models import Tag, Brand, Category, Variation, Product, ProductVariation
+from .models import Tag, Brand, Category, Variation, Product, ProductVariation, Review
 
 # Register Tag
 class TagAdmin(admin.ModelAdmin):
@@ -69,3 +69,20 @@ class ProductVariationAdmin(admin.ModelAdmin):
     get_price.short_description = 'Base Price'
 
 admin.site.register(ProductVariation, ProductVariationAdmin)
+
+# Register Product Review Admin 
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display  = ('user', 'product', 'rating', 'is_active', 'created_at')
+    list_filter   = ('is_active', 'rating')
+    search_fields = ('user__username', 'product__product_name', 'comment')
+    readonly_fields = ('user', 'product', 'comment', 'rating', 'created_at', 'updated_at')
+    actions = ['activate_reviews', 'deactivate_reviews']
+
+    @admin.action(description='Activate selected reviews')
+    def activate_reviews(self, request, queryset):
+        queryset.update(is_active=True)
+
+    @admin.action(description='Deactivate selected reviews')
+    def deactivate_reviews(self, request, queryset):
+        queryset.update(is_active=False)
