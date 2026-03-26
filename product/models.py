@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from tinymce.models import HTMLField
 from django.contrib import admin
+from django.contrib.auth.models import User
 
 # Customizing the admin interface
 admin.site.site_header = "PCSHOP Admin"
@@ -148,3 +149,34 @@ class ProductVariation(models.Model):
 
     def __str__(self):
         return f"{self.product} - {self.variation}"
+
+
+
+
+# Product Review Model
+class Review(models.Model):
+    RATING_CHOICES = [(i, str(i)) for i in range(1, 6)]  # 1 to 5 stars
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    comment = models.TextField()
+    rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES, default=5)
+    is_active = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('product', 'user')  # one review per user per product
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.product_name} ({self.rating}★)"
