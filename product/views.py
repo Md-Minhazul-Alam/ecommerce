@@ -107,6 +107,11 @@ def product_detail(request, product_slug):
             messages.error(request, 'You must be logged in to submit a review.')
             return redirect('account_login')
         
+        # Check if user already reviewed this product
+        if product.reviews.filter(user=request.user).exists():
+            messages.warning(request, 'You have already reviewed this product.')
+            return redirect(request.path + '#reviews')
+        
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
