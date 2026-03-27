@@ -185,16 +185,22 @@
                     <div class="reviews-list mb-4">
                         <h5>Customer Reviews</h5>
 
-                        <!-- Single Review -->
+                        {% for review in reviews %}
                         <div class="review-item border rounded p-3 mb-3">
                             <div class="d-flex justify-content-between mb-1">
-                                <strong>Mr X</strong>
-                                <span class="text-warning">★★★★★</span>
+                                <strong>{{ review.user.username }}</strong>
+                                <span class="text-warning">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+                                    {% endfor %}
+                                </span>
                             </div>
-                            <p class="text-muted small mb-1">March 20, 2026</p>
-                            <p class="mb-0">Great product! Really happy with the build quality and performance.</p>
+                            <p class="text-muted small mb-1">{{ review.created_at|date:"F d, Y" }}</p>
+                            <p class="mb-0">{{ review.comment }}</p>
                         </div>
-
+                        {% empty %}
+                            <p class="text-muted">No reviews yet. Be the first to review this product.</p>
+                        {% endfor %}
                     </div>
 
                     <hr>
@@ -209,6 +215,7 @@
                             <button type="submit" class="btn btn-dark mt-2 w-100">Submit Review</button>
                         </form>
                     </div>
+
                 </div>
             </div>
 

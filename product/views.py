@@ -118,6 +118,9 @@ def product_detail(request, product_slug):
         else:
             messages.error(request, 'Please correct the errors below.')
 
+    # Reviews — after POST so new review shows immediately
+    reviews = product.reviews.filter(is_active=True).order_by('-created_at')
+
     context = {
         "setting": setting,
         'menuCategories': menuCategories,
@@ -125,5 +128,6 @@ def product_detail(request, product_slug):
         'grouped_variations': grouped_variations,
         'related_products': related_products,
         'form': form,
+        'reviews': reviews,
     }
     return render(request, "product/product_details.html", context)
