@@ -173,7 +173,7 @@ class Review(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('product', 'user')  # one review per user per product
+        unique_together = ('product', 'user')
         ordering = ['-created_at']
 
     def __str__(self):
