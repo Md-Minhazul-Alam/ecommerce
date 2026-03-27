@@ -12,7 +12,8 @@ class ReviewForm(forms.ModelForm):
             'rating': forms.RadioSelect(choices=Review.RATING_CHOICES),
             'comment': forms.Textarea(attrs={
                 'rows': 4,
-                'placeholder': 'Share your experience with this product...'
+                'placeholder': 'Share your experience with this product...',
+                'required': True,
             }),
         }
         labels = {
@@ -22,10 +23,13 @@ class ReviewForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['rating'].required = True
+        self.fields['comment'].required = True
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
+        self.helper.form_show_labels = True
         self.helper.layout = Layout(
-            Field('rating', css_class='d-flex gap-3'),
+            Field('rating'),
             Field('comment'),
-            Submit('submit', 'Submit Review', css_class='btn btn-primary mt-2')
+            Submit('submit', 'Submit Review', css_class='btn btn-dark mt-2 w-100')
         )
