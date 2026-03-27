@@ -1,6 +1,6 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit
+from crispy_forms.layout import Layout, Field
 from .models import Review
 
 
@@ -31,5 +31,4 @@ class ReviewForm(forms.ModelForm):
         self.helper.layout = Layout(
             Field('rating'),
             Field('comment'),
-            Submit('submit', 'Submit Review', css_class='btn btn-dark mt-2 w-100')
         )
