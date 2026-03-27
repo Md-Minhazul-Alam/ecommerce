@@ -1,9 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from businessprofile.models import WebsiteSetting
 from product.models import Category, Product
 from django.db.models import Q
 from itertools import groupby
 from .forms import ReviewForm
+
 
 # Products 
 def all_products(request, category_slug=None):
@@ -97,6 +100,23 @@ def product_detail(request, product_slug):
 
     # Review Form
     form = ReviewForm()
+
+    # Save Review
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.error(request, 'You must be logged in to submit a review.')
+            return redirect('account_login')
+        
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = product
+            review.user = request.user
+            review.save()
+            messages.success(request, 'Your review has been submitted successfully!')
+            return redirect(request.path + '#reviews')
+        else:
+            messages.error(request, 'Please correct the errors below.')
 
     context = {
         "setting": setting,
