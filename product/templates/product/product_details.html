@@ -181,7 +181,7 @@
             <div class="tab-pane fade" id="reviews" role="tabpanel">
                 <div class="reviews-wrapper mt-4">
 
-                    <!-- Existing Reviews -->
+                    <!-- Reviews -->
                     <div class="reviews-list mb-4">
                         <h5>Customer Reviews</h5>
 
@@ -197,6 +197,68 @@
                             </div>
                             <p class="text-muted small mb-1">{{ review.created_at|date:"F d, Y" }}</p>
                             <p class="mb-0">{{ review.comment }}</p>
+
+                            <!-- Edit/Delete buttons -->
+                            {% if user == review.user %}
+                            <div class="mt-2 d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-secondary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editReviewModal{{ review.id }}">
+                                    Edit
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteReviewModal{{ review.id }}">
+                                    Delete
+                                </button>
+                            </div>
+
+                            <!-- Edit Modal -->
+                            <div class="modal fade" id="editReviewModal{{ review.id }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Edit Review</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <form method="POST" action="{% url 'edit_review' review.id %}">
+                                            {% csrf_token %}
+                                            <div class="modal-body">
+                                                {% load crispy_forms_tags %}
+                                                {{ form|crispy }}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-dark">Update Review</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Delete Modal -->
+                            <div class="modal fade" id="deleteReviewModal{{ review.id }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Delete Review</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to delete your review?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <form method="POST" action="{% url 'delete_review' review.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
                         </div>
                         {% empty %}
                             <p class="text-muted">No reviews yet. Be the first to review this product.</p>
@@ -215,8 +277,10 @@
                             {% if user.is_authenticated %}
                                 <button type="submit" class="btn btn-dark mt-2 w-100">Submit Review</button>
                             {% else %}
-                                <button type="button" class="btn btn-dark mt-2 w-100" data-bs-toggle="tooltip" 
-                                    data-bs-placement="top" title="Please login to submit a review"
+                                <button type="button" class="btn btn-dark mt-2 w-100"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Please login to submit a review"
                                     onclick="showLoginAlert()">
                                     Submit Review
                                 </button>

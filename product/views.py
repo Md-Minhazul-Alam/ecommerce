@@ -136,3 +136,29 @@ def product_detail(request, product_slug):
         'reviews': reviews,
     }
     return render(request, "product/product_details.html", context)
+
+from .models import Review
+
+# Edit Review
+def edit_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your review has been updated successfully!')
+            return redirect(request.META.get('HTTP_REFERER', '/') + '#reviews')
+    messages.error(request, 'Something went wrong.')
+    return redirect(request.META.get('HTTP_REFERER', '/') + '#reviews')
+
+
+# Delete Review
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+    if request.method == 'POST':
+        product_slug = review.product.product_slug
+        review.delete()
+        messages.success(request, 'Your review has been deleted successfully!')
+        return redirect('product_detail', product_slug=product_slug)
+    messages.error(request, 'Something went wrong.')
+    return redirect(request.META.get('HTTP_REFERER', '/') + '#reviews')
