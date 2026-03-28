@@ -5,7 +5,7 @@ from businessprofile.models import WebsiteSetting
 from product.models import Category, Product
 from django.db.models import Q
 from itertools import groupby
-from .forms import ReviewForm
+from .forms import ReviewForm, ProductForm
 
 
 # Products 
@@ -162,3 +162,32 @@ def delete_review(request, review_id):
         return redirect('product_detail', product_slug=product_slug)
     messages.error(request, 'Something went wrong.')
     return redirect(request.META.get('HTTP_REFERER', '/') + '#reviews')
+
+# Add Product
+@login_required
+def add_product(request):
+    # Setting
+    setting = WebsiteSetting.objects.first()
+    # Menus
+    menuCategories = Category.objects.filter(
+        is_active=True,
+        parent_category__isnull=True
+    ).prefetch_related("subcategories")
+
+    form = ProductForm()
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save()
+            messages.success(request, 'Product added successfully!')
+            return redirect('product_detail', product_slug=product.product_slug)
+        else:
+            messages.error(request, 'Please correct the errors below.')
+
+    context = {
+        'setting': setting,
+        'menuCategories': menuCategories,
+        'form': form,
+    }
+    return render(request, 'product/add_product.html', context)
