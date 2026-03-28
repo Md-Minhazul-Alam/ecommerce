@@ -46,6 +46,7 @@ class ProductForm(forms.ModelForm):
             'short_description',
             'description',
             'has_variation',
+            'rating',
             'thumbnail',
             'image_url',
             'is_active',

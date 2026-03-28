@@ -2,10 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from businessprofile.models import WebsiteSetting
-from product.models import Category, Product
+from product.models import Category, Product, ProductVariation
 from django.db.models import Q
 from itertools import groupby
 from .forms import ReviewForm, ProductForm
+from django.forms import inlineformset_factory
 
 
 # Products 
@@ -166,20 +167,30 @@ def delete_review(request, review_id):
 # Add Product
 @login_required
 def add_product(request):
-    # Setting
     setting = WebsiteSetting.objects.first()
-    # Menus
     menuCategories = Category.objects.filter(
         is_active=True,
         parent_category__isnull=True
     ).prefetch_related("subcategories")
 
+    VariationFormSet = inlineformset_factory(
+        Product,
+        ProductVariation,
+        fields=('variation', 'stock'),
+        extra=1,
+        can_delete=True
+    )
+
     form = ProductForm()
+    formset = VariationFormSet()
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save()
+            formset = VariationFormSet(request.POST, instance=product)
+            if product.has_variation and formset.is_valid():
+                formset.save()
             messages.success(request, 'Product added successfully!')
             return redirect('product_detail', product_slug=product.product_slug)
         else:
@@ -189,5 +200,6 @@ def add_product(request):
         'setting': setting,
         'menuCategories': menuCategories,
         'form': form,
+        'formset': formset,
     }
     return render(request, 'product/add_product.html', context)
