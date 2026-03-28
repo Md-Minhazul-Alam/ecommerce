@@ -139,7 +139,7 @@
 
     // Show/hide variations section
     function toggleVariations() {
-        variationsSection.style.display = hasVariationField.checked ? 'block' : 'none';
+        variationsSection.style.display = hasVariationField.value === 'True' ? 'block' : 'none';
     }
     hasVariationField.addEventListener('change', toggleVariations);
     toggleVariations();
@@ -161,7 +161,6 @@
         formsetContainer.appendChild(newRow);
         totalForms.value = formCount + 1;
 
-        // Bind remove button on new row
         bindRemoveButtons();
     });
 
