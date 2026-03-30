@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from businessprofile.models import WebsiteSetting
-from product.models import Category, Product, ProductVariation
+from product.models import Category, Product, ProductVariation, Review
 from django.db.models import Q
 from itertools import groupby
 from .forms import ReviewForm, ProductForm
@@ -139,9 +139,9 @@ def product_detail(request, product_slug):
     }
     return render(request, "product/product_details.html", context)
 
-from .models import Review
 
 # Edit Review
+@login_required
 def edit_review(request, review_id):
     review = get_object_or_404(Review, id=review_id, user=request.user)
     if request.method == 'POST':
@@ -155,6 +155,7 @@ def edit_review(request, review_id):
 
 
 # Delete Review
+@login_required
 def delete_review(request, review_id):
     review = get_object_or_404(Review, id=review_id, user=request.user)
     if request.method == 'POST':
