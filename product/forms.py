@@ -3,6 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
 from .models import Review, Product, Brand, Category, Tag
 
+
 # Review Form
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -33,7 +34,8 @@ class ReviewForm(forms.ModelForm):
             Field('comment'),
         )
 
-# Product Add
+
+# Product Form
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
@@ -43,10 +45,10 @@ class ProductForm(forms.ModelForm):
             'category',
             'tags',
             'price',
+            'rating',
             'short_description',
             'description',
             'has_variation',
-            'rating',
             'thumbnail',
             'image_url',
             'is_active',
@@ -61,13 +63,24 @@ class ProductForm(forms.ModelForm):
                 'min': '0',
                 'step': '0.01',
             }),
+            'rating': forms.NumberInput(attrs={
+                'placeholder': '0.00',
+                'min': '0',
+                'max': '5',
+                'step': '0.01',
+            }),
             'short_description': forms.TextInput(attrs={
                 'placeholder': 'Short description (max 255 characters)',
             }),
             'image_url': forms.URLInput(attrs={
-                'placeholder': 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+                'placeholder': 'https://example.com/image.jpg',
             }),
             'tags': forms.CheckboxSelectMultiple(),
+            'has_variation': forms.Select(choices=[
+                ('', 'Select'),
+                ('True', 'Yes'),
+                ('False', 'No'),
+            ]),
         }
         labels = {
             'product_name': 'Product Name',
@@ -75,6 +88,7 @@ class ProductForm(forms.ModelForm):
             'category': 'Category',
             'tags': 'Tags',
             'price': 'Price',
+            'rating': 'Rating',
             'short_description': 'Short Description',
             'description': 'Description',
             'has_variation': 'Has Variation',
@@ -91,6 +105,11 @@ class ProductForm(forms.ModelForm):
         self.fields['tags'].queryset = Tag.objects.filter(is_active=True)
         self.fields['brand'].empty_label = 'Select Brand'
         self.fields['category'].empty_label = 'Select Category'
+        self.fields['brand'].required = False
+        self.fields['category'].required = False
+        self.fields['rating'].required = False
+        self.fields['thumbnail'].required = False
+        self.fields['image_url'].required = False
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
         self.helper.form_enctype = 'multipart/form-data'
@@ -100,6 +119,7 @@ class ProductForm(forms.ModelForm):
             Field('category'),
             Field('tags'),
             Field('price'),
+            Field('rating'),
             Field('short_description'),
             Field('description'),
             Field('thumbnail'),
