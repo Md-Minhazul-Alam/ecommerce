@@ -159,8 +159,7 @@
             </div>
         </div>
         <!-- Delete Modals -->
-        {% if user.is_superuser %}
-        {% for product in products %}
+        {% if user.is_superuser or user.is_staff %}
         <div class="modal fade" id="deleteModal{{ product.id }}" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -181,7 +180,6 @@
                 </div>
             </div>
         </div>
-        {% endfor %}
         {% endif %}
     </div>
 </section>
