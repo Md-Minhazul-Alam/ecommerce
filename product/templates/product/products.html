@@ -134,31 +134,8 @@
                                         <i class="fas fa-trash me-1"></i> Delete
                                     </button>
                                 </div>
-
-                                <!-- Delete Modal -->
-                                <div class="modal fade" id="deleteModal{{ product.id }}" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Delete Product</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to delete <strong>{{ product.product_name }}</strong>?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <form method="POST" action="{% url 'delete_product' product.product_slug %}">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 {% endif %}
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -166,6 +143,32 @@
                 <p>No products available.</p>
                 {% endfor %}
             </div>
+
+            <!-- Delete Modals -->
+            {% if user.is_superuser %}
+            {% for product in products %}
+            <div class="modal fade" id="deleteModal{{ product.id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete Product</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete <strong>{{ product.product_name }}</strong>?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <form method="POST" action="{% url 'delete_product' product.product_slug %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
         </div>
     </section>
 
