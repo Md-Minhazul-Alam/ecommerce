@@ -7,6 +7,7 @@ from django.db.models import Q
 from itertools import groupby
 from .forms import ReviewForm, ProductForm
 from django.forms import inlineformset_factory
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 # Products 
@@ -203,3 +204,56 @@ def add_product(request):
         'formset': formset,
     }
     return render(request, 'product/add_product.html', context)
+
+# Edit Product
+@staff_member_required
+def edit_product(request, product_slug):
+    setting = WebsiteSetting.objects.first()
+    menuCategories = Category.objects.filter(
+        is_active=True,
+        parent_category__isnull=True
+    ).prefetch_related("subcategories")
+
+    product = get_object_or_404(Product, product_slug=product_slug)
+
+    VariationFormSet = inlineformset_factory(
+        Product,
+        ProductVariation,
+        fields=('variation', 'stock'),
+        extra=1,
+        can_delete=True
+    )
+
+    form = ProductForm(instance=product)
+    formset = VariationFormSet(instance=product)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        formset = VariationFormSet(request.POST, instance=product)
+        if form.is_valid() and formset.is_valid():
+            product = form.save()
+            formset.save()
+            messages.success(request, 'Product updated successfully!')
+            return redirect('product_detail', product_slug=product.product_slug)
+        else:
+            messages.error(request, 'Please correct the errors below.')
+
+    context = {
+        'setting': setting,
+        'menuCategories': menuCategories,
+        'form': form,
+        'formset': formset,
+        'product': product,
+    }
+    return render(request, 'product/edit_product.html', context)
+
+
+# Delete Product
+@staff_member_required
+def delete_product(request, product_slug):
+    product = get_object_or_404(Product, product_slug=product_slug)
+    if request.method == 'POST':
+        product.delete()
+        messages.success(request, 'Product deleted successfully!')
+        return redirect('all_products')
+    return redirect('all_products')

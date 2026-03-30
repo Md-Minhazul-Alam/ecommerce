@@ -1,0 +1,198 @@
+{% extends 'frontend/layouts/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb -->
+<section class="breadcrumb-section border-top">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'all_products' %}">Products</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'product_detail' product.product_slug %}">{{ product.product_name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Product</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="mb-0">Edit Product</h2>
+                    <a href="{% url 'product_detail' product.product_slug %}" class="btn btn-outline-dark rounded-pill px-4">
+                        <i class="fas fa-chevron-left me-1"></i> Back
+                    </a>
+                </div>
+
+                <!-- Messages -->
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <!-- Basic Info -->
+                            <h5 class="mb-3 border-bottom pb-2">Basic Info</h5>
+                            {{ form.product_name|as_crispy_field }}
+                            <div class="row">
+                                <div class="col-md-6">{{ form.brand|as_crispy_field }}</div>
+                                <div class="col-md-6">{{ form.category|as_crispy_field }}</div>
+                            </div>
+                            {{ form.tags|as_crispy_field }}
+
+                            <!-- Pricing -->
+                            <h5 class="mb-3 border-bottom pb-2 mt-4">Pricing</h5>
+                            <div class="row">
+                                <div class="col-md-6">{{ form.price|as_crispy_field }}</div>
+                                <div class="col-md-6">{{ form.rating|as_crispy_field }}</div>
+                            </div>
+
+                            <!-- Description -->
+                            <h5 class="mb-3 border-bottom pb-2 mt-4">Description</h5>
+                            {{ form.short_description|as_crispy_field }}
+                            {{ form.description|as_crispy_field }}
+
+                            <!-- Media -->
+                            <h5 class="mb-3 border-bottom pb-2 mt-4">Media</h5>
+                            {% if product.thumbnail %}
+                            <div class="mb-3">
+                                <label class="form-label">Current Thumbnail</label>
+                                <div>
+                                    <img src="{{ product.thumbnail.url }}" width="100" height="100"
+                                        style="object-fit:cover; border-radius:4px;" class="mb-2">
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-md-6">{{ form.thumbnail|as_crispy_field }}</div>
+                                <div class="col-md-6">{{ form.image_url|as_crispy_field }}</div>
+                            </div>
+
+                            <!-- Options -->
+                            <h5 class="mb-3 border-bottom pb-2 mt-4">Options</h5>
+                            <div class="row">
+                                <div class="col-md-4">{{ form.has_variation|as_crispy_field }}</div>
+                                <div class="col-md-4">{{ form.is_active|as_crispy_field }}</div>
+                                <div class="col-md-4">{{ form.is_featured|as_crispy_field }}</div>
+                            </div>
+
+                            <!-- Variations Inline -->
+                            <div id="variationsSection" class="mt-4" {% if not product.has_variation %}style="display:none;"{% endif %}>
+                                <h5 class="mb-3 border-bottom pb-2">Product Variations</h5>
+                                {{ formset.management_form }}
+                                <div id="formsetContainer">
+                                    {% for vform in formset %}
+                                    <div class="variation-row border rounded p-3 mb-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                {{ vform.variation|as_crispy_field }}
+                                            </div>
+                                            <div class="col-md-4">
+                                                {{ vform.stock|as_crispy_field }}
+                                            </div>
+                                            <div class="col-md-2 d-flex align-items-center justify-content-center mt-3 gap-2">
+                                                {% if vform.instance.pk %}
+                                                <div class="form-check">
+                                                    {{ vform.DELETE }}
+                                                    <label class="form-check-label text-danger" for="{{ vform.DELETE.id_for_label }}">
+                                                        Delete
+                                                    </label>
+                                                </div>
+                                                {% else %}
+                                                <button type="button" class="btn btn-sm btn-outline-danger remove-row">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {{ vform.id }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+
+                                <button type="button" class="btn btn-outline-dark btn-sm rounded-pill px-3 mt-2" id="addVariation">
+                                    <i class="fas fa-plus me-1"></i> Add Variation
+                                </button>
+                            </div>
+
+                            <!-- Submit -->
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-dark btn-lg rounded-pill">
+                                    <i class="fas fa-save me-2"></i> Save Changes
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block postloadjs %}
+<script>
+    const hasVariationField = document.getElementById('id_has_variation');
+    const variationsSection = document.getElementById('variationsSection');
+    const formsetContainer = document.getElementById('formsetContainer');
+    const totalForms = document.getElementById('id_product_variations-TOTAL_FORMS');
+    const addVariationBtn = document.getElementById('addVariation');
+
+    // Show/hide variations section
+    function toggleVariations() {
+        variationsSection.style.display = hasVariationField.value === 'True' ? 'block' : 'none';
+    }
+    hasVariationField.addEventListener('change', toggleVariations);
+
+    // Add new variation row
+    addVariationBtn.addEventListener('click', function () {
+        const formCount = parseInt(totalForms.value);
+        const firstRow = formsetContainer.querySelector('.variation-row');
+        const newRow = firstRow.cloneNode(true);
+
+        newRow.innerHTML = newRow.innerHTML.replace(
+            /product_variations-\d+/g,
+            `product_variations-${formCount}`
+        );
+        newRow.querySelectorAll('input, select').forEach(el => {
+            if (el.type !== 'hidden') el.value = '';
+        });
+
+        formsetContainer.appendChild(newRow);
+        totalForms.value = formCount + 1;
+        bindRemoveButtons();
+    });
+
+    // Remove variation row
+    function bindRemoveButtons() {
+        document.querySelectorAll('.remove-row').forEach(btn => {
+            btn.onclick = function () {
+                const row = btn.closest('.variation-row');
+                if (formsetContainer.querySelectorAll('.variation-row').length > 1) {
+                    row.remove();
+                    totalForms.value = formsetContainer.querySelectorAll('.variation-row').length;
+                }
+            };
+        });
+    }
+    bindRemoveButtons();
+</script>
+{% endblock %}

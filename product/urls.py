@@ -12,4 +12,6 @@ urlpatterns = [
 
     # Product CRUD
     path('product/add/', views.add_product, name='add_product'),
+    path('product/<slug:product_slug>/edit/', views.edit_product, name='edit_product'),
+    path('product/<slug:product_slug>/delete/', views.delete_product, name='delete_product'),
 ]
