@@ -73,7 +73,7 @@ class ProductForm(forms.ModelForm):
                 'placeholder': 'Short description (max 255 characters)',
             }),
             'image_url': forms.URLInput(attrs={
-                'placeholder': 'https://example.com/image.jpg',
+                'placeholder': 'https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg',
             }),
             'tags': forms.CheckboxSelectMultiple(),
             'has_variation': forms.Select(choices=[
@@ -105,11 +105,27 @@ class ProductForm(forms.ModelForm):
         self.fields['tags'].queryset = Tag.objects.filter(is_active=True)
         self.fields['brand'].empty_label = 'Select Brand'
         self.fields['category'].empty_label = 'Select Category'
-        self.fields['brand'].required = False
-        self.fields['category'].required = False
+
+        # Required fields
+        self.fields['product_name'].required = True
+        self.fields['brand'].required = True
+        self.fields['category'].required = True
+        self.fields['price'].required = True
+        self.fields['short_description'].required = True
+        self.fields['description'].required = True
+        self.fields['has_variation'].required = True
+
+        # Optional fields
         self.fields['rating'].required = False
+        self.fields['tags'].required = False
+        self.fields['is_active'].required = False
+        self.fields['is_featured'].required = False
+
+        # thumbnail and image_url individually optional
+        # but at least one required — enforced in clean()
         self.fields['thumbnail'].required = False
         self.fields['image_url'].required = False
+
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
         self.helper.form_enctype = 'multipart/form-data'
@@ -128,3 +144,14 @@ class ProductForm(forms.ModelForm):
             Field('is_active'),
             Field('is_featured'),
         )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        thumbnail = cleaned_data.get('thumbnail')
+        image_url = cleaned_data.get('image_url')
+
+        if not thumbnail and not image_url:
+            raise forms.ValidationError(
+                'Please provide either a Thumbnail image or an Image URL.'
+            )
+        return cleaned_data
