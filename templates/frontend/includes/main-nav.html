@@ -56,10 +56,14 @@
                             <li>
                                 <a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user-circle me-2"></i>My Account</a>
                             </li>
+                            {% if user.is_superuser or user.is_staff %}
+                            <li><hr class="dropdown-divider"></li>
                             <li>
-                                <hr class="dropdown-divider">
+                                <a class="dropdown-item" href="{% url 'add_product' %}">
+                                    <i class="fas fa-plus me-2"></i>Product Management
+                                </a>
                             </li>
-                            <li><a class="dropdown-item" href="{% url 'add_product' %}"><i class="fas fa-plus me-2"></i>Product Management</a></li>
+                            {% endif %}
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
