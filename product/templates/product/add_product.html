@@ -52,6 +52,15 @@
                         <form method="POST" enctype="multipart/form-data" aria-label="Add new product form" novalidate>
                             {% csrf_token %}
 
+                            <!-- Non-field errors -->
+                            {% if form.errors %}
+                            <div class="alert alert-danger" role="alert" aria-live="polite">
+                                {% for error in form.non_field_errors %}
+                                    <p class="mb-0"><i class="fas fa-exclamation-circle me-1" aria-hidden="true"></i>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+
                             <!-- Basic Info -->
                             <h5 class="mb-3 border-bottom pb-2" id="basic-info-heading">Basic Info</h5>
                             <fieldset aria-labelledby="basic-info-heading">
@@ -82,6 +91,10 @@
                             <!-- Media -->
                             <h5 class="mb-3 border-bottom pb-2 mt-4" id="media-heading">Media</h5>
                             <fieldset aria-labelledby="media-heading">
+                                <p class="text-muted small mb-3">
+                                    <i class="fas fa-info-circle me-1" aria-hidden="true"></i>
+                                    At least one of the following is required — either upload a thumbnail or provide an image URL.
+                                </p>
                                 <div class="row">
                                     <div class="col-md-6">{{ form.thumbnail|as_crispy_field }}</div>
                                     <div class="col-md-6">{{ form.image_url|as_crispy_field }}</div>
