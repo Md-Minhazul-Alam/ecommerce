@@ -1,32 +1,28 @@
 <!-- Footer -->
 {% load static %}
-<footer class="footer">
+<footer class="footer" role="contentinfo" aria-label="Site footer">
     <div class="container">
         <div class="row">
+
+            <!-- Brand -->
             <div class="col-lg-3 col-md-6 mb-4">
                 <h5>
                     {% if setting.website_logo %}
-                    <a href="/">
-                        <img src="{{ setting.website_logo.url }}" alt="{{ setting.website_name }}" class="logo"
+                    <a href="/" aria-label="Go to homepage">
+                        <img src="{{ setting.website_logo.url }}" alt="{{ setting.website_name }} logo" class="logo"
                             style="width:180px; height: auto;">
                     </a>
                     {% else %}
-                    <a href="/" class="logo">{{ setting.website_name }}</a>
+                    <a href="/" class="logo" aria-label="Go to homepage">{{ setting.website_name }}</a>
                     {% endif %}
                 </h5>
                 <p class="mb-4">{{ setting.website_description }}</p>
-                <!-- <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div> -->
             </div>
 
+            <!-- Quick Links -->
             <div class="col-lg-3 col-md-6 mb-4">
-                <h5>Quick Links</h5>
-                <ul class="footer-links">
+                <h5 id="quick-links-heading">Quick Links</h5>
+                <ul class="footer-links" aria-labelledby="quick-links-heading">
                     {% for link in footerQuickLinks %}
                     <li>
                         <a href="{% url 'quick_link_detail' link.slug %}">
@@ -39,9 +35,10 @@
                 </ul>
             </div>
 
+            <!-- Categories -->
             <div class="col-lg-3 col-md-6 mb-4">
-                <h5>Categories</h5>
-                <ul class="footer-links">
+                <h5 id="categories-heading">Categories</h5>
+                <ul class="footer-links" aria-labelledby="categories-heading">
                     {% for category in footerCategories %}
                     <li>
                         <a href="{% url 'category' category.category_slug %}">
@@ -52,9 +49,10 @@
                 </ul>
             </div>
 
+            <!-- Legal -->
             <div class="col-lg-3 col-md-6 mb-4">
-                <h5>Legal</h5>
-                <ul class="footer-links">
+                <h5 id="legal-heading">Legal</h5>
+                <ul class="footer-links" aria-labelledby="legal-heading">
                     {% for link in footerLegalLinks %}
                     <li>
                         <a href="{% url 'legal_link_detail' link.slug %}">
@@ -66,20 +64,21 @@
                     {% endfor %}
                 </ul>
             </div>
+
         </div>
 
-        <hr class="my-4" style="border-color: #495057;">
+        <hr class="my-4" style="border-color: #495057;" aria-hidden="true">
 
         <div class="row align-items-center">
             <div class="col-md-6 mb-3 mb-md-0">
                 <p class="mb-0">
-                    <i class="fas fa-copyright me-1"></i>
-                    {% now "Y" %} {{ website_setting.website_name }}. All rights reserved.
+                    <i class="fas fa-copyright me-1" aria-hidden="true"></i>
+                    {% now "Y" %} {{ setting.website_name }}. All rights reserved.
                 </p>
             </div>
             <div class="col-md-6 text-md-end">
                 <div class="payment-methods">
-                    <img src="{% static 'assets/images/payment.png' %}" alt="Payment Methods">
+                    <img src="{% static 'assets/images/payment.png' %}" alt="Accepted payment methods including major credit cards">
                 </div>
             </div>
         </div>
