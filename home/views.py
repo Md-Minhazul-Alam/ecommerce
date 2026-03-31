@@ -9,27 +9,26 @@ import random
 def custom_404(request, exception):
     return render(request, "home/404.html", status=404)
 
-# Home Page 
+
+# Home Page
 def home_page(request):
-    # Setting 
+    # Setting
     setting = WebsiteSetting.objects.first()
     # Menus
     menuCategories = Category.objects.filter(
         is_active=True,
         parent_category__isnull=True
     ).prefetch_related("subcategories")
-
     # Category List
     categoryList = Category.objects.all()
-
     # Sliders
     sliders = HeroSlider.objects.all()
-
     # Featured products
-    featured_products = list(Product.objects.filter(is_featured=True, is_active=True))
+    featured_products = list(
+        Product.objects.filter(is_featured=True, is_active=True)
+    )
     random.shuffle(featured_products)
     featured_products = featured_products[:8]
-
     context = {
         'setting': setting,
         'menuCategories': menuCategories,
