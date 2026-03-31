@@ -18,7 +18,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="/"><i class="fas fa-home"></i> Home</a>
+                    <a href="/"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">{{ quick_link.title }}</li>
             </ol>
@@ -27,9 +27,9 @@
 </section>
 
 <!-- Quick Link Content -->
-<section class="page-details-section py-5">
+<section class="page-details-section py-5" aria-labelledby="quicklink-title">
     <div class="container">
-        <h1 class="mb-4">{{ quick_link.title }}</h1>
+        <h1 class="mb-4" id="quicklink-title">{{ quick_link.title }}</h1>
         <div class="page-description">
             {{ quick_link.description|safe }}
         </div>
