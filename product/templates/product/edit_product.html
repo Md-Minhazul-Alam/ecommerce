@@ -9,95 +9,125 @@
 <!-- Breadcrumb -->
 <section class="breadcrumb-section border-top">
     <div class="container">
+        <h2 class="visually-hidden">Breadcrumb Navigation</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'all_products' %}">Products</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'product_detail' product.product_slug %}">{{ product.product_name }}</a></li>
+                <li class="breadcrumb-item">
+                    <a href="/"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'all_products' %}">Products</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'product_detail' product.product_slug %}">{{ product.product_name }}</a>
+                </li>
                 <li class="breadcrumb-item active" aria-current="page">Edit Product</li>
             </ol>
         </nav>
     </div>
 </section>
 
-<section class="py-5">
+<section class="py-5" aria-labelledby="edit-product-heading">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
 
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0">Edit Product</h2>
-                    <a href="{% url 'product_detail' product.product_slug %}" class="btn btn-outline-dark rounded-pill px-4">
-                        <i class="fas fa-chevron-left me-1"></i> Back
+                    <h2 class="mb-0" id="edit-product-heading">Edit Product</h2>
+                    <a href="{% url 'product_detail' product.product_slug %}"
+                        class="btn btn-outline-dark rounded-pill px-4"
+                        aria-label="Back to {{ product.product_name }}">
+                        <i class="fas fa-chevron-left me-1" aria-hidden="true"></i> Back
                     </a>
                 </div>
 
                 <!-- Messages -->
                 {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" aria-live="polite">
                     {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close alert"></button>
                 </div>
                 {% endfor %}
 
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4">
-                        <form method="POST" enctype="multipart/form-data">
+                        <form method="POST" enctype="multipart/form-data" aria-label="Edit product form" novalidate>
                             {% csrf_token %}
 
                             <!-- Basic Info -->
-                            <h5 class="mb-3 border-bottom pb-2">Basic Info</h5>
-                            {{ form.product_name|as_crispy_field }}
-                            <div class="row">
-                                <div class="col-md-6">{{ form.brand|as_crispy_field }}</div>
-                                <div class="col-md-6">{{ form.category|as_crispy_field }}</div>
-                            </div>
-                            {{ form.tags|as_crispy_field }}
+                            <h5 class="mb-3 border-bottom pb-2" id="basic-info-heading">Basic Info</h5>
+                            <fieldset aria-labelledby="basic-info-heading">
+                                {{ form.product_name|as_crispy_field }}
+                                <div class="row">
+                                    <div class="col-md-6">{{ form.brand|as_crispy_field }}</div>
+                                    <div class="col-md-6">{{ form.category|as_crispy_field }}</div>
+                                </div>
+                                {{ form.tags|as_crispy_field }}
+                            </fieldset>
 
                             <!-- Pricing -->
-                            <h5 class="mb-3 border-bottom pb-2 mt-4">Pricing</h5>
-                            <div class="row">
-                                <div class="col-md-6">{{ form.price|as_crispy_field }}</div>
-                                <div class="col-md-6">{{ form.rating|as_crispy_field }}</div>
-                            </div>
+                            <h5 class="mb-3 border-bottom pb-2 mt-4" id="pricing-heading">Pricing</h5>
+                            <fieldset aria-labelledby="pricing-heading">
+                                <div class="row">
+                                    <div class="col-md-6">{{ form.price|as_crispy_field }}</div>
+                                    <div class="col-md-6">{{ form.rating|as_crispy_field }}</div>
+                                </div>
+                            </fieldset>
 
                             <!-- Description -->
-                            <h5 class="mb-3 border-bottom pb-2 mt-4">Description</h5>
-                            {{ form.short_description|as_crispy_field }}
-                            {{ form.description|as_crispy_field }}
+                            <h5 class="mb-3 border-bottom pb-2 mt-4" id="description-heading">Description</h5>
+                            <fieldset aria-labelledby="description-heading">
+                                {{ form.short_description|as_crispy_field }}
+                                {{ form.description|as_crispy_field }}
+                            </fieldset>
 
                             <!-- Media -->
-                            <h5 class="mb-3 border-bottom pb-2 mt-4">Media</h5>
-                            {% if product.thumbnail %}
-                            <div class="mb-3">
-                                <label class="form-label">Current Thumbnail</label>
-                                <div>
-                                    <img src="{{ product.thumbnail.url }}" width="100" height="100"
-                                        style="object-fit:cover; border-radius:4px;" class="mb-2">
+                            <h5 class="mb-3 border-bottom pb-2 mt-4" id="media-heading">Media</h5>
+                            <fieldset aria-labelledby="media-heading">
+                                {% if product.thumbnail %}
+                                <div class="mb-3">
+                                    <label class="form-label" id="current-thumbnail-label">Current Thumbnail</label>
+                                    <div>
+                                        <img src="{{ product.thumbnail.url }}"
+                                            width="100"
+                                            height="100"
+                                            style="object-fit:cover; border-radius:4px;"
+                                            class="mb-2"
+                                            alt="Current thumbnail for {{ product.product_name }}"
+                                            aria-labelledby="current-thumbnail-label">
+                                    </div>
                                 </div>
-                            </div>
-                            {% endif %}
-                            <div class="row">
-                                <div class="col-md-6">{{ form.thumbnail|as_crispy_field }}</div>
-                                <div class="col-md-6">{{ form.image_url|as_crispy_field }}</div>
-                            </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-md-6">{{ form.thumbnail|as_crispy_field }}</div>
+                                    <div class="col-md-6">{{ form.image_url|as_crispy_field }}</div>
+                                </div>
+                            </fieldset>
 
                             <!-- Options -->
-                            <h5 class="mb-3 border-bottom pb-2 mt-4">Options</h5>
-                            <div class="row">
-                                <div class="col-md-4">{{ form.has_variation|as_crispy_field }}</div>
-                                <div class="col-md-4">{{ form.is_active|as_crispy_field }}</div>
-                                <div class="col-md-4">{{ form.is_featured|as_crispy_field }}</div>
-                            </div>
+                            <h5 class="mb-3 border-bottom pb-2 mt-4" id="options-heading">Options</h5>
+                            <fieldset aria-labelledby="options-heading">
+                                <div class="row">
+                                    <div class="col-md-4">{{ form.has_variation|as_crispy_field }}</div>
+                                    <div class="col-md-4">{{ form.is_active|as_crispy_field }}</div>
+                                    <div class="col-md-4">{{ form.is_featured|as_crispy_field }}</div>
+                                </div>
+                            </fieldset>
 
                             <!-- Variations Inline -->
-                            <div id="variationsSection" class="mt-4" {% if not product.has_variation %}style="display:none;"{% endif %}>
-                                <h5 class="mb-3 border-bottom pb-2">Product Variations</h5>
+                            <div id="variationsSection"
+                                class="mt-4"
+                                {% if not product.has_variation %}style="display:none;"{% endif %}
+                                role="region"
+                                aria-labelledby="variations-heading"
+                                aria-live="polite"
+                                aria-hidden="{% if not product.has_variation %}true{% else %}false{% endif %}">
+                                <h5 class="mb-3 border-bottom pb-2" id="variations-heading">Product Variations</h5>
                                 {{ formset.management_form }}
-                                <div id="formsetContainer">
+                                <div id="formsetContainer" role="list" aria-label="Variation rows">
                                     {% for vform in formset %}
-                                    <div class="variation-row border rounded p-3 mb-3">
+                                    <div class="variation-row border rounded p-3 mb-3" role="listitem">
                                         <div class="row align-items-center">
                                             <div class="col-md-6">
                                                 {{ vform.variation|as_crispy_field }}
@@ -114,8 +144,10 @@
                                                     </label>
                                                 </div>
                                                 {% else %}
-                                                <button type="button" class="btn btn-sm btn-outline-danger remove-row">
-                                                    <i class="fas fa-times"></i>
+                                                <button type="button"
+                                                    class="btn btn-sm btn-outline-danger remove-row"
+                                                    aria-label="Remove this variation row">
+                                                    <i class="fas fa-times" aria-hidden="true"></i>
                                                 </button>
                                                 {% endif %}
                                             </div>
@@ -125,15 +157,20 @@
                                     {% endfor %}
                                 </div>
 
-                                <button type="button" class="btn btn-outline-dark btn-sm rounded-pill px-3 mt-2" id="addVariation">
-                                    <i class="fas fa-plus me-1"></i> Add Variation
+                                <button type="button"
+                                    class="btn btn-outline-dark btn-sm rounded-pill px-3 mt-2"
+                                    id="addVariation"
+                                    aria-label="Add another variation row">
+                                    <i class="fas fa-plus me-1" aria-hidden="true"></i> Add Variation
                                 </button>
                             </div>
 
                             <!-- Submit -->
                             <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-dark btn-lg rounded-pill">
-                                    <i class="fas fa-save me-2"></i> Save Changes
+                                <button type="submit"
+                                    class="btn btn-dark btn-lg rounded-pill"
+                                    aria-label="Save changes to {{ product.product_name }}">
+                                    <i class="fas fa-save me-2" aria-hidden="true"></i> Save Changes
                                 </button>
                             </div>
 
@@ -158,7 +195,9 @@
 
     // Show/hide variations section
     function toggleVariations() {
-        variationsSection.style.display = hasVariationField.value === 'True' ? 'block' : 'none';
+        const show = hasVariationField.value === 'True';
+        variationsSection.style.display = show ? 'block' : 'none';
+        variationsSection.setAttribute('aria-hidden', show ? 'false' : 'true');
     }
     hasVariationField.addEventListener('change', toggleVariations);
 
