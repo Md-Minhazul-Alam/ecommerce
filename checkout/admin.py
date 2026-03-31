@@ -1,16 +1,17 @@
 from django.contrib import admin
 from .models import Order, OrderLineItem
 
+
 class OrderLineItemAdminInline(admin.TabularInline):
     model = OrderLineItem
-    readonly_fields = ('product_variation', 'lineitem_total') 
-    fields = ('product', 'product_variation', 'quantity', 'lineitem_total') 
+    readonly_fields = ('product_variation', 'lineitem_total')
+    fields = ('product', 'product_variation', 'quantity', 'lineitem_total')
     extra = 0
+
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = (OrderLineItemAdminInline,)
-
     readonly_fields = (
         'order_number',
         'date',
@@ -18,7 +19,6 @@ class OrderAdmin(admin.ModelAdmin):
         'order_total',
         'grand_total',
     )
-
     fields = (
         'user_profile',
         'order_number',
@@ -36,7 +36,6 @@ class OrderAdmin(admin.ModelAdmin):
         'order_total',
         'grand_total',
     )
-
     list_display = (
         'order_number',
         'full_name',
@@ -46,7 +45,6 @@ class OrderAdmin(admin.ModelAdmin):
         'delivery_cost',
         'grand_total',
     )
-
     ordering = ('-date',)
 
     def save_model(self, request, obj, form, change):

@@ -26,7 +26,7 @@ class StripeWH_Handler:
         body = render_to_string(
             'checkout/confirmation_emails/confirmation_email_body.txt',
             {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
-        
+
         send_mail(
             subject,
             body,
@@ -58,7 +58,10 @@ class StripeWH_Handler:
                 billing_details = stripe_charge.billing_details
                 grand_total = round(stripe_charge.amount / 100, 2)
             else:
-                billing_details = intent.charges.data[0].billing_details if intent.charges.data else None
+                billing_details = (
+                    intent.charges.data[0].billing_details
+                    if intent.charges.data else None
+                )
                 grand_total = round(intent.amount / 100, 2)
 
             shipping_details = getattr(intent, 'shipping', None)
@@ -76,22 +79,50 @@ class StripeWH_Handler:
             if not email and hasattr(intent.metadata, 'email'):
                 email = intent.metadata.email
             if not email:
-                email = ''  
+                email = ''
 
             # Update profile information if save_info was checked
             profile = None
             username = getattr(intent.metadata, 'username', 'AnonymousUser')
             if username != 'AnonymousUser':
                 try:
-                    profile = UserProfile.objects.get(user__username=username)
+                    profile = UserProfile.objects.get(
+                        user__username=username
+                    )
                     if save_info:
-                        profile.phone = getattr(shipping_details, 'phone', '')
-                        profile.country = getattr(shipping_details.address, 'country', '') if shipping_details else ''
-                        profile.postal_code = getattr(shipping_details.address, 'postal_code', '') if shipping_details else ''
-                        profile.city = getattr(shipping_details.address, 'city', '') if shipping_details else ''
-                        profile.address_line1 = getattr(shipping_details.address, 'line1', '') if shipping_details else ''
-                        profile.address_line2 = getattr(shipping_details.address, 'line2', '') if shipping_details else ''
-                        profile.state = getattr(shipping_details.address, 'state', '') if shipping_details else ''
+                        profile.phone = getattr(
+                            shipping_details, 'phone', ''
+                        )
+                        profile.country = (
+                            getattr(
+                                shipping_details.address, 'country', ''
+                            ) if shipping_details else ''
+                        )
+                        profile.postal_code = (
+                            getattr(
+                                shipping_details.address, 'postal_code', ''
+                            ) if shipping_details else ''
+                        )
+                        profile.city = (
+                            getattr(
+                                shipping_details.address, 'city', ''
+                            ) if shipping_details else ''
+                        )
+                        profile.address_line1 = (
+                            getattr(
+                                shipping_details.address, 'line1', ''
+                            ) if shipping_details else ''
+                        )
+                        profile.address_line2 = (
+                            getattr(
+                                shipping_details.address, 'line2', ''
+                            ) if shipping_details else ''
+                        )
+                        profile.state = (
+                            getattr(
+                                shipping_details.address, 'state', ''
+                            ) if shipping_details else ''
+                        )
                         profile.save()
                 except UserProfile.DoesNotExist:
                     profile = None
@@ -101,18 +132,28 @@ class StripeWH_Handler:
             attempt = 1
             order = None
 
+            def _get_shipping_attr(attr):
+                return (
+                    getattr(shipping_details.address, attr, '')
+                    if shipping_details else ''
+                )
+
             while attempt <= 5:
                 try:
                     order = Order.objects.get(
-                        full_name__iexact=getattr(shipping_details, 'name', ''),
+                        full_name__iexact=getattr(
+                            shipping_details, 'name', ''
+                        ),
                         email__iexact=email,
-                        phone_number__iexact=getattr(shipping_details, 'phone', ''),
-                        country__iexact=getattr(shipping_details.address, 'country', '') if shipping_details else '',
-                        postcode__iexact=getattr(shipping_details.address, 'postal_code', '') if shipping_details else '',
-                        town_or_city__iexact=getattr(shipping_details.address, 'city', '') if shipping_details else '',
-                        street_address1__iexact=getattr(shipping_details.address, 'line1', '') if shipping_details else '',
-                        street_address2__iexact=getattr(shipping_details.address, 'line2', '') if shipping_details else '',
-                        county__iexact=getattr(shipping_details.address, 'state', '') if shipping_details else '',
+                        phone_number__iexact=getattr(
+                            shipping_details, 'phone', ''
+                        ),
+                        country__iexact=_get_shipping_attr('country'),
+                        postcode__iexact=_get_shipping_attr('postal_code'),
+                        town_or_city__iexact=_get_shipping_attr('city'),
+                        street_address1__iexact=_get_shipping_attr('line1'),
+                        street_address2__iexact=_get_shipping_attr('line2'),
+                        county__iexact=_get_shipping_attr('state'),
                         grand_total=grand_total,
                         original_bag=bag,
                         stripe_pid=pid,
@@ -126,7 +167,10 @@ class StripeWH_Handler:
             if order_exists:
                 self._send_confirmation_email(order)
                 return HttpResponse(
-                    content=f'Webhook received: {event["type"]} | SUCCESS: Verified existing order',
+                    content=(
+                        f'Webhook received: {event["type"]} | '
+                        f'SUCCESS: Verified existing order'
+                    ),
                     status=200
                 )
 
@@ -136,12 +180,12 @@ class StripeWH_Handler:
                 user_profile=profile,
                 email=email,
                 phone_number=getattr(shipping_details, 'phone', ''),
-                country=getattr(shipping_details.address, 'country', '') if shipping_details else '',
-                postcode=getattr(shipping_details.address, 'postal_code', '') if shipping_details else '',
-                town_or_city=getattr(shipping_details.address, 'city', '') if shipping_details else '',
-                street_address1=getattr(shipping_details.address, 'line1', '') if shipping_details else '',
-                street_address2=getattr(shipping_details.address, 'line2', '') if shipping_details else '',
-                county=getattr(shipping_details.address, 'state', '') if shipping_details else '',
+                country=_get_shipping_attr('country'),
+                postcode=_get_shipping_attr('postal_code'),
+                town_or_city=_get_shipping_attr('city'),
+                street_address1=_get_shipping_attr('line1'),
+                street_address2=_get_shipping_attr('line2'),
+                county=_get_shipping_attr('state'),
                 grand_total=grand_total,
                 original_bag=bag,
                 stripe_pid=pid,
@@ -153,18 +197,28 @@ class StripeWH_Handler:
                 product = Product.objects.get(id=item_id)
 
                 # If variations exist
-                if isinstance(item_data, dict) and 'items_by_variation' in item_data:
-                    for variation_key, variation_info in item_data['items_by_variation'].items():
+                if (
+                    isinstance(item_data, dict)
+                    and 'items_by_variation' in item_data
+                ):
+                    for variation_key, variation_info in (
+                        item_data['items_by_variation'].items()
+                    ):
                         quantity = variation_info.get('quantity', 0)
                         OrderLineItem.objects.create(
                             order=order,
                             product=product,
-                            product_variation=str(variation_info.get('variations', '')),
+                            product_variation=str(
+                                variation_info.get('variations', '')
+                            ),
                             quantity=quantity,
                             lineitem_total=product.price * quantity
                         )
                 # If simple quantity
-                elif isinstance(item_data, dict) and 'quantity' in item_data:
+                elif (
+                    isinstance(item_data, dict)
+                    and 'quantity' in item_data
+                ):
                     quantity = item_data.get('quantity', 0)
                     OrderLineItem.objects.create(
                         order=order,
@@ -183,13 +237,19 @@ class StripeWH_Handler:
 
             self._send_confirmation_email(order)
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Created order {order.id}',
+                content=(
+                    f'Webhook received: {event["type"]} | '
+                    f'SUCCESS: Created order {order.id}'
+                ),
                 status=200
             )
 
         except Exception as e:
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} | ERROR: {str(e)}',
+                content=(
+                    f'Webhook received: {event["type"]} | '
+                    f'ERROR: {str(e)}'
+                ),
                 status=500
             )
 

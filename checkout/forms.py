@@ -19,7 +19,7 @@ class OrderForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
         placeholders = {
             'full_name': 'Full Name',
             'email': 'Email Address',
@@ -54,6 +54,12 @@ class OrderLineItemForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['product'].widget.attrs.update({'class': 'stripe-style-input'})
-        self.fields['product_variation'].widget.attrs.update({'class': 'stripe-style-input'})
-        self.fields['quantity'].widget.attrs.update({'class': 'stripe-style-input', 'min': 1})
+        self.fields['product'].widget.attrs.update(
+            {'class': 'stripe-style-input'}
+        )
+        self.fields['product_variation'].widget.attrs.update(
+            {'class': 'stripe-style-input'}
+        )
+        self.fields['quantity'].widget.attrs.update(
+            {'class': 'stripe-style-input', 'min': 1}
+        )

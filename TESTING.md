@@ -43,6 +43,42 @@ Minor warnings related to ES6 syntax and Stripe API functions were ignored as th
 | `static/assets/js/stripe.js`  | Manages Stripe payment integration on checkout page | ![stripe.js Validation](/static/testing/js-stripe.png) |
 
 
+### PEP8 Validation
+
+The project's Python code was validated to ensure it follows the **PEP8** style guidelines for readability and consistency. Validation was performed using the **PEP8 Online** code checker.
+
+| Location          | File / Module | Screenshot                                               |
+| ----------------- | ------------- | -------------------------------------------------------- |
+| `bag`        | `contexts.py`     | ![view.py](/static/pep8/context.PNG)                |
+| `bag`        | `urls.py`     | ![urls.py](/static/pep8/urls.PNG)                 |
+| `bag`            | `views.py`   | ![models.py](/static/pep8/views.PNG)                 |
+| `businessprofile`            | `admin.py`    | ![admin.py](/static/pep8/admin-businessprofile.PNG)                  |
+| `businessprofile`  | `context_processors.py`    | ![context_processors.py](/static/pep8/context-businessprofile.PNG)        |
+| `businessprofile`  | `model.py`    | ![models.py](/static/pep8/models-businessprofile.PNG)        |
+| `businessprofile`  | `urls.py`    | ![urls.py](/static/pep8/urls-businessprofile.PNG)        |
+| `businessprofile`  | `views.py`    | ![views.py](/static/pep8/views-businessprofile.PNG)        |
+| `checkout`  | `admin.py`    | ![admin.py](/static/pep8/admin-checkout.PNG)        |
+| `checkout`  | `forms.py`    | ![forms.py](/static/pep8/forms-checkout.PNG)        |
+| `checkout`  | `models.py`    | ![models.py](/static/pep8/models-checkout.PNG)        |
+| `checkout`  | `signals.py`    | ![signals.py](/static/pep8/signals-checkout.PNG)        |
+| `checkout`  | `urls.py`    | ![urls.py](/static/pep8/urls-checkout.PNG)        |
+| `checkout`  | `views.py`    | ![views.py](/static/pep8/views-checkout.PNG)        |
+| `checkout`  | `webhook_handler.py`    | ![webhook_handler.py](/static/pep8/webhook_handler-checkout.PNG)        |
+| `checkout`  | `webhook.py`    | ![webhook.py](/static/pep8/webhook-checkout.PNG)        |
+
+
+
+All Python files were checked to confirm they comply with **PEP8 standards**, including:
+
+- Proper indentation and spacing
+- Correct line length
+- Consistent naming conventions for variables, functions, and classes
+- Removal of unused imports and variables
+
+The results confirmed that the Python codebase follows **PEP8 guidelines**, helping maintain clean, readable, and maintainable code throughout the project.
+
+---
+
 ## Responsiveness
 
 Tested on desktop, tablet, and mobile devices.

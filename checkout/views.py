@@ -17,6 +17,7 @@ from bag.contexts import bag_contents
 import stripe
 import json
 
+
 @require_POST
 def cache_checkout_data(request):
     """
@@ -41,7 +42,11 @@ def cache_checkout_data(request):
         })
         return HttpResponse(status=200)
     except Exception as e:
-        messages.error(request, 'Sorry, your payment cannot be processed right now. Please try again later.')
+        messages.error(
+            request,
+            'Sorry, your payment cannot be processed right now. '
+            'Please try again later.'
+        )
         return HttpResponse(content=str(e), status=400)
 
 
@@ -49,7 +54,7 @@ def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
-    # Settings 
+    # Settings
     setting = WebsiteSetting.objects.first()
 
     # Menu categories
@@ -107,14 +112,18 @@ def checkout(request):
                     product = Product.objects.get(pk=item_id)
 
                     if 'items_by_variation' in item_data:
-                        for variation_key, variation_info in item_data['items_by_variation'].items():
+                        for variation_key, variation_info in (
+                            item_data['items_by_variation'].items()
+                        ):
                             quantity = variation_info['quantity']
 
                             # Extract variation(s)
                             variations = variation_info.get('variations', {})
                             if isinstance(variations, dict):
                                 # Join multiple variations into readable text
-                                variation_text = ", ".join([f"{v}" for v in variations.values()])
+                                variation_text = ", ".join(
+                                    [f"{v}" for v in variations.values()]
+                                )
                             else:
                                 variation_text = str(variations)
 
@@ -137,7 +146,8 @@ def checkout(request):
 
                 except Product.DoesNotExist:
                     messages.error(request, (
-                        "One of the products in your bag wasn't found in our database. "
+                        "One of the products in your bag wasn't found "
+                        "in our database. "
                         "Please call us for assistance!"
                     ))
                     order.delete()
@@ -150,9 +160,15 @@ def checkout(request):
             # Send confirmation email
             _send_confirmation_email(order)
 
-            return redirect(reverse('checkout_success', args=[order.order_number]))
+            return redirect(
+                reverse('checkout_success', args=[order.order_number])
+            )
         else:
-            messages.error(request, "There was an error with your form. Please double-check your information.")
+            messages.error(
+                request,
+                "There was an error with your form. "
+                "Please double-check your information."
+            )
 
     else:
         # Pre-fill form if user is logged in
@@ -176,7 +192,11 @@ def checkout(request):
             order_form = OrderForm()
 
         if not stripe_public_key:
-            messages.warning(request, "Stripe public key is missing. Check your environment variables.")
+            messages.warning(
+                request,
+                "Stripe public key is missing. "
+                "Check your environment variables."
+            )
 
     context = {
         'setting': setting,
@@ -216,7 +236,9 @@ def checkout_success(request, order_number):
                 'address_line2': order.street_address2,
                 'state': order.county,
             }
-            user_profile_form = UserProfileForm(profile_data, instance=profile)
+            user_profile_form = UserProfileForm(
+                profile_data, instance=profile
+            )
             if user_profile_form.is_valid():
                 user_profile_form.save()
 
