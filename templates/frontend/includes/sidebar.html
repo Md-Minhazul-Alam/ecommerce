@@ -1,37 +1,60 @@
-<div class="sidebar" id="sidebar">
+<nav class="sidebar" id="sidebar" role="navigation" aria-label="Mobile navigation" aria-hidden="true">
     <div class="sidebar-header">
-        <h4>Menu</h4>
-        <button class="sidebar-close" id="sidebarClose">
-            <i class="fas fa-times"></i>
+        <h4 id="sidebar-title">Menu</h4>
+        <button class="sidebar-close" 
+            id="sidebarClose"
+            aria-label="Close navigation menu"
+            aria-controls="sidebar"
+            aria-expanded="true">
+            <i class="fas fa-times" aria-hidden="true"></i>
         </button>
     </div>
-    <div class="sidebar-menu">
-        <a href="/">Home</a>
+
+    <div class="sidebar-menu" role="menubar" aria-labelledby="sidebar-title">
+
+        <!-- Home -->
+        <a href="/" role="menuitem">Home</a>
+
+        <!-- Categories -->
         {% for cat in menuCategories %}
             {% if cat.subcategories.all|length > 0 %}
-                <div class="sidebar-dropdown">
-                    <a href="{% url 'category' cat.category_slug %}">
+                <div class="sidebar-dropdown" role="none">
+                    <a href="{% url 'category' cat.category_slug %}"
+                        role="menuitem"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        id="sidebar-cat-{{ cat.category_slug }}">
                         {{ cat.category }}
-                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-icon" aria-hidden="true">▼</span>
                     </a>
-                    <div class="sidebar-submenu">
+                    <div class="sidebar-submenu"
+                        role="menu"
+                        aria-labelledby="sidebar-cat-{{ cat.category_slug }}">
                         {% for sub in cat.subcategories.all %}
-                            <a href="{% url 'category' sub.category_slug %}">
+                            <a href="{% url 'category' sub.category_slug %}"
+                                role="menuitem">
                                 {{ sub.category }}
                             </a>
                         {% endfor %}
                     </div>
                 </div>
             {% else %}
-                <a href="{% url 'category' cat.category_slug %}">
+                <a href="{% url 'category' cat.category_slug %}"
+                    role="menuitem">
                     {{ cat.category }}
                 </a>
             {% endif %}
         {% endfor %}
-        <a href="/products">Shop</a>
-        <a href="#">Deals</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+
+        <!-- Shop -->
+        <a href="{% url 'all_products' %}" role="menuitem">Shop</a>
+
     </div>
+</nav>
+
+<!-- Overlay -->
+<div class="overlay" 
+    id="overlay"
+    role="presentation"
+    aria-hidden="true">
 </div>
-<div class="overlay" id="overlay"></div>
