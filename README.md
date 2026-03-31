@@ -100,6 +100,27 @@ Authentication:
 - Django Allauth: login, signup, password reset
 
 
+---
+
+## Custom Python Logic
+
+The following custom Python logic has been implemented throughout the application to demonstrate Python proficiency and meet functional requirements:
+
+| Location | Logic | Purpose |
+|----------|-------|---------|
+| `bag/contexts.py` | Dynamic delivery calculation | Delivery charge is automatically applied if the order total is below `FREE_DELIVERY_THRESHOLD`, otherwise delivery is free (£0) |
+| `bag/contexts.py` | Grand total calculation | Grand total is dynamically calculated by combining order total and delivery cost |
+| `bag/views.py` | Variation key generation | Unique keys are dynamically created from product variation combinations for session storage |
+| `bag/views.py` | Quantity limit enforcement | Minimum quantity of 1 and maximum of 99 enforced per item in the bag |
+| `bag/views.py` | Session bag management | Bag data stored and managed in Django session with full CRUD operations |
+| `checkout/views.py` | Stripe PaymentIntent creation | Dynamic total sent to Stripe API in pence/cents for secure payment processing |
+| `checkout/views.py` | Order line item creation | Order items programmatically saved from session bag data to database |
+| `checkout/views.py` | Profile auto-fill | Checkout form pre-filled with saved profile data for authenticated users |
+| `product/views.py` | Product filtering & sorting | Products dynamically filtered by category, search query, price, and rating |
+| `product/views.py` | Variation grouping | Product variations grouped by type using Python's itertools groupby function |
+
+---
+
 Database Schema
 ---------------
 
