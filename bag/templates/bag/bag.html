@@ -2,6 +2,8 @@
 {% block title %}Shopping Bag - {{ setting.website_name }}{% endblock %}
 {% block content %}
 {% load static %}
+
+<!-- Breadcrumb -->
 <section class="breadcrumb-section border-top">
     <div class="container">
         <h2 class="visually-hidden">Breadcrumb Navigation</h2>
@@ -9,7 +11,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="{% url 'home' %}">
-                        <i class="fas fa-home"></i> Home
+                        <i class="fas fa-home" aria-hidden="true"></i> Home
                     </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Shopping Bag</li>
@@ -20,12 +22,15 @@
 
 <div class="container mt-5 pb-5">
     <div class="row">
+
         <!-- Cart Items -->
         <div class="col-lg-8">
             {% if bag_items %}
+                <h2 class="visually-hidden">Cart Items</h2>
                 {% for item in bag_items %}
-                <div class="cart-item mb-4 p-3 border rounded">
+                <div class="cart-item mb-4 p-3 border rounded" role="article" aria-label="{{ item.product.product_name }}">
                     <div class="row align-items-center">
+
                         <!-- Product Image -->
                         <div class="col-md-2 col-3">
                             {% if item.product.thumbnail %}
@@ -33,7 +38,7 @@
                             {% elif item.product.image_url %}
                                 <img src="{{ item.product.image_url }}" class="item-img me-2 me-md-3 img-fluid" alt="{{ item.product.product_name }}">
                             {% else %}
-                                <img src="{% static 'assets/images/default.jpg' %}" class="item-img me-2 me-md-3 img-fluid" alt="{{ item.product.product_name }}">
+                                <img src="{% static 'assets/images/default.jpg' %}" class="item-img me-2 me-md-3 img-fluid" alt="No image available for {{ item.product.product_name }}">
                             {% endif %}
                         </div>
 
@@ -41,15 +46,12 @@
                         <div class="col-md-4 col-9">
                             <div class="item-details">
                                 <h5 class="mb-1">{{ item.product.product_name }}</h5>
-
                                 {% if item.product.brand %}
                                     <p class="text-muted mb-1"><small>Brand: {{ item.product.brand.brand }}</small></p>
                                 {% endif %}
-
                                 {% if item.product.sku %}
                                     <p class="text-muted mb-1"><small>SKU: {{ item.product.sku }}</small></p>
                                 {% endif %}
-
                                 {% if item.variations %}
                                     <p class="text-muted mb-1">
                                         <small>
@@ -64,15 +66,17 @@
 
                         <!-- Price -->
                         <div class="col-md-2 col-4 text-center mt-3 mt-md-0">
-                            <div class="item-price fw-bold">${{ item.product.price }}</div>
-                            <p class="mb-0 fw-bold text-dark">
+                            <div class="item-price fw-bold" aria-label="Price: ${{ item.product.price }}">${{ item.product.price }}</div>
+                            <p class="mb-0 fw-bold text-dark" aria-label="Item total: ${{ item.item_total|floatformat:2 }}">
                                 = ${{ item.item_total|floatformat:2 }}
                             </p>
                         </div>
 
                         <!-- Quantity -->
                         <div class="col-md-3 col-5 text-center mt-3 mt-md-0">
-                            <div class="quantity-control d-flex justify-content-center align-items-center">
+                            <div class="quantity-control d-flex justify-content-center align-items-center"
+                                role="group"
+                                aria-label="Quantity controls for {{ item.product.product_name }}">
 
                                 <!-- Decrease -->
                                 <form action="{% url 'decrement_bag_item' item.item_id %}" method="POST" class="me-1">
@@ -81,14 +85,22 @@
                                     {% if item.variation_key %}
                                         <input type="hidden" name="variation_key" value="{{ item.variation_key }}">
                                     {% endif %}
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm px-2"
-                                            {% if item.quantity <= 1 %}disabled{% endif %}>
-                                        <i class="fas fa-minus"></i>
+                                    <button type="submit"
+                                        class="btn btn-outline-secondary btn-sm px-2"
+                                        aria-label="Decrease quantity of {{ item.product.product_name }}"
+                                        {% if item.quantity <= 1 %}disabled aria-disabled="true"{% endif %}>
+                                        <i class="fas fa-minus" aria-hidden="true"></i>
                                     </button>
                                 </form>
 
                                 <!-- Quantity Display -->
-                                <input type="number" class="form-control text-center mx-1" value="{{ item.quantity }}" readonly style="width:60px;">
+                                <input type="number"
+                                    class="form-control text-center mx-1"
+                                    value="{{ item.quantity }}"
+                                    readonly
+                                    aria-label="Current quantity of {{ item.product.product_name }}"
+                                    aria-live="polite"
+                                    style="width:60px;">
 
                                 <!-- Increase -->
                                 <form action="{% url 'increment_bag_item' item.item_id %}" method="POST" class="ms-1">
@@ -97,34 +109,39 @@
                                     {% if item.variation_key %}
                                         <input type="hidden" name="variation_key" value="{{ item.variation_key }}">
                                     {% endif %}
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm px-2"
-                                            {% if item.quantity >= 99 %}disabled{% endif %}>
-                                        <i class="fas fa-plus"></i>
+                                    <button type="submit"
+                                        class="btn btn-outline-secondary btn-sm px-2"
+                                        aria-label="Increase quantity of {{ item.product.product_name }}"
+                                        {% if item.quantity >= 99 %}disabled aria-disabled="true"{% endif %}>
+                                        <i class="fas fa-plus" aria-hidden="true"></i>
                                     </button>
                                 </form>
 
                             </div>
                         </div>
 
-
                         <!-- Remove Button -->
                         <div class="col-md-1 col-3 text-end mt-3 mt-md-0">
                             <form action="{% url 'remove_from_bag' item.item_id %}" method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm" title="Remove item">
-                                    <i class="fas fa-trash-alt"></i>
+                                <button type="submit"
+                                    class="btn btn-danger btn-sm"
+                                    aria-label="Remove {{ item.product.product_name }} from cart">
+                                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
                                 </button>
                             </form>
                         </div>
+
                     </div>
                 </div>
                 {% endfor %}
+
             {% else %}
-                <div class="text-center py-5">
+                <div class="text-center py-5" role="status" aria-live="polite">
                     <h4 class="mb-2">Your cart is empty</h4>
-                    <p class="text-muted mb-4">Looks like you haven’t added anything yet.</p>
+                    <p class="text-muted mb-4">Looks like you haven't added anything yet.</p>
                     <a href="{% url 'all_products' %}" class="btn btn-primary">
-                        <i class="fas fa-shopping-bag me-2"></i>Shop Now
+                        <i class="fas fa-shopping-bag me-2" aria-hidden="true"></i>Shop Now
                     </a>
                 </div>
             {% endif %}
@@ -132,26 +149,30 @@
 
         <!-- Cart Summary -->
         <div class="col-lg-4">
-            <div class="cart-summary p-3 border rounded">
-                <h4><i class="fas fa-receipt me-2"></i>Order Summary</h4>
+            <div class="cart-summary p-3 border rounded" role="region" aria-label="Order Summary">
+                <h4>
+                    <i class="fas fa-receipt me-2" aria-hidden="true"></i>Order Summary
+                </h4>
+
                 <!-- Bag Total -->
                 <div class="summary-row d-flex justify-content-between mb-2">
                     <span>Bag Total ({{ product_count }} {% if product_count == 1 %}item{% else %}items{% endif %})</span>
-                    <span class="fw-semibold" id="subtotal">${{ total|floatformat:2 }}</span>
+                    <span class="fw-semibold" id="subtotal" aria-label="Subtotal: ${{ total|floatformat:2 }}">${{ total|floatformat:2 }}</span>
                 </div>
 
+                <!-- Shipping -->
                 <div class="summary-row d-flex justify-content-between mb-2">
                     <span>Shipping</span>
                     {% if delivery > 0 %}
-                        <span class="fw-semibold text-success">${{ delivery|floatformat:2 }}</span>
+                        <span class="fw-semibold text-success" aria-label="Shipping cost: ${{ delivery|floatformat:2 }}">${{ delivery|floatformat:2 }}</span>
                     {% else %}
-                        <span class="fw-semibold text-success">FREE</span>
+                        <span class="fw-semibold text-success" aria-label="Shipping: Free">FREE</span>
                     {% endif %}
                 </div>
 
                 <!-- Free delivery hint -->
                 {% if free_delivery_delta > 0 %}
-                    <p class="mb-1 text-danger">
+                    <p class="mb-1 text-danger" role="status" aria-live="polite">
                         You could get free delivery by spending just <strong>${{ free_delivery_delta|floatformat:2 }}</strong> more!
                     </p>
                 {% endif %}
@@ -159,19 +180,20 @@
                 <!-- Grand Total -->
                 <div class="summary-row d-flex justify-content-between fw-bold mb-3 total">
                     <span>Grand Total</span>
-                    <span class="amount" id="total">${{ grand_total|floatformat:2 }}</span>
+                    <span class="amount" id="total" aria-label="Grand total: ${{ grand_total|floatformat:2 }}">${{ grand_total|floatformat:2 }}</span>
                 </div>
 
                 <!-- Buttons -->
-                <a href="{% url 'checkout' %}" class="btn btn-dark w-100 mb-2 rounded-pill">
-                    <i class="fas fa-lock me-2"></i> Proceed to Checkout
+                <a href="{% url 'checkout' %}" class="btn btn-dark w-100 mb-2 rounded-pill" aria-label="Proceed to checkout">
+                    <i class="fas fa-lock me-2" aria-hidden="true"></i> Proceed to Checkout
                 </a>
 
-                <a href="{% url 'all_products' %}" class="btn btn-outline-dark w-100 rounded-pill">
-                    <i class="fas fa-arrow-left me-2"></i> Continue Shopping
+                <a href="{% url 'all_products' %}" class="btn btn-outline-dark w-100 rounded-pill" aria-label="Continue shopping">
+                    <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Continue Shopping
                 </a>
             </div>
         </div>
+
     </div>
 </div>
 
