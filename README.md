@@ -329,6 +329,26 @@ FEATURES
 | User Profile        | Editable user info: name, phone, address, country. Lists past orders with date and total.                       | ![Profile](/static/screenshots/profile.png)             |
 | Admin Panel         | Django Admin for full CRUD control on products, brands, categories, and orders.                                  | ![Admin](/static/screenshots/admin.png)                 |
 
+---
+
+## CRUD Functionality
+
+The application implements full CRUD (Create, Read, Update, Delete) functionality from the frontend without relying on the Django admin panel:
+
+**Normal Users (Signed In):**
+- Create: Submit a product review
+- Read: View all products and reviews
+- Update: Edit their own review
+- Delete: Delete their own review
+
+**Staff / Superusers:**
+- Create: Add new products with variations via frontend form
+- Read: View all products and orders
+- Update: Edit existing products and variations via frontend form
+- Delete: Delete products directly from the frontend
+
+---
+
 
 Tools & Technologies
 --------------------
