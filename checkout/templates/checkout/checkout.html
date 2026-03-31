@@ -8,13 +8,16 @@
 {% endblock %}
 
 {% block content %}
+
+<!-- Breadcrumb -->
 <section class="breadcrumb-section border-top py-3 bg-light">
     <div class="container">
+        <h2 class="visually-hidden">Breadcrumb Navigation</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
                     <a href="{% url 'home' %}" class="text-decoration-none text-dark">
-                        <i class="fas fa-home"></i> Home
+                        <i class="fas fa-home" aria-hidden="true"></i> Home
                     </a>
                 </li>
                 <li class="breadcrumb-item active text-dark" aria-current="page">Checkout</li>
@@ -23,17 +26,22 @@
     </div>
 </section>
 
-<section class="checkout-section py-5">
+<section class="checkout-section py-5" aria-labelledby="checkout-heading">
     <div class="container">
         <div class="row g-5">
+
             <!-- Checkout Form -->
             <div class="col-lg-7">
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-transparent border-0">
-                        <h4 class="fw-bold mb-0 text-dark">Billing & Delivery</h4>
+                        <h4 class="fw-bold mb-0 text-dark" id="checkout-heading">Billing & Delivery</h4>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{% url 'checkout' %}" id="payment-form">
+                        <form method="POST" 
+                            action="{% url 'checkout' %}" 
+                            id="payment-form"
+                            aria-label="Checkout form"
+                            novalidate>
                             {% csrf_token %}
 
                             <!-- Details Section -->
@@ -46,7 +54,6 @@
                             <!-- Delivery Section -->
                             <fieldset class="rounded px-3 mb-5">
                                 <legend class="fieldset-label small text-black px-2 w-auto">Delivery</legend>
-
                                 {{ order_form.phone_number|as_crispy_field }}
                                 {{ order_form.street_address1|as_crispy_field }}
                                 {{ order_form.street_address2|as_crispy_field }}
@@ -57,7 +64,12 @@
 
                                 <div class="form-check form-check-inline float-end mt-2">
                                     {% if user.is_authenticated %}
-                                        <input class="form-check-input ms-2 me-0" type="checkbox" id="id-save-info" name="save-info" checked>
+                                        <input class="form-check-input ms-2 me-0" 
+                                            type="checkbox" 
+                                            id="id-save-info" 
+                                            name="save-info" 
+                                            checked
+                                            aria-label="Save delivery information to my profile">
                                         <label class="form-check-label" for="id-save-info">
                                             Save this delivery information to my profile
                                         </label>
@@ -70,29 +82,47 @@
                                 </div>
                             </fieldset>
 
+                            <!-- Payment Section -->
                             <fieldset class="px-3">
                                 <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
-                                <!-- A Stripe card element -->
-                                <div class="mb-3" id="card-element"></div>
 
-                                <!-- Errors -->
-                                <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+                                <!-- Stripe Card Element -->
+                                <div class="mb-3" 
+                                    id="card-element"
+                                    aria-label="Credit or debit card input"
+                                    role="group">
+                                </div>
+
+                                <!-- Card Errors -->
+                                <div class="mb-3 text-danger" 
+                                    id="card-errors" 
+                                    role="alert"
+                                    aria-live="assertive"
+                                    aria-atomic="true">
+                                </div>
+
                                 <input type="hidden" value="{{ client_secret }}" name="client_secret">
                             </fieldset>
 
                             <!-- Submit -->
                             <div class="text-end mt-4">
-                                <a href="{% url 'view_bag' %}" class="btn btn-outline-dark rounded-pill me-2 ps-4 pe-4">
-                                    <i class="fas fa-chevron-left me-1"></i> Adjust Bag
+                                <a href="{% url 'view_bag' %}" 
+                                    class="btn btn-outline-dark rounded-pill me-2 ps-4 pe-4"
+                                    aria-label="Go back and adjust your bag">
+                                    <i class="fas fa-chevron-left me-1" aria-hidden="true"></i> Adjust Bag
                                 </a>
-                                <button id="submit-button" type="submit" class="btn btn-dark rounded-pill ps-4 pe-4">
-                                    <i class="fas fa-lock me-2"></i> Complete Order
+                                <button id="submit-button" 
+                                    type="submit" 
+                                    class="btn btn-dark rounded-pill ps-4 pe-4"
+                                    aria-label="Complete your order">
+                                    <i class="fas fa-lock me-2" aria-hidden="true"></i> Complete Order
                                 </button>
-                                <p class="small text-danger mt-2 mb-0">
-                                    <i class="fas fa-exclamation-circle me-1"></i>
-                                    Your card will be charged <strong>${{ grand_total|floatformat:2 }}</strong>
+                                <p class="small text-danger mt-2 mb-0" role="note">
+                                    <i class="fas fa-exclamation-circle me-1" aria-hidden="true"></i>
+                                    Your card will be charged <strong aria-label="Amount to be charged: ${{ grand_total|floatformat:2 }}">${{ grand_total|floatformat:2 }}</strong>
                                 </p>
                             </div>
+
                         </form>
                     </div>
                 </div>
@@ -100,19 +130,27 @@
 
             <!-- Order Summary -->
             <div class="col-lg-5">
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm" role="region" aria-labelledby="order-summary-heading">
                     <div class="card-header bg-transparent border-0">
-                        <h4 class="fw-bold mb-0 text-dark">Order Summary ({{ product_count }})</h4>
+                        <h4 class="fw-bold mb-0 text-dark" id="order-summary-heading">
+                            Order Summary ({{ product_count }} {% if product_count == 1 %}item{% else %}items{% endif %})
+                        </h4>
                     </div>
                     <div class="card-body">
                         {% if bag_items %}
                             {% for item in bag_items %}
-                                <div class="d-flex align-items-center mb-3">
+                                <div class="d-flex align-items-center mb-3" 
+                                    role="article"
+                                    aria-label="{{ item.product.product_name }}">
                                     <div class="flex-shrink-0 me-3" style="width:60px;">
                                         {% if item.product.thumbnail %}
-                                            <img src="{{ item.product.thumbnail.url }}" class="img-fluid rounded" alt="{{ item.product.name }}">
+                                            <img src="{{ item.product.thumbnail.url }}" 
+                                                class="img-fluid rounded" 
+                                                alt="{{ item.product.product_name }}">
                                         {% else %}
-                                            <img src="{% static 'images/default.jpg' %}" class="product-img" alt="{{ item.product.name }}">
+                                            <img src="{% static 'images/default.jpg' %}" 
+                                                class="product-img" 
+                                                alt="No image available for {{ item.product.product_name }}">
                                         {% endif %}
                                     </div>
                                     <div class="flex-grow-1">
@@ -127,42 +165,52 @@
                                         <small class="text-muted d-block">Qty: {{ item.quantity }}</small>
                                     </div>
                                     <div class="text-end">
-                                        <p class="mb-0 text-dark fw-semibold">
+                                        <p class="mb-0 text-dark fw-semibold" aria-label="Unit price: ${{ item.product.price|floatformat:2 }}">
                                             ${{ item.product.price|floatformat:2 }}
                                         </p>
-                                        <small class="text-muted">× {{ item.quantity }}</small><br>
-                                        <strong class="text-dark">
+                                        <small class="text-muted" aria-hidden="true">× {{ item.quantity }}</small><br>
+                                        <strong class="text-dark" aria-label="Item total: ${{ item.item_total|floatformat:2 }}">
                                             ${{ item.item_total|floatformat:2 }}
                                         </strong>
-
                                     </div>
                                 </div>
                             {% endfor %}
-                            <hr>
-                            <div class="d-flex justify-content-between">
-                                <span class="text-muted">Order Total</span>
-                                <span class="text-dark">${{ total|floatformat:2 }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <span class="text-muted">Delivery</span>
-                                <span class="text-dark">${{ delivery|floatformat:2 }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between fw-bold fs-5 mt-2">
-                                <span>Grand Total</span>
-                                <span>${{ grand_total|floatformat:2 }}</span>
-                            </div>
+
+                            <hr aria-hidden="true">
+
+                            <ul class="list-unstyled" aria-label="Order totals">
+                                <li class="d-flex justify-content-between">
+                                    <span class="text-muted">Order Total</span>
+                                    <span class="text-dark" aria-label="Order total: ${{ total|floatformat:2 }}">${{ total|floatformat:2 }}</span>
+                                </li>
+                                <li class="d-flex justify-content-between">
+                                    <span class="text-muted">Delivery</span>
+                                    <span class="text-dark" aria-label="Delivery: ${{ delivery|floatformat:2 }}">${{ delivery|floatformat:2 }}</span>
+                                </li>
+                                <li class="d-flex justify-content-between fw-bold fs-5 mt-2">
+                                    <span>Grand Total</span>
+                                    <span aria-label="Grand total: ${{ grand_total|floatformat:2 }}">${{ grand_total|floatformat:2 }}</span>
+                                </li>
+                            </ul>
+
                         {% else %}
-                            <p class="text-muted">Your cart is empty.</p>
+                            <p class="text-muted" role="status">Your cart is empty.</p>
                         {% endif %}
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
+
 <!-- Loader Overlay -->
-<div id="loader-overlay" class="d-none">
-    <div class="loader"></div>
+<div id="loader-overlay" 
+    class="d-none" 
+    role="status" 
+    aria-live="polite"
+    aria-label="Processing your payment, please wait">
+    <div class="loader" aria-hidden="true"></div>
     <p class="text-white mt-3">Processing your payment, please wait...</p>
 </div>
 
