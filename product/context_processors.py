@@ -1,6 +1,7 @@
 from .models import Category
 import random
 
+
 def menu_categories(request):
     menuCategories = Category.objects.filter(
         is_active=True,

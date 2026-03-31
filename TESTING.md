@@ -67,6 +67,12 @@ The project's Python code was validated to ensure it follows the **PEP8** style 
 | `checkout`  | `webhook.py`    | ![webhook.py](/static/pep8/webhook-checkout.PNG)        |
 | `home`  | `urls.py`    | ![urls.py](/static/pep8/urls-home.PNG)        |
 | `home`  | `views.py`    | ![views.py](/static/pep8/views-home.PNG)        |
+| `product`  | `admin.py`    | ![admin.py](/static/pep8/admin-product.PNG)        |
+| `product`  | `context_processors.py`    | ![context_processors.py](/static/pep8/context_processors-product.PNG)        |
+| `product`  | `forms.py`    | ![forms.py](/static/pep8/forms-product.PNG)        |
+| `product`  | `models.py`    | ![models.py](/static/pep8/models-product.PNG)        |
+| `product`  | `urls.py`    | ![urls.py](/static/pep8/urls-product.PNG)        |
+| `product`  | `views.py`    | ![views.py](/static/pep8/views-product.PNG)        |
 
 
 

@@ -10,9 +10,9 @@ from django.forms import inlineformset_factory
 from django.contrib.admin.views.decorators import staff_member_required
 
 
-# Products 
+# Products
 def all_products(request, category_slug=None):
-    # Setting 
+    # Setting
     setting = WebsiteSetting.objects.first()
     # Menus
     menuCategories = Category.objects.filter(
@@ -30,11 +30,17 @@ def all_products(request, category_slug=None):
     # Category Filter
     category = None
     if category_slug:
-        category = get_object_or_404(Category, category_slug=category_slug, is_active=True)
-        
+        category = get_object_or_404(
+            Category, category_slug=category_slug, is_active=True
+        )
+
         if show_all:
-            sub_categories = category.subcategories.filter(is_active=True).values_list('id', flat=True)
-            products = products.filter(Q(category=category) | Q(category__in=sub_categories))
+            sub_categories = category.subcategories.filter(
+                is_active=True
+            ).values_list('id', flat=True)
+            products = products.filter(
+                Q(category=category) | Q(category__in=sub_categories)
+            )
         else:
             products = products.filter(category=category)
 
@@ -52,12 +58,17 @@ def all_products(request, category_slug=None):
 
     if sort:
         if sort == "price":
-            products = products.order_by("price" if direction == "asc" else "-price")
+            products = products.order_by(
+                "price" if direction == "asc" else "-price"
+            )
         elif sort == "rating":
-            products = products.order_by("rating" if direction == "asc" else "-rating")
+            products = products.order_by(
+                "rating" if direction == "asc" else "-rating"
+            )
         elif sort == "category":
             products = products.order_by(
-                "category__category" if direction == "asc" else "-category__category"
+                "category__category"
+                if direction == "asc" else "-category__category"
             )
 
     context = {
@@ -75,7 +86,7 @@ def all_products(request, category_slug=None):
 
 # Product Details
 def product_detail(request, product_slug):
-    # Setting 
+    # Setting
     setting = WebsiteSetting.objects.first()
     # Menus
     menuCategories = Category.objects.filter(
@@ -87,11 +98,16 @@ def product_detail(request, product_slug):
     product = get_object_or_404(Product, product_slug=product_slug)
 
     # All variations
-    variations = product.product_variations.select_related('variation').all()
+    variations = product.product_variations.select_related(
+        'variation'
+    ).all()
 
     # Group Variations
     grouped_variations = {}
-    for name, group in groupby(sorted(variations, key=lambda v: v.variation.name), key=lambda v: v.variation.name):
+    for name, group in groupby(
+        sorted(variations, key=lambda v: v.variation.name),
+        key=lambda v: v.variation.name
+    ):
         grouped_variations[name] = list(group)
 
     # Related Products
@@ -106,27 +122,35 @@ def product_detail(request, product_slug):
     # Save Review
     if request.method == 'POST':
         if not request.user.is_authenticated:
-            messages.error(request, 'You must be logged in to submit a review.')
+            messages.error(
+                request, 'You must be logged in to submit a review.'
+            )
             return redirect('account_login')
-        
+
         # Check if user already reviewed this product
         if product.reviews.filter(user=request.user).exists():
-            messages.warning(request, 'You have already reviewed this product.')
+            messages.warning(
+                request, 'You have already reviewed this product.'
+            )
             return redirect(request.path + '#reviews')
-        
+
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.product = product
             review.user = request.user
             review.save()
-            messages.success(request, 'Your review has been submitted successfully!')
+            messages.success(
+                request, 'Your review has been submitted successfully!'
+            )
             return redirect(request.path + '#reviews')
         else:
             messages.error(request, 'Please correct the errors below.')
 
     # Reviews — after POST so new review shows immediately
-    reviews = product.reviews.filter(is_active=True).order_by('-created_at')
+    reviews = product.reviews.filter(
+        is_active=True
+    ).order_by('-created_at')
 
     # Edit forms — pre-filled with existing review data
     edit_forms = {}
@@ -145,6 +169,7 @@ def product_detail(request, product_slug):
     }
     return render(request, "product/product_details.html", context)
 
+
 # Edit Review
 @login_required
 def edit_review(request, review_id):
@@ -153,8 +178,12 @@ def edit_review(request, review_id):
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your review has been updated successfully!')
-            return redirect(request.META.get('HTTP_REFERER', '/') + '#reviews')
+            messages.success(
+                request, 'Your review has been updated successfully!'
+            )
+            return redirect(
+                request.META.get('HTTP_REFERER', '/') + '#reviews'
+            )
     messages.error(request, 'Something went wrong.')
     return redirect(request.META.get('HTTP_REFERER', '/') + '#reviews')
 
@@ -166,10 +195,13 @@ def delete_review(request, review_id):
     if request.method == 'POST':
         product_slug = review.product.product_slug
         review.delete()
-        messages.success(request, 'Your review has been deleted successfully!')
+        messages.success(
+            request, 'Your review has been deleted successfully!'
+        )
         return redirect('product_detail', product_slug=product_slug)
     messages.error(request, 'Something went wrong.')
     return redirect(request.META.get('HTTP_REFERER', '/') + '#reviews')
+
 
 # Add Product
 @staff_member_required
@@ -199,7 +231,9 @@ def add_product(request):
             if product.has_variation and formset.is_valid():
                 formset.save()
             messages.success(request, 'Product added successfully!')
-            return redirect('product_detail', product_slug=product.product_slug)
+            return redirect(
+                'product_detail', product_slug=product.product_slug
+            )
         else:
             messages.error(request, 'Please correct the errors below.')
 
@@ -210,6 +244,7 @@ def add_product(request):
         'formset': formset,
     }
     return render(request, 'product/add_product.html', context)
+
 
 # Edit Product
 @staff_member_required
@@ -240,7 +275,9 @@ def edit_product(request, product_slug):
             product = form.save()
             formset.save()
             messages.success(request, 'Product updated successfully!')
-            return redirect('product_detail', product_slug=product.product_slug)
+            return redirect(
+                'product_detail', product_slug=product.product_slug
+            )
         else:
             messages.error(request, 'Please correct the errors below.')
 

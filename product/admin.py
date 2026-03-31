@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
-from .models import Tag, Brand, Category, Variation, Product, ProductVariation, Review
+from .models import (
+    Tag, Brand, Category, Variation, Product, ProductVariation, Review
+)
+
 
 # Register Tag
 class TagAdmin(admin.ModelAdmin):
@@ -8,7 +11,9 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ('tag',)
     list_per_page = 25
 
+
 admin.site.register(Tag, TagAdmin)
+
 
 # Register Brand
 class BrandAdmin(admin.ModelAdmin):
@@ -16,15 +21,19 @@ class BrandAdmin(admin.ModelAdmin):
     search_fields = ('brand',)
     list_per_page = 25
 
+
 admin.site.register(Brand, BrandAdmin)
+
 
 # Register Category
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('category', 'category_slug', 'parent_category')
     search_fields = ('category',)
     list_per_page = 25
-    
+
+
 admin.site.register(Category, CategoryAdmin)
+
 
 # Register Variation
 class VariationAdmin(admin.ModelAdmin):
@@ -32,7 +41,9 @@ class VariationAdmin(admin.ModelAdmin):
     search_fields = ('name', 'value', 'variation_slug')
     list_per_page = 25
 
+
 admin.site.register(Variation, VariationAdmin)
+
 
 # Review Inline
 class ReviewInline(admin.TabularInline):
@@ -41,14 +52,22 @@ class ReviewInline(admin.TabularInline):
     readonly_fields = ('user', 'rating', 'comment', 'created_at')
     can_delete = True
 
+
 # Register Product & Variation Inline
 class ProductVariationInline(admin.TabularInline):
     model = ProductVariation
-    extra = 1  
-    autocomplete_fields = ['variation']  
+    extra = 1
+    autocomplete_fields = ['variation']
+
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('product_name', 'get_thumbnail_preview', 'product_slug', 'brand', 'category')
+    list_display = (
+        'product_name',
+        'get_thumbnail_preview',
+        'product_slug',
+        'brand',
+        'category'
+    )
     search_fields = ('product_name', 'product_slug')
     list_filter = ('brand', 'category', 'is_active', 'is_featured')
     filter_horizontal = ('tags',)
@@ -56,13 +75,18 @@ class ProductAdmin(admin.ModelAdmin):
 
     def get_thumbnail_preview(self, obj):
         if obj.thumbnail:
-            return mark_safe(f'<img src="{obj.thumbnail.url}" width="60" height="60" style="object-fit:cover; border-radius:4px;" />')
+            return mark_safe(
+                f'<img src="{obj.thumbnail.url}" width="60" height="60"'
+                f' style="object-fit:cover; border-radius:4px;" />'
+            )
         return "—"
     get_thumbnail_preview.short_description = "Thumbnail"
 
     readonly_fields = ('get_thumbnail_preview',)
 
+
 admin.site.register(Product, ProductAdmin)
+
 
 # Register Product Variation Admin
 class ProductVariationAdmin(admin.ModelAdmin):
@@ -73,15 +97,19 @@ class ProductVariationAdmin(admin.ModelAdmin):
         return obj.product.price
     get_price.short_description = 'Base Price'
 
+
 admin.site.register(ProductVariation, ProductVariationAdmin)
 
-# Register Product Review Admin 
+
+# Register Product Review Admin
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display  = ('user', 'product', 'rating', 'is_active', 'created_at')
-    list_filter   = ('is_active', 'rating')
+    list_display = ('user', 'product', 'rating', 'is_active', 'created_at')
+    list_filter = ('is_active', 'rating')
     search_fields = ('user__username', 'product__product_name', 'comment')
-    readonly_fields = ('user', 'product', 'comment', 'rating', 'created_at', 'updated_at')
+    readonly_fields = (
+        'user', 'product', 'comment', 'rating', 'created_at', 'updated_at'
+    )
     actions = ['activate_reviews', 'deactivate_reviews']
 
     @admin.action(description='Activate selected reviews')

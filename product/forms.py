@@ -73,7 +73,11 @@ class ProductForm(forms.ModelForm):
                 'placeholder': 'Short description (max 255 characters)',
             }),
             'image_url': forms.URLInput(attrs={
-                'placeholder': 'https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg',
+                'placeholder': (
+                    'https://png.pngtree.com/png-vector/20190820/ourmid/'
+                    'pngtree-no-image-vector-illustration-isolated-'
+                    'png-image_1694547.jpg'
+                ),
             }),
             'tags': forms.CheckboxSelectMultiple(),
             'has_variation': forms.Select(choices=[
@@ -101,7 +105,9 @@ class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['brand'].queryset = Brand.objects.filter(is_active=True)
-        self.fields['category'].queryset = Category.objects.filter(is_active=True)
+        self.fields['category'].queryset = Category.objects.filter(
+            is_active=True
+        )
         self.fields['tags'].queryset = Tag.objects.filter(is_active=True)
         self.fields['brand'].empty_label = 'Select Brand'
         self.fields['category'].empty_label = 'Select Category'
