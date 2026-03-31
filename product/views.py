@@ -167,7 +167,7 @@ def delete_review(request, review_id):
     return redirect(request.META.get('HTTP_REFERER', '/') + '#reviews')
 
 # Add Product
-@login_required
+@staff_member_required
 def add_product(request):
     setting = WebsiteSetting.objects.first()
     menuCategories = Category.objects.filter(
