@@ -149,9 +149,14 @@ class ProductForm(forms.ModelForm):
         cleaned_data = super().clean()
         thumbnail = cleaned_data.get('thumbnail')
         image_url = cleaned_data.get('image_url')
+        rating = cleaned_data.get('rating')
 
         if not thumbnail and not image_url:
             raise forms.ValidationError(
                 'Please provide either a Thumbnail image or an Image URL.'
             )
+
+        if rating is not None and (rating < 0 or rating > 5):
+            self.add_error('rating', 'Rating must be between 0 and 5.')
+
         return cleaned_data
