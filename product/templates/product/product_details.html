@@ -343,7 +343,11 @@
                                         <form method="POST" action="{% url 'edit_review' review.id %}" aria-label="Edit review form">
                                             {% csrf_token %}
                                             <div class="modal-body">
-                                                {{ edit_forms|get_item:review.id|crispy }}
+                                                {% for edit_review_id, edit_form in edit_forms.items %}
+                                                    {% if edit_review_id == review.id %}
+                                                        {{ edit_form|crispy }}
+                                                    {% endif %}
+                                                {% endfor %}
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancel editing review">Cancel</button>
