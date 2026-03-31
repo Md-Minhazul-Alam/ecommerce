@@ -93,7 +93,7 @@ class ProductForm(forms.ModelForm):
             'description': 'Description',
             'has_variation': 'Has Variation',
             'thumbnail': 'Thumbnail Image',
-            'image_url': 'Image URL',
+            'image_url': 'Image URL (or provide thumbnail above)',
             'is_active': 'Active',
             'is_featured': 'Featured',
         }
@@ -114,10 +114,10 @@ class ProductForm(forms.ModelForm):
         self.fields['short_description'].required = True
         self.fields['description'].required = True
         self.fields['has_variation'].required = True
+        self.fields['tags'].required = True
 
         # Optional fields
         self.fields['rating'].required = False
-        self.fields['tags'].required = False
         self.fields['is_active'].required = False
         self.fields['is_featured'].required = False
 
