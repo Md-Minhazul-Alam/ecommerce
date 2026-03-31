@@ -1,59 +1,103 @@
-<nav class="menu-nav d-none d-lg-block">
+<nav class="menu-nav d-none d-lg-block" role="navigation" aria-label="Category Navigation">
     <div class="container">
         <div class="d-flex">
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+            <ul class="nav" role="menubar" aria-label="Main menu">
+
+                <!-- Home -->
+                <li class="nav-item" role="none">
+                    <a class="nav-link" href="{% url 'home' %}" role="menuitem">Home</a>
                 </li>
+
+                <!-- Categories -->
                 {% for cat in menuCategories %}
                     {% if cat.subcategories.all %}
-                        {% if cat.subcategories.all|length > 0 %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="{% url 'category' cat.category_slug %}" data-bs-toggle="dropdown">
-                                    {{ cat.category }}
-                                </a>
-                                <ul class="dropdown-menu">
-                                    {% for sub in cat.subcategories.all %}
-                                        <li>
-                                            <a class="dropdown-item" href="{% url 'category' sub.category_slug %}">
-                                                {{ sub.category }}
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                    <li>
-                                        <a class="dropdown-item" href="{% url 'category' cat.category_slug %}?show_all=true">
-                                            All Products
+                        <li class="nav-item dropdown" role="none">
+                            <a class="nav-link dropdown-toggle" 
+                                href="{% url 'category' cat.category_slug %}" 
+                                data-bs-toggle="dropdown"
+                                role="menuitem"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                                id="dropdown-{{ cat.category_slug }}">
+                                {{ cat.category }}
+                            </a>
+                            <ul class="dropdown-menu" 
+                                role="menu" 
+                                aria-labelledby="dropdown-{{ cat.category_slug }}">
+                                {% for sub in cat.subcategories.all %}
+                                    <li role="none">
+                                        <a class="dropdown-item" 
+                                            href="{% url 'category' sub.category_slug %}"
+                                            role="menuitem">
+                                            {{ sub.category }}
                                         </a>
                                     </li>
-                                </ul>
-                            </li>
-
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'category' cat.category_slug %}">
-                                    {{ cat.category }}
-                                </a>
-                            </li>
-                        {% endif %}
+                                {% endfor %}
+                                <li role="none">
+                                    <a class="dropdown-item" 
+                                        href="{% url 'category' cat.category_slug %}?show_all=true"
+                                        role="menuitem">
+                                        All Products
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'category' cat.category_slug %}">
+                        <li class="nav-item" role="none">
+                            <a class="nav-link" 
+                                href="{% url 'category' cat.category_slug %}"
+                                role="menuitem">
                                 {{ cat.category }}
                             </a>
                         </li>
                     {% endif %}
                 {% endfor %}
-                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+
+                <!-- All Products -->
+                <li class="nav-item dropdown" role="none">
+                    <a class="nav-link dropdown-toggle" 
+                        href="#" 
+                        data-bs-toggle="dropdown"
+                        role="menuitem"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        id="dropdown-all-products">
                         All Products
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'all_products' %}?sort=price&direction=asc">By Price</a></li>
-                        <li><a class="dropdown-item" href="{% url 'all_products' %}?sort=rating&direction=desc">By Rating</a></li>
-                        <li><a class="dropdown-item" href="{% url 'all_products' %}?sort=category&direction=asc">By Category</a></li>
-                        <li><a class="dropdown-item" href="{% url 'all_products' %}">All Products</a></li>
+                    <ul class="dropdown-menu" 
+                        role="menu" 
+                        aria-labelledby="dropdown-all-products">
+                        <li role="none">
+                            <a class="dropdown-item" 
+                                href="{% url 'all_products' %}?sort=price&direction=asc"
+                                role="menuitem">
+                                By Price
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a class="dropdown-item" 
+                                href="{% url 'all_products' %}?sort=rating&direction=desc"
+                                role="menuitem">
+                                By Rating
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a class="dropdown-item" 
+                                href="{% url 'all_products' %}?sort=category&direction=asc"
+                                role="menuitem">
+                                By Category
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a class="dropdown-item" 
+                                href="{% url 'all_products' %}"
+                                role="menuitem">
+                                All Products
+                            </a>
+                        </li>
                     </ul>
                 </li>
+
             </ul>
         </div>
     </div>
