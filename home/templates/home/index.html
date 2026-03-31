@@ -2,14 +2,25 @@
 
 {% block content %}
 {% load static %}
+
 <!-- Hero Slider -->
-<section class="hero-section">
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+<section class="hero-section" aria-label="Featured promotions slideshow">
+    <div id="heroCarousel" 
+        class="carousel slide" 
+        data-bs-ride="carousel" 
+        data-bs-interval="5000"
+        aria-roledescription="carousel"
+        aria-label="Hero image slider">
+
         <!-- Indicators -->
         <div class="carousel-indicators">
             {% for slider in sliders %}
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
-                class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}">
+            <button type="button" 
+                data-bs-target="#heroCarousel" 
+                data-bs-slide-to="{{ forloop.counter0 }}"
+                class="{% if forloop.first %}active{% endif %}"
+                aria-current="{% if forloop.first %}true{% endif %}"
+                aria-label="Slide {{ forloop.counter }}">
             </button>
             {% endfor %}
         </div>
@@ -17,13 +28,22 @@
         <!-- Carousel Items -->
         <div class="carousel-inner">
             {% for slider in sliders %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <div class="hero-slide" style="background-image: url('{{ slider.image.url }}');">
+            <div class="carousel-item {% if forloop.first %}active{% endif %}"
+                aria-roledescription="slide"
+                aria-label="Slide {{ forloop.counter }} of {{ sliders|length }}">
+                <div class="hero-slide" 
+                    style="background-image: url('{{ slider.image.url }}');"
+                    role="img"
+                    aria-label="{{ slider.title }}">
                     <div class="hero-content">
                         <h1>{{ slider.title }}</h1>
                         <p>{{ slider.subtitle }}</p>
                         {% if slider.link %}
-                        <a href="{{ slider.link }}" class="btn btn-primary btn-hero">Shop Now</a>
+                        <a href="{{ slider.link }}" 
+                            class="btn btn-primary btn-hero"
+                            aria-label="Shop now - {{ slider.title }}">
+                            Shop Now
+                        </a>
                         {% endif %}
                     </div>
                 </div>
@@ -32,23 +52,34 @@
         </div>
 
         <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
+        <button class="carousel-control-prev" 
+            type="button" 
+            data-bs-target="#heroCarousel" 
+            data-bs-slide="prev"
+            aria-label="Previous slide">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
+        <button class="carousel-control-next" 
+            type="button" 
+            data-bs-target="#heroCarousel" 
+            data-bs-slide="next"
+            aria-label="Next slide">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
         </button>
+
     </div>
 </section>
 
 <!-- Categories -->
-<section class="category-section">
+<section class="category-section" aria-labelledby="category-heading">
     <div class="container">
-        <h2 class="section-title fade-in">Shop by Category</h2>
-        <div class="category-slider">
+        <h2 class="section-title fade-in" id="category-heading">Shop by Category</h2>
+        <div class="category-slider" role="list" aria-label="Product categories">
             {% for category in categoryList %}
-            <div class="category-item fade-in">
-                <a href="{% url 'category' category.category_slug %}" class="text-decoration-none">
+            <div class="category-item fade-in" role="listitem">
+                <a href="{% url 'category' category.category_slug %}" 
+                    class="text-decoration-none"
+                    aria-label="Browse {{ category.category }} category">
                     <div class="category-img">
                         {% if category.category_image %}
                             <img src="{{ category.category_image.url }}" alt="{{ category.category }}">
@@ -66,60 +97,60 @@
     </div>
 </section>
 
-<section class="product-section">
+<!-- Featured Products -->
+<section class="product-section" aria-labelledby="featured-heading">
     <div class="container">
-        <h2 class="section-title fade-in">Featured Products</h2>
-        <div class="row g-4">
+        <h2 class="section-title fade-in" id="featured-heading">Featured Products</h2>
+        <div class="row g-4" role="list" aria-label="Featured products">
             {% for product in featured_products %}
-                <div class="col-lg-3 col-md-6">
-                    <div class="product-card fade-in">
-                        <a href="{% url 'product_detail' product.product_slug %}">
-                            {% if product.thumbnail %}
-                                <img src="{{ product.thumbnail.url }}" class="product-img" alt="{{ product.product_name }}">
-                            {% elif product.image_url %}
-                                <img src="{{ product.image_url }}" class="product-img" alt="{{ product.product_name }}">
-                            {% else %}
-                                <img src="{% static 'images/default.jpg' %}" class="product-img" alt="No Image">
-                            {% endif %}
-                        </a>
-                        <div class="product-info">
-                            <h5 class="product-title">
-                                <a href="{% url 'product_detail' product.product_slug %}">
-                                    {{ product.product_name }}
-                                </a>
-                            </h5>
-                            {% if product.rating %}
-                            <div class="product-rating">
-                                <div class="rating-stars">
-                                    {% for i in "12345" %}
-                                        {% with star=forloop.counter %}
-                                            {% if product.rating >= star %}
-                                                <i class="fas fa-star"></i>
-                                            {% elif product.rating >= star|add:"-0.5" %}
-                                                <i class="fas fa-star-half-alt"></i>
-                                            {% else %}
-                                                <i class="far fa-star"></i>
-                                            {% endif %}
-                                        {% endwith %}
-                                    {% endfor %}
-                                </div>
-                                <span class="rating-text">{{ product.rating }}/5</span>
+            <div class="col-lg-3 col-md-6" role="listitem">
+                <div class="product-card fade-in">
+                    <a href="{% url 'product_detail' product.product_slug %}"
+                        aria-label="View {{ product.product_name }}">
+                        {% if product.thumbnail %}
+                            <img src="{{ product.thumbnail.url }}" class="product-img" alt="{{ product.product_name }}">
+                        {% elif product.image_url %}
+                            <img src="{{ product.image_url }}" class="product-img" alt="{{ product.product_name }}">
+                        {% else %}
+                            <img src="{% static 'images/default.jpg' %}" class="product-img" alt="No image available for {{ product.product_name }}">
+                        {% endif %}
+                    </a>
+                    <div class="product-info">
+                        <h5 class="product-title">
+                            <a href="{% url 'product_detail' product.product_slug %}">
+                                {{ product.product_name }}
+                            </a>
+                        </h5>
+                        {% if product.rating %}
+                        <div class="product-rating" aria-label="Rating: {{ product.rating }} out of 5">
+                            <div class="rating-stars" aria-hidden="true">
+                                {% for i in "12345" %}
+                                    {% with star=forloop.counter %}
+                                        {% if product.rating >= star %}
+                                            <i class="fas fa-star"></i>
+                                        {% elif product.rating >= star|add:"-0.5" %}
+                                            <i class="fas fa-star-half-alt"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endfor %}
                             </div>
-                            {% endif %}
-                            <p class="product-description">
-                                {{ product.short_description|default:"No description available."|truncatewords:7 }}
-                            </p>
-
-                            <div class="product-footer">
-                                <div class="product-price">${{ product.price }}</div>
-                            </div>
+                            <span class="rating-text">{{ product.rating }}/5</span>
+                        </div>
+                        {% endif %}
+                        <p class="product-description">
+                            {{ product.short_description|default:"No description available."|truncatewords:7 }}
+                        </p>
+                        <div class="product-footer">
+                            <div class="product-price" aria-label="Price: ${{ product.price }}">${{ product.price }}</div>
                         </div>
                     </div>
                 </div>
+            </div>
             {% endfor %}
         </div>
     </div>
 </section>
-
 
 {% endblock %}
