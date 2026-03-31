@@ -3,6 +3,8 @@
 {% load static %}
 
 {% block content %}
+
+<!-- Breadcrumb -->
 <section class="breadcrumb-section border-top py-3 bg-light">
     <div class="container">
         <h2 class="visually-hidden">Breadcrumb Navigation</h2>
@@ -10,7 +12,7 @@
             <ol class="breadcrumb mb-0 bg-light">
                 <li class="breadcrumb-item">
                     <a href="{% url 'home' %}" class="text-decoration-none text-dark">
-                        <i class="fas fa-home"></i> Home
+                        <i class="fas fa-home" aria-hidden="true"></i> Home
                     </a>
                 </li>
                 <li class="breadcrumb-item active text-dark" aria-current="page">Order Invoice</li>
@@ -20,7 +22,9 @@
 </section>
 
 <section class="container py-5">
-    <div class="text-center mb-5">
+
+    <!-- Success Message -->
+    <div class="text-center mb-5" role="status" aria-live="polite">
         <h2 class="text-success">Thank you for your order!</h2>
         <p>Your order has been successfully processed. Your order number is <strong>{{ order.order_number }}</strong>.</p>
         <p>A confirmation email has been sent to <strong>{{ order.email }}</strong>.</p>
@@ -28,24 +32,28 @@
 
     <!-- Billing & Delivery Information -->
     <div class="row mb-4">
+
+        <!-- Billing -->
         <div class="col-md-6">
             <div class="card mb-3">
                 <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0">Billing Information</h5>
+                    <h5 class="mb-0" id="billing-heading">Billing Information</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body" aria-labelledby="billing-heading">
                     <p><strong>Full Name:</strong> {{ order.full_name }}</p>
                     <p><strong>Email:</strong> {{ order.email }}</p>
                     <p><strong>Phone Number:</strong> {{ order.phone_number }}</p>
                 </div>
             </div>
         </div>
+
+        <!-- Delivery -->
         <div class="col-md-6">
             <div class="card mb-3">
                 <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0">Delivery Information</h5>
+                    <h5 class="mb-0" id="delivery-heading">Delivery Information</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body" aria-labelledby="delivery-heading">
                     <p><strong>Address:</strong>
                         {{ order.street_address1 }}{% if order.street_address2 %}, {{ order.street_address2 }}{% endif %},
                         {{ order.town_or_city }}{% if order.county %}, {{ order.county }}{% endif %},
@@ -54,22 +62,23 @@
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- Order Summary -->
     <div class="card mb-4">
         <div class="card-header bg-dark text-white">
-            <h5 class="mb-0">Order Summary</h5>
+            <h5 class="mb-0" id="order-summary-heading">Order Summary</h5>
         </div>
-        <div class="card-body">
-            <table class="table table-bordered">
+        <div class="card-body" aria-labelledby="order-summary-heading">
+            <table class="table table-bordered" role="table" aria-label="Order items summary">
                 <thead class="table-dark">
                     <tr>
-                        <th>Product</th>
-                        <th>Variation</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Total</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Variation</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,12 +89,12 @@
                                 {% if item.product_variation %}
                                     <span class="badge bg-secondary">{{ item.product_variation }}</span>
                                 {% else %}
-                                    -
+                                    <span aria-label="No variation">-</span>
                                 {% endif %}
                             </td>
                             <td>{{ item.quantity }}</td>
-                            <td>${{ item.product.price }}</td>
-                            <td>${{ item.lineitem_total }}</td>
+                            <td aria-label="Unit price: ${{ item.product.price }}">${{ item.product.price }}</td>
+                            <td aria-label="Line total: ${{ item.lineitem_total }}">${{ item.lineitem_total }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -96,39 +105,41 @@
     <!-- Totals -->
     <div class="row justify-content-end mb-4">
         <div class="col-md-6">
-            <ul class="list-group">
+            <ul class="list-group" aria-label="Order totals">
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Subtotal:</span>
-                    <strong>${{ order.order_total }}</strong>
+                    <strong aria-label="Subtotal: ${{ order.order_total }}">${{ order.order_total }}</strong>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Delivery:</span>
-                    <strong>${{ order.delivery_cost }}</strong>
+                    <strong aria-label="Delivery cost: ${{ order.delivery_cost }}">${{ order.delivery_cost }}</strong>
                 </li>
                 <li class="list-group-item d-flex justify-content-between bg-dark text-white">
                     <span>Grand Total:</span>
-                    <strong>${{ order.grand_total }}</strong>
+                    <strong aria-label="Grand total: ${{ order.grand_total }}">${{ order.grand_total }}</strong>
                 </li>
             </ul>
         </div>
     </div>
 
+    <!-- Action Button -->
     <div class="text-center mt-4">
         {% if from_profile %}
-            <a href="{% url 'profile' %}" class="btn btn-dark rounded-pill px-4 py-2">
+            <a href="{% url 'profile' %}" class="btn btn-dark rounded-pill px-4 py-2" aria-label="Back to profile">
                 <span class="icon me-2">
-                    <i class="fas fa-angle-left"></i>
+                    <i class="fas fa-angle-left" aria-hidden="true"></i>
                 </span>
                 <span class="text-uppercase">Back to Profile</span>
             </a>
         {% else %}
-            <a href="{% url 'home' %}" class="btn btn-dark rounded-pill px-4 py-2">
+            <a href="{% url 'home' %}" class="btn btn-dark rounded-pill px-4 py-2" aria-label="Continue shopping">
                 <span class="icon me-2">
-                    <i class="fas fa-shopping-cart"></i>
+                    <i class="fas fa-shopping-cart" aria-hidden="true"></i>
                 </span>
                 <span class="text-uppercase">Continue Shopping</span>
             </a>
         {% endif %}
     </div>
+
 </section>
 {% endblock %}
