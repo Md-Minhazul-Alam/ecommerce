@@ -128,6 +128,11 @@ def product_detail(request, product_slug):
     # Reviews — after POST so new review shows immediately
     reviews = product.reviews.filter(is_active=True).order_by('-created_at')
 
+    # Edit forms — pre-filled with existing review data
+    edit_forms = {}
+    for review in reviews:
+        edit_forms[review.id] = ReviewForm(instance=review)
+
     context = {
         "setting": setting,
         'menuCategories': menuCategories,
@@ -136,9 +141,9 @@ def product_detail(request, product_slug):
         'related_products': related_products,
         'form': form,
         'reviews': reviews,
+        'edit_forms': edit_forms,
     }
     return render(request, "product/product_details.html", context)
-
 
 # Edit Review
 @login_required
