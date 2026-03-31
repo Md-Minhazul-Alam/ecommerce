@@ -30,6 +30,23 @@ Business Goals:
 - Provide real-world e-commerce functionality.
 - Serve as a learning and portfolio project.
 
+---
+
+## Accessibility
+
+The application has been designed with accessibility in mind to meet WCAG guidelines and ensure an inclusive user experience:
+
+- ARIA labels added to all interactive elements including navigation, forms, buttons, and search bar
+- Alt text provided on all product and site images for screen reader compatibility
+- Semantic HTML elements used throughout the application (nav, main, section, article, footer)
+- Responsive design tested and verified on desktop, tablet, and mobile screen sizes
+- Color contrast meets WCAG accessibility guidelines
+- Keyboard navigable interface throughout the site
+- Form labels and input fields properly associated for screen reader support
+- Error messages displayed clearly for form validation feedback
+
+---
+
 Scope & Features
 ----------------
 Homepage:
