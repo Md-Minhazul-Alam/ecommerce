@@ -1,6 +1,6 @@
 {% extends 'frontend/layouts/base.html' %}
-
 {% load static %}
+{% load crispy_forms_tags %}
 
 <!-- Meta Tags -->
 {% block title %}{{ product.product_name }} - {{ setting.website_name }}{% endblock %}
@@ -17,33 +17,44 @@
 {% block og_url %}{{ request.build_absolute_uri }}{% endblock %}
 
 {% block content %}
+
 <!-- Breadcrumb -->
 <section class="breadcrumb-section border-top">
     <div class="container">
         <h2 class="visually-hidden">Breadcrumb Navigation</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li class="breadcrumb-item">
+                    <a href="/"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+                </li>
                 <li class="breadcrumb-item active" aria-current="page">{{ product.product_name }}</li>
             </ol>
         </nav>
     </div>
 </section>
 
-<section class="product-details-section">
+<!-- Product Details -->
+<section class="product-details-section" aria-labelledby="product-title">
     <div class="container">
         <div class="row">
-            <!-- Left Side - Product Images -->
+
+            <!-- Left Side - Product Image -->
             <div class="col-lg-6">
                 <div class="product-image-wrapper">
                     {% if product.thumbnail %}
-                    <img src="{{ product.thumbnail.url }}" class="product-main-image" alt="{{ product.product_name }}"
+                    <img src="{{ product.thumbnail.url }}"
+                        class="product-main-image"
+                        alt="{{ product.product_name }}"
                         id="mainImage">
                     {% elif product.image_url %}
-                    <img src="{{ product.image_url }}" class="product-main-image" alt="{{ product.product_name }}"
+                    <img src="{{ product.image_url }}"
+                        class="product-main-image"
+                        alt="{{ product.product_name }}"
                         id="mainImage">
                     {% else %}
-                    <img src="{% static 'assets/images/default.jpg' %}" class="product-main-image" alt="No Image"
+                    <img src="{% static 'assets/images/default.jpg' %}"
+                        class="product-main-image"
+                        alt="No image available for {{ product.product_name }}"
                         id="mainImage">
                     {% endif %}
                 </div>
@@ -52,13 +63,14 @@
             <!-- Right Side - Product Info -->
             <div class="col-lg-6">
                 <div class="product-info-wrapper">
+
                     <!-- Product Title -->
-                    <h1 class="product-detail-title">{{ product.product_name }}</h1>
+                    <h1 class="product-detail-title" id="product-title">{{ product.product_name }}</h1>
 
                     <!-- Rating -->
                     {% if product.rating %}
-                    <div class="product-rating">
-                        <div class="rating-stars">
+                    <div class="product-rating" aria-label="Rating: {{ product.rating }} out of 5">
+                        <div class="rating-stars" aria-hidden="true">
                             {% for i in "12345" %}
                             {% with star=forloop.counter %}
                             {% if product.rating >= star %}
@@ -76,22 +88,34 @@
                     {% endif %}
 
                     <!-- Price -->
-                    <div class="product-detail-price">${{ product.price }}</div>
+                    <div class="product-detail-price" aria-label="Price: ${{ product.price }}">${{ product.price }}</div>
 
                     <!-- Short Description -->
                     {% if product.short_description %}
                     <p class="product-short-desc">{{ product.short_description }}</p>
                     {% endif %}
 
-                    <!-- Add to Cart Button -->
-                    <form class="form" action="{% url 'add_to_bag' product.id %}" method="POST">
+                    <!-- Add to Cart Form -->
+                    <form class="form" 
+                        action="{% url 'add_to_bag' product.id %}" 
+                        method="POST"
+                        aria-label="Add {{ product.product_name }} to cart">
                         {% csrf_token %}
                         <div class="form-row">
+
+                            <!-- Variations -->
                             {% if grouped_variations %}
                                 {% for variation_name, variations in grouped_variations.items %}
                                     <div class="variation-section mt-3">
-                                        <span class="variation-label d-block mb-2 fw-bold">{{ variation_name }}:</span>
-                                        <select class="variation-select form-select w-50" name="{{ variation_name|lower }}" required>
+                                        <label class="variation-label d-block mb-2 fw-bold" 
+                                            for="variation_{{ variation_name|lower }}">
+                                            {{ variation_name }}:
+                                        </label>
+                                        <select class="variation-select form-select w-50"
+                                            name="{{ variation_name|lower }}"
+                                            id="variation_{{ variation_name|lower }}"
+                                            required
+                                            aria-label="Select {{ variation_name }}">
                                             {% for pv in variations %}
                                                 <option value="{{ pv.variation.value|lower }}">{{ pv.variation.value }}</option>
                                             {% endfor %}
@@ -102,8 +126,13 @@
 
                             <!-- Quantity -->
                             <div class="quantity-selector mt-4">
-                                <div class="quantity-input d-flex align-items-center w-50">
-                                    <button type="button" class="quantity-btn btn btn-outline-secondary rounded-0 px-3">-</button>
+                                <label for="id_qty_{{ product.id }}" class="visually-hidden">Quantity</label>
+                                <div class="quantity-input d-flex align-items-center w-50"
+                                    role="group"
+                                    aria-label="Quantity selector">
+                                    <button type="button"
+                                        class="quantity-btn btn btn-outline-secondary rounded-0 px-3"
+                                        aria-label="Decrease quantity">-</button>
                                     <input type="number"
                                         class="form-control text-center rounded-0 mx-2"
                                         name="quantity"
@@ -111,17 +140,25 @@
                                         min="1"
                                         max="99"
                                         data-item_id="{{ product.id }}"
-                                        id="id_qty_{{ product.id }}">
-                                    <button type="button" class="quantity-btn btn btn-outline-secondary rounded-0 px-3">+</button>
+                                        id="id_qty_{{ product.id }}"
+                                        aria-label="Product quantity">
+                                    <button type="button"
+                                        class="quantity-btn btn btn-outline-secondary rounded-0 px-3"
+                                        aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
 
+                            <!-- Action Buttons -->
                             <div class="col-12 mt-5">
-                                <a href="{% url 'all_products' %}" class="btn btn-secondary rounded-0 me-2 rounded-pill ps-4 pe-4">
-                                    <i class="fas fa-chevron-left me-1"></i> Keep Shopping
+                                <a href="{% url 'all_products' %}"
+                                    class="btn btn-secondary rounded-0 me-2 rounded-pill ps-4 pe-4"
+                                    aria-label="Continue shopping">
+                                    <i class="fas fa-chevron-left me-1" aria-hidden="true"></i> Keep Shopping
                                 </a>
-                                <button type="submit" class="btn btn-dark text-uppercase rounded-pill ps-4 pe-4">
-                                    <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                                <button type="submit"
+                                    class="btn btn-dark text-uppercase rounded-pill ps-4 pe-4"
+                                    aria-label="Add {{ product.product_name }} to cart">
+                                    <i class="fas fa-shopping-cart me-1" aria-hidden="true"></i> Add to Cart
                                 </button>
                             </div>
 
@@ -131,10 +168,10 @@
 
                     <!-- Tags -->
                     {% if product.tags.all %}
-                    <div class="product-tags">
+                    <div class="product-tags" aria-label="Product tags">
                         <span class="tags-label">Tags:</span>
                         {% for tag in product.tags.all %}
-                        <a href="" class="product-tag">
+                        <a href="" class="product-tag" aria-label="View products tagged {{ tag.tag }}">
                             {{ tag.tag }}
                         </a>
                         {% empty %}
@@ -143,60 +180,87 @@
                     </div>
                     {% endif %}
 
+                    <!-- Staff/Superuser Actions -->
                     {% if user.is_superuser or user.is_staff %}
-                    <div class="d-flex gap-2 mt-2">
-                        <a href="{% url 'edit_product' product.product_slug %}" class="btn btn-sm btn-dark rounded-pill px-3">
-                            <i class="fas fa-edit me-1"></i> Edit
+                    <div class="d-flex gap-2 mt-2" role="group" aria-label="Product management actions">
+                        <a href="{% url 'edit_product' product.product_slug %}"
+                            class="btn btn-sm btn-dark rounded-pill px-3"
+                            aria-label="Edit {{ product.product_name }}">
+                            <i class="fas fa-edit me-1" aria-hidden="true"></i> Edit
                         </a>
                         <button class="btn btn-sm btn-outline-danger rounded-pill px-3"
                             data-bs-toggle="modal"
-                            data-bs-target="#deleteModal{{ product.id }}">
-                            <i class="fas fa-trash me-1"></i> Delete
+                            data-bs-target="#deleteModal{{ product.id }}"
+                            aria-label="Delete {{ product.product_name }}"
+                            aria-haspopup="dialog">
+                            <i class="fas fa-trash me-1" aria-hidden="true"></i> Delete
                         </button>
                     </div>
                     {% endif %}
+
                 </div>
             </div>
         </div>
-        <!-- Delete Modals -->
+
+        <!-- Delete Modal -->
         {% if user.is_superuser or user.is_staff %}
-        <div class="modal fade" id="deleteModal{{ product.id }}" tabindex="-1">
-            <div class="modal-dialog">
+        <div class="modal fade"
+            id="deleteModal{{ product.id }}"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="deleteModalLabel"
+            aria-modal="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Delete Product</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <h5 class="modal-title" id="deleteModalLabel">Delete Product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close delete dialog"></button>
                     </div>
                     <div class="modal-body">
                         <p>Are you sure you want to delete <strong>{{ product.product_name }}</strong>?</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancel deletion">Cancel</button>
                         <form method="POST" action="{% url 'delete_product' product.product_slug %}">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger" aria-label="Confirm delete {{ product.product_name }}">Delete</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
         {% endif %}
+
     </div>
 </section>
 
-<section class="details-review-section">
+<!-- Description & Reviews Tabs -->
+<section class="details-review-section" aria-label="Product details and reviews">
     <div class="container">
+
         <!-- Tabs -->
-        <ul class="nav nav-tabs" id="productTabs" role="tablist">
+        <ul class="nav nav-tabs" id="productTabs" role="tablist" aria-label="Product information tabs">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description"
-                    type="button" role="tab">
+                <button class="nav-link active"
+                    id="description-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#description"
+                    type="button"
+                    role="tab"
+                    aria-controls="description"
+                    aria-selected="true">
                     Description
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews"
-                    type="button" role="tab">
+                <button class="nav-link"
+                    id="reviews-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#reviews"
+                    type="button"
+                    role="tab"
+                    aria-controls="reviews"
+                    aria-selected="false">
                     Reviews
                 </button>
             </li>
@@ -206,88 +270,111 @@
         <div class="tab-content" id="productTabContent">
 
             <!-- Description Tab -->
-            <div class="tab-pane fade show active" id="description" role="tabpanel">
+            <div class="tab-pane fade show active"
+                id="description"
+                role="tabpanel"
+                aria-labelledby="description-tab">
                 <div class="product-description">
                     <h5>Product Overview</h5>
-                    {{ product.description | safe }}
+                    {{ product.description|safe }}
                 </div>
             </div>
 
             <!-- Reviews Tab -->
-            <div class="tab-pane fade" id="reviews" role="tabpanel">
+            <div class="tab-pane fade"
+                id="reviews"
+                role="tabpanel"
+                aria-labelledby="reviews-tab">
                 <div class="reviews-wrapper mt-4">
 
-                    <!-- Reviews -->
-                    <div class="reviews-list mb-4">
-                        <h5>Customer Reviews</h5>
+                    <!-- Reviews List -->
+                    <div class="reviews-list mb-4" aria-labelledby="customer-reviews-heading">
+                        <h5 id="customer-reviews-heading">Customer Reviews</h5>
 
                         {% for review in reviews %}
-                        <div class="review-item border rounded p-3 mb-3">
+                        <div class="review-item border rounded p-3 mb-3"
+                            role="article"
+                            aria-label="Review by {{ review.user.username }}">
                             <div class="d-flex justify-content-between mb-1">
                                 <strong>{{ review.user.username }}</strong>
-                                <span class="text-warning">
+                                <span class="text-warning" aria-label="Rating: {{ review.rating }} out of 5">
                                     {% for i in "12345" %}
                                         {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
                                     {% endfor %}
                                 </span>
                             </div>
-                            <p class="text-muted small mb-1">{{ review.created_at|date:"F d, Y" }}</p>
+                            <p class="text-muted small mb-1">
+                                <time datetime="{{ review.created_at|date:'Y-m-d' }}">{{ review.created_at|date:"F d, Y" }}</time>
+                            </p>
                             <p class="mb-0">{{ review.comment }}</p>
 
                             <!-- Edit/Delete buttons -->
                             {% if user == review.user %}
-                            <div class="mt-2 d-flex gap-2">
+                            <div class="mt-2 d-flex gap-2" role="group" aria-label="Review actions">
                                 <button class="btn btn-sm btn-outline-secondary"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#editReviewModal{{ review.id }}">
+                                    data-bs-target="#editReviewModal{{ review.id }}"
+                                    aria-label="Edit your review"
+                                    aria-haspopup="dialog">
                                     Edit
                                 </button>
                                 <button class="btn btn-sm btn-outline-danger"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#deleteReviewModal{{ review.id }}">
+                                    data-bs-target="#deleteReviewModal{{ review.id }}"
+                                    aria-label="Delete your review"
+                                    aria-haspopup="dialog">
                                     Delete
                                 </button>
                             </div>
 
-                            <!-- Edit Modal -->
-                            <div class="modal fade" id="editReviewModal{{ review.id }}" tabindex="-1">
-                                <div class="modal-dialog">
+                            <!-- Edit Review Modal -->
+                            <div class="modal fade"
+                                id="editReviewModal{{ review.id }}"
+                                tabindex="-1"
+                                role="dialog"
+                                aria-labelledby="editReviewLabel{{ review.id }}"
+                                aria-modal="true">
+                                <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Edit Review</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            <h5 class="modal-title" id="editReviewLabel{{ review.id }}">Edit Review</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close edit review dialog"></button>
                                         </div>
-                                        <form method="POST" action="{% url 'edit_review' review.id %}">
+                                        <form method="POST" action="{% url 'edit_review' review.id %}" aria-label="Edit review form">
                                             {% csrf_token %}
                                             <div class="modal-body">
-                                                {% load crispy_forms_tags %}
                                                 {{ form|crispy }}
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <button type="submit" class="btn btn-dark">Update Review</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancel editing review">Cancel</button>
+                                                <button type="submit" class="btn btn-dark" aria-label="Save updated review">Update Review</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Delete Modal -->
-                            <div class="modal fade" id="deleteReviewModal{{ review.id }}" tabindex="-1">
-                                <div class="modal-dialog">
+                            <!-- Delete Review Modal -->
+                            <div class="modal fade"
+                                id="deleteReviewModal{{ review.id }}"
+                                tabindex="-1"
+                                role="dialog"
+                                aria-labelledby="deleteReviewLabel{{ review.id }}"
+                                aria-modal="true">
+                                <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Delete Review</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            <h5 class="modal-title" id="deleteReviewLabel{{ review.id }}">Delete Review</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close delete review dialog"></button>
                                         </div>
                                         <div class="modal-body">
                                             <p>Are you sure you want to delete your review?</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancel deletion">Cancel</button>
                                             <form method="POST" action="{% url 'delete_review' review.id %}">
                                                 {% csrf_token %}
-                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-danger" aria-label="Confirm delete review">Delete</button>
                                             </form>
                                         </div>
                                     </div>
@@ -297,26 +384,32 @@
 
                         </div>
                         {% empty %}
-                            <p class="text-muted">No reviews yet. Be the first to review this product.</p>
+                            <p class="text-muted" role="status">No reviews yet. Be the first to review this product.</p>
                         {% endfor %}
                     </div>
 
-                    <hr>
+                    <hr aria-hidden="true">
 
                     <!-- Write a Review Form -->
-                    <div class="review-form-wrapper">
-                        <h5>Write a Review</h5>
-                        {% load crispy_forms_tags %}
-                        <form method="POST" action=".">
+                    <div class="review-form-wrapper" aria-labelledby="write-review-heading">
+                        <h5 id="write-review-heading">Write a Review</h5>
+                        <form method="POST" action="." aria-label="Submit a review">
                             {% csrf_token %}
                             {{ form|crispy }}
                             {% if user.is_authenticated %}
-                                <button type="submit" class="btn btn-dark mt-2 w-100">Submit Review</button>
+                                <button type="submit"
+                                    class="btn btn-dark mt-2 w-100"
+                                    aria-label="Submit your review">
+                                    Submit Review
+                                </button>
                             {% else %}
-                                <button type="button" class="btn btn-dark mt-2 w-100"
+                                <button type="button"
+                                    class="btn btn-dark mt-2 w-100"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="top"
                                     title="Please login to submit a review"
+                                    aria-label="Login required to submit a review"
+                                    aria-disabled="true"
                                     onclick="showLoginAlert()">
                                     Submit Review
                                 </button>
@@ -331,24 +424,25 @@
     </div>
 </section>
 
+<!-- Related Products -->
 {% if related_products %}
-<section class="related-product-section py-5">
+<section class="related-product-section py-5" aria-labelledby="related-heading">
     <div class="container">
-        <h3 class="mb-4">Related Products</h3>
-        <div class="row g-4">
+        <h3 class="mb-4" id="related-heading">Related Products</h3>
+        <div class="row g-4" role="list" aria-label="Related products">
             {% for product in related_products %}
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6" role="listitem">
                 <div class="product-card fade-in">
-                    <a href="{% url 'product_detail' product.product_slug %}">
+                    <a href="{% url 'product_detail' product.product_slug %}"
+                        aria-label="View {{ product.product_name }}">
                         {% if product.thumbnail %}
                             <img src="{{ product.thumbnail.url }}" class="product-img" alt="{{ product.product_name }}">
                         {% elif product.image_url %}
                             <img src="{{ product.image_url }}" class="product-img" alt="{{ product.product_name }}">
                         {% else %}
-                            <img src="{% static 'assets/images/default.jpg' %}" class="product-img" alt="No Image">
+                            <img src="{% static 'assets/images/default.jpg' %}" class="product-img" alt="No image available for {{ product.product_name }}">
                         {% endif %}
                     </a>
-
                     <div class="product-info">
                         {% if product.category %}
                             <p class="product-category text-muted">{{ product.category.category }}</p>
@@ -356,10 +450,9 @@
                         <h5 class="product-title">
                             <a href="{% url 'product_detail' product.product_slug %}">{{ product.product_name }}</a>
                         </h5>
-
                         {% if product.rating %}
-                        <div class="product-rating">
-                            <div class="rating-stars">
+                        <div class="product-rating" aria-label="Rating: {{ product.rating }} out of 5">
+                            <div class="rating-stars" aria-hidden="true">
                                 {% for i in "12345" %}
                                     {% with star=forloop.counter %}
                                         {% if product.rating >= star %}
@@ -375,13 +468,11 @@
                             <span class="rating-text">{{ product.rating }}/5</span>
                         </div>
                         {% endif %}
-
                         <p class="product-description">
                             {{ product.short_description|default:"No description available."|truncatewords:10 }}
                         </p>
-
                         <div class="product-footer">
-                            <div class="product-price">${{ product.price }}</div>
+                            <div class="product-price" aria-label="Price: ${{ product.price }}">${{ product.price }}</div>
                         </div>
                     </div>
                 </div>
@@ -398,26 +489,26 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const quantitySections = document.querySelectorAll('.quantity-selector');
-        
-        quantitySections.forEach(section => {
-            const minusBtn = section.querySelector('.quantity-btn:first-child'); 
-            const plusBtn = section.querySelector('.quantity-btn:last-child'); 
-            const input = section.querySelector('input[type="number"]');  
 
-            // Disable or Enable minus button
+        quantitySections.forEach(section => {
+            const minusBtn = section.querySelector('.quantity-btn:first-child');
+            const plusBtn = section.querySelector('.quantity-btn:last-child');
+            const input = section.querySelector('input[type="number"]');
+
             function checkMinusButton() {
                 let currentValue = parseInt(input.value);
                 let minValue = parseInt(input.min);
                 if (currentValue <= minValue) {
                     minusBtn.disabled = true;
+                    minusBtn.setAttribute('aria-disabled', 'true');
                 } else {
                     minusBtn.disabled = false;
+                    minusBtn.setAttribute('aria-disabled', 'false');
                 }
             }
 
             checkMinusButton();
 
-            // Minus
             minusBtn.addEventListener('click', () => {
                 let value = parseInt(input.value);
                 let min = parseInt(input.min);
@@ -427,7 +518,6 @@
                 }
             });
 
-            // Plus
             plusBtn.addEventListener('click', () => {
                 let value = parseInt(input.value);
                 let max = parseInt(input.max);
@@ -437,7 +527,6 @@
                 }
             });
 
-            // if user types manually
             input.addEventListener('input', checkMinusButton);
         });
     });
