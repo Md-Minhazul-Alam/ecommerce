@@ -121,10 +121,15 @@ The following custom Python logic has been implemented throughout the applicatio
 
 ---
 
-Database Schema
----------------
+## Database Schema
 
-1. Website Settings
+The schema below outlines all models and their relationships across the application.
+
+![Database Schema](/static/screenshots/db_schema.png)
+
+---
+
+**1. Website Settings**
 
 WebsiteSetting
 - id (PK)
@@ -157,7 +162,7 @@ LegalLink
 - meta_description: Text
 - is_active: Boolean
 
-2. Products
+**2. Products**
 
 Tag
 - id (PK)
@@ -214,7 +219,17 @@ ProductVariation
 - stock: PositiveInteger
 - Unique Together: (product, variation)
 
-3. Orders
+Review
+- id (PK)
+- product: FK → Product
+- user: FK → User
+- rating: Integer (1-5)
+- comment: Text
+- is_active: Boolean
+- created_at: DateTime
+- updated_at: DateTime
+
+**3. Orders**
 
 Order
 - id (PK)
@@ -244,7 +259,7 @@ OrderLineItem
 - quantity: Integer
 - lineitem_total: Decimal
 
-4. User Profiles
+**4. User Profiles**
 
 UserProfile
 - id (PK)
@@ -259,7 +274,7 @@ UserProfile
 - created_at: DateTime
 - updated_at: DateTime
 
-5. Sliders
+**5. Sliders**
 
 HeroSlider
 - id (PK)
@@ -268,20 +283,23 @@ HeroSlider
 - image: Image
 - link: URLField
 
-------------------------------------------------------------
-RELATIONSHIPS
-------------------------------------------------------------
+---
 
-- Product → Brand: Many-to-One  
-- Product → Category: Many-to-One  
-- Product → Tag: Many-to-Many  
-- Product → ProductVariation: One-to-Many  
-- ProductVariation → Variation: Many-to-One  
-- Order → OrderLineItem: One-to-Many  
-- Order → UserProfile: Many-to-One  
-- User → UserProfile: One-to-One  
+## Relationships
+
+- Product → Brand: Many-to-One
+- Product → Category: Many-to-One
+- Product → Tag: Many-to-Many
+- Product → ProductVariation: One-to-Many
+- ProductVariation → Variation: Many-to-One
+- Order → OrderLineItem: One-to-Many
+- Order → UserProfile: Many-to-One
+- User → UserProfile: One-to-One
 - Category → Category: Self-referencing (parent category)
+- Review → Product: Many-to-One
+- Review → User: Many-to-One
 
+---
 
 Notes
 -----
