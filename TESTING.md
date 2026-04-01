@@ -78,8 +78,8 @@ The project's Python code was validated to ensure it follows the **PEP8** style 
 | `profiles`  | `models.py`    | ![models.py](/static/pep8/models-profiles.PNG)        |
 | `profiles`  | `urls.py`    | ![urls.py](/static/pep8/urls-profiles.PNG)        |
 | `profiles`  | `views.py`    | ![views.py](/static/pep8/views-profiles.PNG)        |
-| `themeOption`  | `admin.py`    | ![admin.py](/static/pep8/admin-themeOption.PNG)        |
-| `themeOption`  | `models.py`    | ![models.py](/static/pep8/models-themeOption.PNG)        |
+| `themeOption`  | `admin.py`    | ![admin.py](/static/pep8/admin-themeoption.PNG)        |
+| `themeOption`  | `models.py`    | ![models.py](/static/pep8/models-themeoption.PNG)        |
 
 
 All Python files were checked to confirm they comply with **PEP8 standards**, including:
