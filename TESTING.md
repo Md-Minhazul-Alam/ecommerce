@@ -73,6 +73,11 @@ The project's Python code was validated to ensure it follows the **PEP8** style 
 | `product`  | `models.py`    | ![models.py](/static/pep8/models-product.PNG)        |
 | `product`  | `urls.py`    | ![urls.py](/static/pep8/urls-product.PNG)        |
 | `product`  | `views.py`    | ![views.py](/static/pep8/views-product.PNG)        |
+| `profiles`  | `admin.py`    | ![admin.py](/static/pep8/admin-profiles.PNG)        |
+| `profiles`  | `forms.py`    | ![forms.py](/static/pep8/forms-profiles.PNG)        |
+| `profiles`  | `models.py`    | ![models.py](/static/pep8/models-profiles.PNG)        |
+| `profiles`  | `urls.py`    | ![urls.py](/static/pep8/urls-profiles.PNG)        |
+| `profiles`  | `views.py`    | ![views.py](/static/pep8/views-profiles.PNG)        |
 
 
 

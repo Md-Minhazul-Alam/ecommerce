@@ -10,7 +10,9 @@ class UserProfile(models.Model):
     Stores additional info for each user.
     Automatically created/updated when a user is created or saved.
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='profile'
+    )
     phone = models.CharField(max_length=20, blank=True, null=True)
     address_line1 = models.CharField(max_length=255, blank=True, null=True)
     address_line2 = models.CharField(max_length=255, blank=True, null=True)
