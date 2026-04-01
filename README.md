@@ -441,6 +441,221 @@ Stripe test mode was used for payment verification.
 User registration and login were validated through Django Allauth flows.  
 Errors, test logs, and screenshots are documented separately in `TESTING.md`.
 
+
+## Deployment on Heroku
+
+This project is deployed on **Heroku**. The following steps were taken to successfully deploy the application.
+
+### Prerequisites
+
+Before deploying, ensure the following are in place:
+- A [Heroku account](https://heroku.com)
+- A [GitHub account](https://github.com) with the project repository
+- A [Neon PostgreSQL](https://neon.tech) or other external database
+- A [Cloudinary account](https://cloudinary.com) for media file storage
+- A [Stripe account](https://stripe.com) for payment processing
+- Python and pip installed locally
+
+---
+
+### Step 1 — Prepare the Project for Deployment
+
+Before pushing to Heroku, the following files must be in place:
+
+**`requirements.txt`** — Lists all Python dependencies:
+```bash
+pip freeze > requirements.txt
+```
+
+**`Procfile`** — Tells Heroku how to run the application. Create in the root directory:
+```
+web: gunicorn ecommerce.wsgi
+```
+
+**`runtime.txt`** — Specifies the Python version (optional but recommended):
+```
+python-3.12.0
+```
+
+**`settings.py`** — Ensure the following are configured:
+```python
+import os
+import dj_database_url
+
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')]
+
+DATABASES = {
+    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+    if os.getenv('DATABASE_URL')
+    else {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+```
+
+**`.gitignore`** — Ensure sensitive files are never committed:
+```
+*.pyc
+__pycache__/
+.env
+db.sqlite3
+media/
+```
+
+---
+
+### Step 2 — Create a Heroku Application
+
+1. Log in to [heroku.com](https://heroku.com)
+2. Click **New** → **Create new app**
+3. Enter a unique app name (e.g. `pcshop-ff340fe41fef`)
+4. Select **Europe** as the region
+5. Click **Create app**
+
+---
+
+### Step 3 — Connect to GitHub
+
+1. In the Heroku dashboard go to the **Deploy** tab
+2. Under **Deployment method** select **GitHub**
+3. Click **Connect to GitHub** and grant the necessary permissions
+4. Search for your repository name and click **Connect**
+5. Select the branch to deploy (e.g. `main`)
+
+---
+
+### Step 4 — Configure Environment Variables
+
+In the Heroku dashboard go to **Settings** → **Config Vars** → **Reveal Config Vars** and add the following:
+
+| Variable | Value | Purpose |
+|----------|-------|---------|
+| `SECRET_KEY` | Your Django secret key | Django security |
+| `DATABASE_URL` | Your PostgreSQL connection string | Database connection |
+| `CLOUDINARY_URL` | Your Cloudinary URL | Media file storage |
+| `STRIPE_PUBLIC_KEY` | Your Stripe public key | Stripe frontend |
+| `STRIPE_SECRET_KEY` | Your Stripe secret key | Stripe backend |
+| `STRIPE_WH_SECRET` | Your Stripe webhook secret | Stripe webhooks |
+| `EMAIL_HOST_USER` | Your email address | Order confirmation emails |
+| `EMAIL_HOST_PASS` | Your email app password | Order confirmation emails |
+| `DEBUG` | `False` | Disable debug in production |
+| `ALLOWED_HOSTS` | `pcshop-ff340fe41fef.herokuapp.com` | Allowed hosts for Django |
+
+> ⚠️ Never commit any of these values to GitHub. Always use environment variables for sensitive credentials.
+
+---
+
+### Step 5 — Set Up the Database
+
+The project uses an external **Neon PostgreSQL** database provided by Code Institute. After setting `DATABASE_URL` in Config Vars:
+
+1. In the Heroku dashboard go to the **More** menu → **Run console**
+2. Run the following commands:
+```bash
+python manage.py migrate
+python manage.py createsuperuser
+```
+
+---
+
+### Step 6 — Deploy the Application
+
+1. In the Heroku dashboard go to the **Deploy** tab
+2. Scroll to **Manual deploy**
+3. Select the `main` branch
+4. Click **Deploy Branch**
+5. Wait for the build to complete
+6. Click **Open app** to view the live site
+
+For automatic deploys on every push to `main`, enable **Automatic Deploys** on the same page.
+
+---
+
+### Step 7 — Verify Deployment
+
+After deploying, verify the following:
+- The site loads correctly at the Heroku URL
+- Products and categories display correctly
+- User registration and login work via Django Allauth
+- Products can be added to cart and checkout works
+- Stripe test payments complete successfully
+- Order confirmation emails are received
+- Staff/superuser can add, edit, and delete products from the frontend
+- Media images load correctly via Cloudinary
+
+---
+
+### Challenges Faced During Deployment
+
+#### 1. `Pipfile` / `Pipfile.lock` Conflict
+- During development the project contained a `Pipfile` and `Pipfile.lock`
+- These caused Heroku to fail during the build process as it attempted to use Pipenv instead of pip
+- **Fix:** Removed both files and relied solely on `requirements.txt` for dependency management
+
+#### 2. Uvicorn & Procfile Configuration
+- `uvicorn` was installed as the ASGI server but did not start automatically on Heroku
+- Heroku requires an explicit `Procfile` in the project root to define how the app should run
+- A minor mistake in the `Procfile` initially prevented the app from starting
+- **Fix:** Corrected the `Procfile` to use `gunicorn`:
+```
+  web: gunicorn ecommerce.wsgi
+```
+
+#### 3. Dyno Sleep & Lost Media Files
+- On the Basic plan, Heroku dynos sleep after inactivity
+- Upon restarting, all locally stored media files are permanently lost because Heroku uses an ephemeral filesystem
+- **Fix:** Integrated **Cloudinary** as external media storage
+  - All uploaded images are stored on and served from Cloudinary
+  - Images persist regardless of dyno restarts or sleeping
+
+#### 4. Environment Variables
+- Sensitive settings such as `SECRET_KEY`, `DATABASE_URL`, and API keys cannot be committed to a public repository
+- **Fix:** All credentials configured securely via Heroku **Config Vars** — never stored in the codebase
+
+#### 5. Static Files Not Loading
+- After deployment, CSS and JavaScript files were not loading correctly
+- **Fix:** Added `whitenoise` middleware to serve static files on Heroku:
+```python
+  MIDDLEWARE = [
+      'whitenoise.middleware.WhiteNoiseMiddleware',
+      ...
+  ]
+```
+  And added to `settings.py`:
+```python
+  STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+```
+  Then ran:
+```bash
+  python manage.py collectstatic
+```
+
+#### 6. Database Migration on Remote
+- After adding new models locally (e.g. the `Review` model), the remote database did not have the new tables
+- Running the app on Heroku threw `ProgrammingError: relation does not exist`
+- **Fix:** Always run migrations on Heroku after adding new models:
+```bash
+  heroku run python manage.py migrate --app pcshop-ff340fe41fef
+```
+
+---
+
+### Local Development
+
+**Cloning the Repository:**
+
+1. Go to the GitHub repository
+2. Click the green **Code** button and copy the URL
+3. Open Terminal or Git Bash and navigate to your project directory
+4. Run:
+```bash
+git clone 
+cd 
+```
+
 Deployment
 ----------
 - Hosted on Purchased Hosting for testing
@@ -449,7 +664,7 @@ Deployment
 
 Local vs Deployment
 -------------------
-Minor differences may exist between the local and deployed versions due to environment settings, database connections, and API keys.
+Minor differences may exist between the local and deployed versions due to environment settings, database connections, CLOUDINARY connections, ALLOWED_HOSTS, email settings and API keys.
 
 Local Development
 -----------------
