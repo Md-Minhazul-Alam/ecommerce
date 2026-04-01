@@ -350,6 +350,10 @@ Skeleton / Wireframes
 | Checkout Page       | Simple form with billing/shipping info, country dropdown, and Stripe payment form.                              | ![Checkout](/static/screenshots/checkout.png)           |
 | Order Confirmation  | Success page showing order number, details, billing, and shipping info. Sends email confirmation.               | ![Order Success](/static/screenshots/success.png)       |
 | User Profile        | Editable user info: name, phone, address, country. Lists past orders with date and total.                       | ![Profile](/static/screenshots/profile.png)             |
+| Review List         | All submitted reviews displayed on the product detail page with username, star rating, date, and comment.       | ![Review List](/static/screenshots/review_list.png)     |
+| Add Review          | Signed-in users can submit a review with a star rating and comment directly from the product detail page.       | ![Add Review](/static/screenshots/add_review.png)       |
+| Edit Review         | Users can edit their own review via a modal popup pre-filled with their existing rating and comment.            | ![Edit Review](/static/screenshots/edit_review.png)     |
+| Delete Review       | Users can delete their own review via a confirmation modal directly from the product detail page.               | ![Delete Review](/static/screenshots/delete_review.png) |
 | Add Product (Staff) | Staff and superusers can add new products with variations directly from the frontend without using admin panel. | ![Add Product](/static/screenshots/add_product.png)     |
 | Edit Product (Staff)| Staff and superusers can edit existing products and variations from the frontend.                               | ![Edit Product](/static/screenshots/edit_product.png)   |
 | Delete Product (Staff)| Staff and superusers can delete products directly from the frontend.                                          | ![Delete Product](/static/screenshots/delete_product.png)|
