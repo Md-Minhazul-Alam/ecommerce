@@ -409,7 +409,8 @@ Tools & Technologies
 - Git & GitHub – Version control
 - VSCode – Development IDE
 - Font Awesome – Icons
-- HackMD – For README / testing documentation
+- HackMD – README / testing documentation
+- dbdiagram.io – Database schema design
 
 Agile Development
 -----------------
