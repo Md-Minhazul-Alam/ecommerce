@@ -317,26 +317,28 @@ Skeleton / Wireframes
 
 
 
-User Stories
-------------
+## User Stories
+
 | Role | Action | Outcome |
 |------|---------|----------|
 | Visitor | Browse products by category | Find desired products easily |
 | Visitor | Filter/sort products | View products by price, rating, or name |
 | User | Add products to cart | Review selections and proceed to purchase |
 | User | Checkout using Stripe | Secure and verified payment |
+| User | Submit a product review | Share feedback on purchased products |
+| User | Edit or delete own review | Manage personal review content |
 | User | Manage profile | Update info and view past orders |
+| Staff | Add or edit products from frontend | Manage shop content without admin panel |
+| Staff | Delete products from frontend | Remove outdated or discontinued products |
 | Admin | Manage products, categories, and orders | Maintain full control of shop content |
 
 
-------------------------------------------------------------
-FEATURES
-------------------------------------------------------------
+## Features
 
 | SECTION             | DESCRIPTION                                                                                                     | Screenshot / Image                                       |
 |---------------------|-----------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
 | Header              | Top bar with free shipping message (left) and contact number (right). Main header with logo (left), search bar (center), cart & user icons (right). Cart icon shows product count. | ![Header](/static/screenshots/header.png)               |
-| User Authentication | Login, signup, and password reset handled via Django Allauth. Displays “My Account” if logged in or “Login / Sign up” otherwise. | ![Auth](/static/screenshots/auth.png)                   |
+| User Authentication | Login, signup, and password reset handled via Django Allauth. Displays "My Account" if logged in or "Login / Sign up" otherwise. | ![Auth](/static/screenshots/auth.png)                   |
 | Hero Slider         | Displays running offers and promotions. Each slide links to a relevant category or product.                     | ![Slider](/static/screenshots/slider.png)               |
 | Homepage Categories | Selected featured categories displayed as clickable cards that redirect to category listings.                  | ![Categories](/static/screenshots/categories.png)       |
 | Featured Products   | Displays highlighted or exclusive products pulled dynamically from database.                                    | ![Featured Products](/static/screenshots/featured.png)  |
@@ -348,6 +350,9 @@ FEATURES
 | Checkout Page       | Simple form with billing/shipping info, country dropdown, and Stripe payment form.                              | ![Checkout](/static/screenshots/checkout.png)           |
 | Order Confirmation  | Success page showing order number, details, billing, and shipping info. Sends email confirmation.               | ![Order Success](/static/screenshots/success.png)       |
 | User Profile        | Editable user info: name, phone, address, country. Lists past orders with date and total.                       | ![Profile](/static/screenshots/profile.png)             |
+| Add Product (Staff) | Staff and superusers can add new products with variations directly from the frontend without using admin panel. | ![Add Product](/static/screenshots/add_product.png)     |
+| Edit Product (Staff)| Staff and superusers can edit existing products and variations from the frontend.                               | ![Edit Product](/static/screenshots/edit_product.png)   |
+| Delete Product (Staff)| Staff and superusers can delete products directly from the frontend.                                          | ![Delete Product](/static/screenshots/delete_product.png)|
 | Admin Panel         | Django Admin for full CRUD control on products, brands, categories, and orders.                                  | ![Admin](/static/screenshots/admin.png)                 |
 
 ---
