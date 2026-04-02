@@ -430,7 +430,7 @@ Agile Development
 - Used for Kanban style task management with epics and issues
 
 Screenshot / Example:
-![Agile Kanban](/static/screenshots/agile_kanban.png)
+![Agile Kanban](/static/screenshots/agile_kanban_updated.png)
 
 GitHub Issues
 -------------
