@@ -72,6 +72,9 @@ Product Details Page:
 - Add to cart button
 - Related products
 - Notification for cart additions and free shipping info
+- Customer reviews with star rating and comment
+- Submit, edit, and delete own review (signed-in users only)
+- Duplicate review prevention with warning message
 
 Cart Page:
 - Cart items list
@@ -98,6 +101,12 @@ User Profile:
 
 Authentication:
 - Django Allauth: login, signup, password reset
+
+Product Management (Staff & Superusers Only):
+- Add new products with variations directly from the frontend
+- Edit existing products and variations from the frontend
+- Delete products directly from the frontend
+- Product management accessible without using the Django admin panel
 
 
 ---
