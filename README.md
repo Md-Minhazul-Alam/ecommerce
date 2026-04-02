@@ -126,6 +126,7 @@ The following custom Python logic has been implemented throughout the applicatio
 | `checkout/views.py` | Profile auto-fill | Checkout form pre-filled with saved profile data for authenticated users |
 | `product/views.py` | Product filtering & sorting | Products dynamically filtered by category, search query, price, and rating |
 | `product/views.py` | Variation grouping | Product variations grouped by type using Python's itertools groupby function |
+| `product/widgets.py` | Custom clearable file input | Custom widget for thumbnail field showing current image preview with remove checkbox |
 
 ---
 
