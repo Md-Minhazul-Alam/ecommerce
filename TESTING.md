@@ -18,6 +18,8 @@ Minor warnings related to Django template tags (`{% %}` / `{{ }}`) were ignored 
 | Profile Page     | `templates/profiles/profile.html`       | ![Profile](/static/testing/html-profile.png)         |
 | Legal Page         | `templates/businessprofile/legal_link_detail.html`               | ![Legal](/static/testing/html-legal.png)                 |
 | Quick Page         | `templates/businessprofile/quick_link_detail.html`               | ![Quick](/static/testing/html-quick.png)                 |
+| Add Product | `templates/product/add_product.html` | ![Add Product](/static/testing/html-add-product.png) |
+| Edit Product | `templates/product/edit_product.html` | ![Edit Product](/static/testing/html-edit-product.png) |
 
 
 ## CSS Validation
@@ -73,6 +75,7 @@ The project's Python code was validated to ensure it follows the **PEP8** style 
 | `product`  | `models.py`    | ![models.py](/static/pep8/models-product.PNG)        |
 | `product`  | `urls.py`    | ![urls.py](/static/pep8/urls-product.PNG)        |
 | `product`  | `views.py`    | ![views.py](/static/pep8/views-product.PNG)        |
+| `product` | `widgets.py` | ![widgets.py](/static/pep8/widgets-product.PNG) |
 | `profiles`  | `admin.py`    | ![admin.py](/static/pep8/admin-profiles.PNG)        |
 | `profiles`  | `forms.py`    | ![forms.py](/static/pep8/forms-profiles.PNG)        |
 | `profiles`  | `models.py`    | ![models.py](/static/pep8/models-profiles.PNG)        |
@@ -215,7 +218,7 @@ This file documents all user story tests for the PC Shop e-commerce project, inc
 ## Bugs
 
 * **Automated email notifications not sending correctly in some environments**  
-  **Fix:** Ensure SMTP credentials and Django email backend are properly configured → Done 
+  **Fix:** Ensure SMTP credentials and Django email backend are properly configured → Resolved
 
 * **Minor layout misalignment on mobile for cart and checkout pages**  
   **Fix:** Adjusted CSS flex/grid rules and media queries → Resolved  
