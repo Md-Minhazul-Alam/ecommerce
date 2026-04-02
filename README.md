@@ -108,7 +108,6 @@ Product Management (Staff & Superusers Only):
 - Delete products directly from the frontend
 - Product management accessible without using the Django admin panel
 
-
 ---
 
 ## Custom Python Logic
@@ -346,7 +345,6 @@ Skeleton / Wireframes
 | Edit Product (Staff) | Edit product form with existing data | ![Edit Product Desktop](/static/screenshots/edit_product.png) | ![Edit Product Tablet](/static/screenshots/edit_product_tablet.png) | ![Edit Product Mobile](/static/screenshots/edit_product_mobile.png) |
 
 
-
 ## User Stories
 
 | Role | Action | Outcome |
@@ -409,7 +407,6 @@ The application implements full CRUD (Create, Read, Update, Delete) functionalit
 
 ---
 
-
 Tools & Technologies
 --------------------
 - Django (Python) – Backend framework
@@ -444,7 +441,7 @@ MoSCoW Prioritization
 Must Have: Product CRUD, cart, checkout, and Stripe payment integration  
 Should Have: User profile management and category filtering  
 Could Have: Wishlist and product reviews  
-Won’t Have: Discount coupons or referral system (planned for future release)
+Won't Have: Discount coupons or referral system (planned for future release)
 
 Testing
 -------
@@ -453,6 +450,7 @@ Stripe test mode was used for payment verification.
 User registration and login were validated through Django Allauth flows.  
 Errors, test logs, and screenshots are documented separately in `TESTING.md`.
 
+---
 
 ## Deployment on Heroku
 
@@ -613,7 +611,7 @@ After deploying, verify the following:
 - A minor mistake in the `Procfile` initially prevented the app from starting
 - **Fix:** Corrected the `Procfile` to use `gunicorn`:
 ```
-  web: gunicorn ecommerce.wsgi
+web: gunicorn ecommerce.wsgi
 ```
 
 #### 3. Dyno Sleep & Lost Media Files
@@ -631,18 +629,18 @@ After deploying, verify the following:
 - After deployment, CSS and JavaScript files were not loading correctly
 - **Fix:** Added `whitenoise` middleware to serve static files on Heroku:
 ```python
-  MIDDLEWARE = [
-      'whitenoise.middleware.WhiteNoiseMiddleware',
-      ...
-  ]
+MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    ...
+]
 ```
-  And added to `settings.py`:
+And added to `settings.py`:
 ```python
-  STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ```
-  Then ran:
+Then ran:
 ```bash
-  python manage.py collectstatic
+python manage.py collectstatic
 ```
 
 #### 6. Database Migration on Remote
@@ -650,7 +648,7 @@ After deploying, verify the following:
 - Running the app on Heroku threw `ProgrammingError: relation does not exist`
 - **Fix:** Always run migrations on Heroku after adding new models:
 ```bash
-  heroku run python manage.py migrate --app pcshop-ff340fe41fef
+heroku run python manage.py migrate --app pcshop-ff340fe41fef
 ```
 
 ---
@@ -664,29 +662,58 @@ After deploying, verify the following:
 3. Open Terminal or Git Bash and navigate to your project directory
 4. Run:
 ```bash
-git clone 
-cd 
+git clone <repository-url>
+cd <project-folder>
 ```
 
-Deployment
-----------
-- Hosted on Purchased Hosting for testing
-- Stripe payment integration active
-- Email notifications for orders enabled
+**Setting Up the Environment:**
 
-Local vs Deployment
--------------------
-Minor differences may exist between the local and deployed versions due to environment settings, database connections, CLOUDINARY connections, ALLOWED_HOSTS, email settings and API keys.
+1. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # Mac/Linux
+venv\Scripts\activate     # Windows
+```
 
-Local Development
------------------
-**Cloning the Repository**
-1. Go to the GitHub repository.
-2. Click the green **Code** button and copy the URL (HTTPS, SSH, or GitHub CLI).
-3. Open Terminal or Git Bash and navigate to your desired project directory.
-4. Run:  
-   ```bash
-   git clone <repository-url>
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Create a `.env` file in the root directory and add:
+```
+SECRET_KEY=your_secret_key
+DATABASE_URL=your_database_url
+STRIPE_PUBLIC_KEY=your_stripe_public_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WH_SECRET=your_stripe_webhook_secret
+EMAIL_HOST_USER=your_email
+EMAIL_HOST_PASS=your_email_password
+DEBUG=True
+```
+
+4. Run migrations:
+```bash
+python manage.py migrate
+```
+
+5. Create a superuser:
+```bash
+python manage.py createsuperuser
+```
+
+6. Run the development server:
+```bash
+python manage.py runserver
+```
+
+7. Visit `http://127.0.0.1:8000` in your browser
+
+---
+
+### Local vs Deployment
+
+Minor differences may exist between the local and deployed versions due to environment settings, database connections, Cloudinary connections, `ALLOWED_HOSTS`, email settings, and API keys.
 
 ---
 
@@ -694,7 +721,6 @@ Future Features
 ---------------
 - Dark mode toggle
 - Wishlist/favorites
-- Product reviews & ratings
 - Discount coupons and promo codes
 
 ## Credits
@@ -714,6 +740,4 @@ Future Features
 
 ### Acknowledgements
 - Django and open-source community for documentation and discussions.  
-- Code Institute and online developer communities for guidance and testing insights.  
-
-
+- Code Institute and online developer communities for guidance and testing insights.
