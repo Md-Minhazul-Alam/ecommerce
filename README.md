@@ -341,6 +341,9 @@ Skeleton / Wireframes
 | Order Success    | Confirmation, order summary, email notification | ![Success Desktop](/static/screenshots/success.png) | ![Success Tablet](/static/screenshots/success_tablet.png) | ![Success Mobile](/static/screenshots/success_mobile.png) |
 | User Profile     | Profile update, order history                 | ![Profile Desktop](/static/screenshots/profile.png) | ![Profile Tablet](/static/screenshots/profile_tablet.png) | ![Profile Mobile](/static/screenshots/profile_mobile.png) |
 | 404 Page         | Show Page not Found                           | ![404 Desktop](/static/screenshots/404.png) | ![404 Tablet](/static/screenshots/404_tablet.png) | ![404 Mobile](/static/screenshots/404_mobile.png) |
+| Product Details (Reviews) | Customer reviews, submit/edit/delete review | ![Reviews Desktop](/static/screenshots/reviews.png) | ![Reviews Tablet](/static/screenshots/reviews_tablet.png) | ![Reviews Mobile](/static/screenshots/reviews_mobile.png) |
+| Add Product (Staff) | Add product form with variations inline | ![Add Product Desktop](/static/screenshots/add_product.png) | ![Add Product Tablet](/static/screenshots/add_product_tablet.png) | ![Add Product Mobile](/static/screenshots/add_product_mobile.png) |
+| Edit Product (Staff) | Edit product form with existing data | ![Edit Product Desktop](/static/screenshots/edit_product.png) | ![Edit Product Tablet](/static/screenshots/edit_product_tablet.png) | ![Edit Product Mobile](/static/screenshots/edit_product_mobile.png) |
 
 
 
