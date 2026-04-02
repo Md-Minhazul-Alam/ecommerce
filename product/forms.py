@@ -2,6 +2,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
 from .models import Review, Product, Brand, Category, Tag
+from .widgets import CustomClearableFileInput
 
 
 # Review Form
@@ -85,6 +86,7 @@ class ProductForm(forms.ModelForm):
                 ('True', 'Yes'),
                 ('False', 'No'),
             ]),
+            'thumbnail': CustomClearableFileInput(),
         }
         labels = {
             'product_name': 'Product Name',
