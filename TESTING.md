@@ -158,6 +158,17 @@ Audited with Lighthouse for performance, accessibility, SEO, and best practices.
 | Checkout process  | Stripe payment and order summary correct      | Completed test checkout                      | Payment succeeds       | ![Checkout](/static/testing/features/checkout.png)                                          |
 | Profile update    | Update personal info and view orders         | Edited profile info, viewed past orders     | Changes saved correctly | ![Profile](/static/testing/features/profile.png)                                           |
 
+
+| Add Product (Staff only) | Only staff/superuser can access add product page | Logged in as normal user and tried to access `/products/product/add/` | Redirected to admin login | ![Add Product Auth](/static/testing/features/add_product.png) |
+| Edit Product (Staff only) | Only staff/superuser can access edit product page | Logged in as normal user and tried to access edit URL | Redirected to admin login | ![Edit Product Auth](/static/testing/features/edit_product.png) |
+| Delete Product (Staff only) | Only staff/superuser can delete products | Logged in as normal user and tried to delete | Redirected to admin login | ![Delete Product Auth](/static/testing/features/delete_product.png) |
+| Add Product Form Validation | Required fields must be filled | Left required fields empty and submitted | Error messages displayed per field | ![Add Product Validation](/static/testing/features/add-product-validation.png) |
+| Review Submission | Signed-in users can submit a review | Logged in and submitted a review with rating and comment | Review saved and displayed | ![Add Review](/static/testing/features/add_review.png) |
+| Duplicate Review Block | User cannot submit two reviews for the same product | Submitted a review then tried to submit again | Warning message shown, second review blocked | ![Duplicate Review](/static/testing/features/duplicate-review.png) |
+| Edit Review | User can edit their own review | Clicked edit on own review, modal opened pre-filled, updated and saved | Review updated correctly | ![Edit Review](/static/testing/features/edit_review.png) |
+| Delete Review | User can delete their own review | Clicked delete, confirmed in modal | Review removed from product page | ![Delete Review](/static/testing/features/delete_review.png) |
+| Review Login Required | Non-logged-in users cannot submit reviews | Clicked Submit Review without logging in | Alert shown prompting login | ![Review Login](/static/testing/features/review-login.png) |
+
 # PC SHOP - User Story Testing
 
 This file documents all user story tests for the PC Shop e-commerce project, including steps, expected results, and screenshots for verification.
@@ -178,6 +189,14 @@ This file documents all user story tests for the PC Shop e-commerce project, inc
 | **Successful Checkout** | 1. Fill all required fields<br>2. Complete Stripe payment | Order processed; confirmation page displayed; email sent | ![Checkout Success](/static/testing/user-story/checkout-success.png) |
 | **Profile Update** | 1. Open Profile Page<br>2. Update personal info<br>3. Save changes | Updated info saved; reflected immediately | ![Profile Update](/static/testing/user-story/profile-update.png) |
 | **Quick & Legal Links** | 1. Click Quick/Legal link in Footer | Opens correct page in new tab | ![Quick Link](/static/testing/user-story/quick-link.png) |
+| **Add Product (Staff)** | 1. Log in as staff/superuser<br>2. Go to Product Management<br>3. Fill in product form<br>4. Submit | Product created and visible on site | ![Add Product](/static/testing/user-story/add_product.png) |
+| **Edit Product (Staff)** | 1. Log in as staff/superuser<br>2. Click Edit on a product<br>3. Update details<br>4. Save | Product updated correctly | ![Edit Product](/static/testing/user-story/edit_product.png) |
+| **Delete Product (Staff)** | 1. Log in as staff/superuser<br>2. Click Delete on a product<br>3. Confirm in modal | Product removed from site | ![Delete Product](/static/testing/user-story/delete_product.png) |
+| **Submit Review** | 1. Log in as a user<br>2. Go to product detail page<br>3. Fill in rating and comment<br>4. Click Submit Review | Review saved and displayed on product page | ![Submit Review](/static/testing/user-story/add_review.png) |
+| **Duplicate Review Warning** | 1. Log in as a user<br>2. Submit a review for a product<br>3. Try to submit another review for the same product | Warning message displayed, duplicate blocked | ![Duplicate Review](/static/testing/user-story/duplicate-review.png) |
+| **Edit Review** | 1. Log in as the review owner<br>2. Click Edit on own review<br>3. Update rating or comment in modal<br>4. Save | Review updated and displayed correctly | ![Edit Review](/static/testing/user-story/edit_review.png) |
+| **Delete Review** | 1. Log in as the review owner<br>2. Click Delete on own review<br>3. Confirm in modal | Review removed from product page | ![Delete Review](/static/testing/user-story/delete_review.png) |
+| **Review Without Login** | 1. Open product page without logging in<br>2. Click Submit Review | Alert shown prompting user to login | ![Review No Login](/static/testing/user-story/review-login.png) |
 
 ---
 
