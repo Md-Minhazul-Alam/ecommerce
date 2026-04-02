@@ -154,7 +154,6 @@ Audited with Lighthouse for performance, accessibility, SEO, and best practices.
 ---
 
 ## Defensive Programming
-
 | Feature | Expectation | Test | Result | Screenshot |
 | ------- | ----------- | ---- | ------ | ---------- |
 | Navigation bar | Adaptive on all screen sizes | Tested all device widths | Works consistently | ![Navbar](/static/testing/features/navbar.png) |
@@ -164,9 +163,9 @@ Audited with Lighthouse for performance, accessibility, SEO, and best practices.
 | Cart functionality | Add/remove/update quantity | Added multiple products, changed quantity | Totals update correctly | ![Cart](/static/testing/features/cart-update.png) |
 | Checkout process | Stripe payment works correctly | Completed test checkout | Payment succeeds | ![Checkout](/static/testing/features/checkout.png) |
 | Profile update | Update info and view orders | Edited profile, viewed past orders | Changes saved correctly | ![Profile](/static/testing/features/profile.png) |
-| Add product (staff only) | Only staff/superuser can access | Accessed `/products/product/add/` as normal user | Redirected to login | ![Add Product](/static/testing/features/add_product.png) |
-| Edit product (staff only) | Only staff/superuser can edit | Accessed edit URL as normal user | Redirected to login | ![Edit Product](/static/testing/features/edit_product.png) |
-| Delete product (staff only) | Only staff/superuser can delete | Tried to delete as normal user | Redirected to login | ![Delete Product](/static/testing/features/delete_product.png) |
+| Add product (staff only) | Only staff/superuser can access | Logged in as normal user and viewed product page | Add button not visible to normal users | ![Add Product](/static/testing/features/add_product.png) |
+| Edit product (staff only) | Only staff/superuser can edit | Logged in as normal user and viewed product page | Edit button not visible to normal users | ![Edit Product](/static/testing/features/edit_product.png) |
+| Delete product (staff only) | Only staff/superuser can delete | Logged in as normal user and viewed product page | Delete button not visible to normal users | ![Delete Product](/static/testing/features/delete_product.png) |
 | Add product form validation | Required fields must be filled | Submitted form with empty fields | Error messages shown per field | ![Validation](/static/testing/features/add-product-validation.png) |
 | Review submission | Signed-in users can submit reviews | Submitted review with rating and comment | Review saved and displayed | ![Add Review](/static/testing/features/add_review.png) |
 | Duplicate review block | One review per user per product | Submitted review then tried again | Warning shown, blocked | ![Duplicate](/static/testing/features/duplicate-review.png) |
