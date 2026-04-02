@@ -225,6 +225,18 @@ This file documents all user story tests for the PC Shop e-commerce project, inc
 * **Hero slider images not scaling properly on small screens**  
   **Fix:** Added responsive image classes and object-fit → Resolved  
 
+* **Edit review modal not showing existing review data**  
+  **Fix:** Added `edit_forms` dict to `product_detail` view, pre-filling `ReviewForm(instance=review)` for each review → Resolved
+
+* **`TemplateSyntaxError: Invalid filter: get_item`** when using custom template tag  
+  **Fix:** Replaced custom template tag with `{% for edit_review_id, edit_form in edit_forms.items %}{% if edit_review_id == review.id %}` loop in template → Resolved
+
+* **Delete product modal appearing behind product cards**  
+  **Fix:** Moved all delete modals outside the product card loop to fix z-index stacking context issue → Resolved
+
+* **`ProgrammingError: relation product_review does not exist` on Heroku**  
+  **Fix:** Migration `0013_review` was applied locally but not on remote database. Ran `heroku run python manage.py migrate` to apply → Resolved
+
 ---
 
 ## Known Issues
