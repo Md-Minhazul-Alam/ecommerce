@@ -241,5 +241,4 @@ This file documents all user story tests for the PC Shop e-commerce project, inc
 
 ## Known Issues
 
-* Automated email notifications may still fail in local development if SMTP server is not running.  
 * Minor responsive issues may appear in very small screen widths (<320px) — non-critical.
