@@ -126,6 +126,8 @@ The following custom Python logic has been implemented throughout the applicatio
 | `checkout/views.py` | Profile auto-fill | Checkout form pre-filled with saved profile data for authenticated users |
 | `product/views.py` | Product filtering & sorting | Products dynamically filtered by category, search query, price, and rating |
 | `product/views.py` | Variation grouping | Product variations grouped by type using Python's itertools groupby function |
+| `product/forms.py` | Thumbnail or URL validation | Custom `clean()` method ensures at least one of thumbnail image or image URL is provided, raising a validation error if both are empty |
+| `product/forms.py` | Rating range validation | Custom `clean()` method validates that rating value is between 0 and 5, adding a field-level error if out of range |
 | `product/widgets.py` | Custom clearable file input | Custom widget for thumbnail field showing current image preview with remove checkbox |
 
 ---
