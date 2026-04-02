@@ -107,6 +107,8 @@ Tested on desktop, tablet, and mobile devices.
 | Order Success    | Confirmation, order summary, email notification | ![Success Desktop](/static/screenshots/success.png) | ![Success Tablet](/static/screenshots/success_tablet.png) | ![Success Mobile](/static/screenshots/success_mobile.png) |
 | User Profile     | Profile update, order history                 | ![Profile Desktop](/static/screenshots/profile.png) | ![Profile Tablet](/static/screenshots/profile_tablet.png) | ![Profile Mobile](/static/screenshots/profile_mobile.png) |
 | 404 Page         | Show Page not Found                           | ![404 Desktop](/static/screenshots/404.png) | ![404 Tablet](/static/screenshots/404_tablet.png) | ![404 Mobile](/static/screenshots/404_mobile.png) |
+| Add Product | Staff form with variations inline | ![Add Product Desktop](/static/screenshots/add_product.png) | ![Add Product Tablet](/static/screenshots/add_product_tablet.png) | ![Add Product Mobile](/static/screenshots/add_product_mobile.png) |
+| Edit Product | Staff form with existing data and variations | ![Edit Product Desktop](/static/screenshots/edit_product.png) | ![Edit Product Tablet](/static/screenshots/edit_product_tablet.png) | ![Edit Product Mobile](/static/screenshots/edit_product_mobile.png) |
 
 
 ## Browser Compatibility
@@ -126,6 +128,8 @@ All features, including Stripe payment, cart management, and responsive navigati
 | 404 Page         | ![Chrome 404](/static/testing/browser/chrome/chrome-404.png)                      | ![Firefox 404](/static/testing/browser/firefox/firefox-404.png)                   | Works as expected |
 | Quick Links       | ![Chrome Quick](/static/testing/browser/chrome/chrome-quick.png)                      | ![Firefox Quick](/static/testing/browser/firefox/firefox-quick.png)                   | Works as expected |
 | Legal Page         | ![Chrome Legal](/static/testing/browser/chrome/chrome-legal.png)                      | ![Firefox Legal](/static/testing/browser/firefox/firefox-legal.png)                   | Works as expected |
+| Add Product | ![Chrome Add Product](/static/testing/browser/chrome/chrome-add-product.png) | ![Firefox Add Product](/static/testing/browser/firefox/firefox-add-product.png) | Works as expected |
+| Edit Product | ![Chrome Edit Product](/static/testing/browser/chrome/chrome-edit-product.png) | ![Firefox Edit Product](/static/testing/browser/firefox/firefox-edit-product.png) | Works as expected |
 
 
 ## Lighthouse Audit
