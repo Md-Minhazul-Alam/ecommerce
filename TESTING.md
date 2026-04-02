@@ -148,26 +148,24 @@ Audited with Lighthouse for performance, accessibility, SEO, and best practices.
 
 ## Defensive Programming
 
-| Feature           | Expectation                                   | Test                                         | Result                 | Screenshot                                                                                  |
-| ----------------- | --------------------------------------------- | ------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------- |
-| Navigation bar    | Adaptive on desktop, tablet, mobile          | Tested all device widths                     | Works consistently     | ![Navbar Desktop](/static/testing/features/navbar.png) ![Navbar Mobile](/static/testing/features/mobile-navbar.png) |
-| Hero / Offer slider| Displays current promotions correctly        | Checked slider for active promotions        | Works as expected      | ![Hero Slider](/static/testing/features/sliders.png)                                        |
-| Product Listing   | Displays products correctly with filters     | Checked categories, sorting, and pagination | Works as expected      | ![Product Listing](/static/testing/features/product-listing.png)                             |
-| Product search    | Filters products by name, price, rating      | Entered test search terms                    | Correct products listed | ![Search Modal](/static/testing/features/search.png) ![Search Results](/static/testing/features/search-result.png) |
-| Cart functionality| Add/remove/update quantity, calculate totals | Added multiple products, changed quantity   | Totals update correctly | ![Cart Function](/static/testing/features/cart-update.png)                                   |
-| Checkout process  | Stripe payment and order summary correct      | Completed test checkout                      | Payment succeeds       | ![Checkout](/static/testing/features/checkout.png)                                          |
-| Profile update    | Update personal info and view orders         | Edited profile info, viewed past orders     | Changes saved correctly | ![Profile](/static/testing/features/profile.png)                                           |
-
-
-| Add Product (Staff only) | Only staff/superuser can access add product page | Logged in as normal user and tried to access `/products/product/add/` | Redirected to admin login | ![Add Product Auth](/static/testing/features/add_product.png) |
-| Edit Product (Staff only) | Only staff/superuser can access edit product page | Logged in as normal user and tried to access edit URL | Redirected to admin login | ![Edit Product Auth](/static/testing/features/edit_product.png) |
-| Delete Product (Staff only) | Only staff/superuser can delete products | Logged in as normal user and tried to delete | Redirected to admin login | ![Delete Product Auth](/static/testing/features/delete_product.png) |
-| Add Product Form Validation | Required fields must be filled | Left required fields empty and submitted | Error messages displayed per field | ![Add Product Validation](/static/testing/features/add-product-validation.png) |
-| Review Submission | Signed-in users can submit a review | Logged in and submitted a review with rating and comment | Review saved and displayed | ![Add Review](/static/testing/features/add_review.png) |
-| Duplicate Review Block | User cannot submit two reviews for the same product | Submitted a review then tried to submit again | Warning message shown, second review blocked | ![Duplicate Review](/static/testing/features/duplicate-review.png) |
-| Edit Review | User can edit their own review | Clicked edit on own review, modal opened pre-filled, updated and saved | Review updated correctly | ![Edit Review](/static/testing/features/edit_review.png) |
-| Delete Review | User can delete their own review | Clicked delete, confirmed in modal | Review removed from product page | ![Delete Review](/static/testing/features/delete_review.png) |
-| Review Login Required | Non-logged-in users cannot submit reviews | Clicked Submit Review without logging in | Alert shown prompting login | ![Review Login](/static/testing/features/review-login.png) |
+| Feature | Expectation | Test | Result | Screenshot |
+| ------- | ----------- | ---- | ------ | ---------- |
+| Navigation bar | Adaptive on all screen sizes | Tested all device widths | Works consistently | ![Navbar](/static/testing/features/navbar.png) |
+| Hero slider | Displays promotions correctly | Checked slider for active promotions | Works as expected | ![Slider](/static/testing/features/slider.png) |
+| Product listing | Displays products with filters | Checked categories, sorting, pagination | Works as expected | ![Listing](/static/testing/features/product-listing.png) |
+| Product search | Filters by name, price, rating | Entered test search terms | Correct products listed | ![Search](/static/testing/features/search.png) |
+| Cart functionality | Add/remove/update quantity | Added multiple products, changed quantity | Totals update correctly | ![Cart](/static/testing/features/cart-update.png) |
+| Checkout process | Stripe payment works correctly | Completed test checkout | Payment succeeds | ![Checkout](/static/testing/features/checkout.png) |
+| Profile update | Update info and view orders | Edited profile, viewed past orders | Changes saved correctly | ![Profile](/static/testing/features/profile.png) |
+| Add product (staff only) | Only staff/superuser can access | Accessed `/products/product/add/` as normal user | Redirected to login | ![Add Product](/static/testing/features/add_product.png) |
+| Edit product (staff only) | Only staff/superuser can edit | Accessed edit URL as normal user | Redirected to login | ![Edit Product](/static/testing/features/edit_product.png) |
+| Delete product (staff only) | Only staff/superuser can delete | Tried to delete as normal user | Redirected to login | ![Delete Product](/static/testing/features/delete_product.png) |
+| Add product form validation | Required fields must be filled | Submitted form with empty fields | Error messages shown per field | ![Validation](/static/testing/features/add-product-validation.png) |
+| Review submission | Signed-in users can submit reviews | Submitted review with rating and comment | Review saved and displayed | ![Add Review](/static/testing/features/add_review.png) |
+| Duplicate review block | One review per user per product | Submitted review then tried again | Warning shown, blocked | ![Duplicate](/static/testing/features/duplicate-review.png) |
+| Edit review | User can edit their own review | Clicked edit, modal opened pre-filled, saved | Review updated correctly | ![Edit Review](/static/testing/features/edit_review.png) |
+| Delete review | User can delete their own review | Clicked delete, confirmed in modal | Review removed | ![Delete Review](/static/testing/features/delete_review.png) |
+| Review login required | Non-logged-in users cannot review | Clicked Submit Review without logging in | Alert shown prompting login | ![Review Login](/static/testing/features/review-login.png) |
 
 # PC SHOP - User Story Testing
 
